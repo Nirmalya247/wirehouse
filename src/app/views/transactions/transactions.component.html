@@ -10,32 +10,28 @@
                 </div>
                 <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
                     <form class="form-horizontal">
-
-
-
-
-
                         <div class="form-group">
-                            <label class="col-form-label" for="appendedInputButtons">Add items</label>
+                            <label class="col-form-label" for="appendedInputButton">Item Name</label>
                             <div class="controls">
                                 <div class="input-group">
-                                    <select id="select1" name="select1" class="form-control">
+                                    <select id="select1" name="select1" class="form-control" placeholder="item name">
+                                        <input class="c-multi-select-search"/>
                                         <option value="0">Please select</option>
                                         <option value="1">Option #1</option>
                                         <option value="2">Option #2</option>
                                         <option value="3">Option #3</option>
                                     </select>
-                                    <input id="appendedInputButton" class="form-control" size="16" type="text" placeholder="in 1">
-                                    <input id="appendedInputButton" class="form-control" size="16" type="text" placeholder="in 2">
+                                    <input id="appendedInputButton" class="form-control" size="20" type="text" placeholder="Available Quantity">
+                                    <input id="appendedInputButton" class="form-control" size="20" type="text" placeholder="Unit Price">
+                                    <input id="appendedInputButton" class="form-control" size="20" type="text" placeholder="Quantity">
+                                    <input id="appendedInputButton" class="form-control" size="20" type="text" placeholder="Total Price">
+
                                     <span class="input-group-append">
-                                    <button class="btn btn-secondary" type="button"><i class="fa fa-close"></i></button>
+                                        <button class="btn btn-secondary" type="button">x</button>
                                     </span>
                                 </div>
                             </div>
                         </div>
-
-
-
 
                         <div class="form-actions">
                             <button class="btn btn-primary" type="button"><i class="fa fa-plus"></i>&nbsp;Add item</button>
@@ -43,15 +39,15 @@
                         <div class="form-group row">
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">VAT (%)</label>
-                                <input type="text" class="form-control" placeholder=".col-md-3">
+                                <input type="text" class="form-control" placeholder="%">
                             </div>
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Discount (%)</label>
-                                <input type="text" class="form-control" placeholder=".col-md-3">
+                                <input type="text" class="form-control" placeholder="%">
                             </div>
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Discount (value)</label>
-                                <input type="text" class="form-control" placeholder=".col-md-3">
+                                <input type="text" class="form-control" placeholder="Rs.">
                             </div>
 
 
@@ -59,11 +55,11 @@
                             <div class="col-md-3">
                                 <label class="col-form-label" for="select1">Payment Mode</label>
                                 <select id="select1" name="select1" class="form-control">
-                                    <option value="0">Please select</option>
-                                    <option value="1">Option #1</option>
-                                    <option value="2">Option #2</option>
-                                    <option value="3">Option #3</option>
-                                </select>
+                                <option value="0">Please select</option>
+                                <option value="1">Option #1</option>
+                                <option value="2">Option #2</option>
+                                <option value="3">Option #3</option>
+                              </select>
                             </div>
                         </div>
                         <div class="form-group row">
