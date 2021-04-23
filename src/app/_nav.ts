@@ -4,12 +4,23 @@ export const navItems: INavData[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    icon: 'icon-speedometer',
-    badge: {
-      variant: 'info',
-      text: 'NEW'
-    }
+    icon: 'icon-speedometer'
   },
+  {
+    name: 'Transactions',
+    url: '/transactions',
+    icon: 'icon-wallet'
+  },
+  {
+    name: 'Inventory',
+    url: '/theme/typography',
+    icon: 'icon-social-dropbox'
+  },
+  {
+    name: 'Admin Management',
+    url: '/base',
+    icon: 'icon-user'
+  }/*,
   {
     title: true,
     name: 'Theme'
@@ -247,5 +258,5 @@ export const navItems: INavData[] = [
     icon: 'icon-layers',
     variant: 'danger',
     attributes: { target: '_blank', rel: 'noopener' }
-  }
+  }*/
 ];
