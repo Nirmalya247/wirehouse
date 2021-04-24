@@ -13,12 +13,12 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Inventory',
-    url: '/theme/typography',
+    url: '/inventory',
     icon: 'icon-social-dropbox'
   },
   {
     name: 'Admin Management',
-    url: '/base',
+    url: '/admin-management',
     icon: 'icon-user'
   }/*,
   {

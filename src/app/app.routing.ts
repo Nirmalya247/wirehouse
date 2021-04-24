@@ -59,6 +59,14 @@ export const routes: Routes = [
         loadChildren: () => import('./views/transactions/transactions.module').then(m => m.TransactionsModule)
       },
       {
+        path: 'inventory',
+        loadChildren: () => import('./views/inventory/inventory.module').then(m => m.InventoryModule)
+      },
+      {
+        path: 'admin-management',
+        loadChildren: () => import('./views/admin-management/admin-management.module').then(m => m.AdminManagementModule)
+      },
+      {
         path: 'notifications',
         loadChildren: () => import('./views/notifications/notifications.module').then(m => m.NotificationsModule)
       },
