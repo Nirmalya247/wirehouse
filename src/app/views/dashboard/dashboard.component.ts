@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
         { data: [65, 59, 80, 81, 56, 55, 40,56,76,23,55, 11], label: 'profit' },
         { data: [28, 48, 40, 19, 86, 27, 85, 54,10, 45,63,77], label: 'Sales' }
     ];
+
     ngOnInit(): void {
     }
     public chartClicked(e: any): void {

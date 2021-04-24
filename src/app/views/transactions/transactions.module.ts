@@ -10,6 +10,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { TransactionsComponent } from './transactions.component';
 import { TransactionsRoutingModule } from './transactions-routing.module';
@@ -27,7 +28,8 @@ import { TransactionsRoutingModule } from './transactions-routing.module';
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     TooltipModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    NgSelectModule
   ],
   declarations: [ TransactionsComponent ]
 })
