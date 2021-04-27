@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -8,6 +9,13 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
 import { IconModule, IconSetModule, IconSetService } from '@coreui/icons-angular';
+
+import { HttpClientModule } from '@angular/common/http';
+
+// Language.
+// Auth
+import { AuthService } from './auth-services/auth.service';
+// Auth.
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -59,6 +67,8 @@ import { ChartsModule } from 'ng2-charts';
     ChartsModule,
     IconModule,
     IconSetModule.forRoot(),
+    HttpClientModule,
+    FormsModule
   ],
   declarations: [
     AppComponent,
@@ -74,6 +84,7 @@ import { ChartsModule } from 'ng2-charts';
       useClass: HashLocationStrategy
     },
     IconSetService,
+    AuthService
   ],
   bootstrap: [ AppComponent ]
 })

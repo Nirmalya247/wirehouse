@@ -11,49 +11,7 @@
                 </div>
                 <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
                     class="card-body">
-                    <form class="form-horizontal">
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <ng-select [items]="people" bindLabel="name" autofocus bindValue="id" [(ngModel)]="selectedPersonId">
-                                </ng-select>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="controls">
-                                    <div class="input-group">
-                                        <!--
-                                        <select id="select1" name="select1" class="form-control" placeholder="item name">
-                                            <input class="c-multi-select-search" />
-                                            <option value="0">Please select</option>
-                                            <option value="1">Option #1</option>
-                                            <option value="2">Option #2</option>
-                                            <option value="3">Option #3</option>
-                                        </select>
-                                        
-                                        
-                                        <ng-select [items]="people" bindLabel="name" autofocus bindValue="id" [(ngModel)]="selectedPersonId">
-                                        </ng-select>-->
-    
-                                        <input id="appendedInputButton" class="form-control" size="20" type="text"
-                                            placeholder="Available Quantity">
-                                        <input id="appendedInputButton" class="form-control" size="20" type="text"
-                                            placeholder="Unit Price">
-                                        <input id="appendedInputButton" class="form-control" size="20" type="text"
-                                            placeholder="Quantity">
-                                        <input id="appendedInputButton" class="form-control" size="20" type="text"
-                                            placeholder="Total Price">
-    
-                                        <span class="input-group-append">
-                                            <button class="btn btn-secondary" type="button">x</button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button class="btn btn-primary" type="button"><i class="fa fa-plus"></i>&nbsp;Add
-                                item</button>
-                        </div>
+                    <form class="form-horizontal" #f="ngForm" novalidate>
                         <div class="form-group row">
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">VAT (%)</label>

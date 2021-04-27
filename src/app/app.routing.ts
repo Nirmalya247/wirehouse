@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuardService } from './auth-services/auth-guard.service';
 
 // Import Containers
 import { DefaultLayoutComponent } from './containers';
@@ -12,6 +13,7 @@ import { RegisterComponent } from './views/register/register.component';
 export const routes: Routes = [
   {
     path: '',
+    //canActivate: [AuthGuardService],
     redirectTo: 'dashboard',
     pathMatch: 'full',
   },
@@ -37,14 +39,8 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'register',
-    component: RegisterComponent,
-    data: {
-      title: 'Register Page'
-    }
-  },
-  {
     path: '',
+    //canActivate: [AuthGuardService],
     component: DefaultLayoutComponent,
     data: {
       title: 'Home'
@@ -52,31 +48,23 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
+        canActivate: [AuthGuardService],
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
         path: 'transactions',
+        canActivate: [AuthGuardService],
         loadChildren: () => import('./views/transactions/transactions.module').then(m => m.TransactionsModule)
       },
       {
         path: 'inventory',
+        canActivate: [AuthGuardService],
         loadChildren: () => import('./views/inventory/inventory.module').then(m => m.InventoryModule)
       },
       {
         path: 'admin-management',
+        canActivate: [AuthGuardService],
         loadChildren: () => import('./views/admin-management/admin-management.module').then(m => m.AdminManagementModule)
-      },
-      {
-        path: 'notifications',
-        loadChildren: () => import('./views/notifications/notifications.module').then(m => m.NotificationsModule)
-      },
-      {
-        path: 'theme',
-        loadChildren: () => import('./views/theme/theme.module').then(m => m.ThemeModule)
-      },
-      {
-        path: 'widgets',
-        loadChildren: () => import('./views/widgets/widgets.module').then(m => m.WidgetsModule)
       }
     ]
   },
