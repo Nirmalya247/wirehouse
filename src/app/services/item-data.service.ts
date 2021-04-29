@@ -16,10 +16,17 @@ export class ItemDataService {
         return this.http.post(url, item);
     }
     // get items
-    getItems(search):Observable<any> {
-        search[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
-        search[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+    getItems(query):Observable<Array<Item>> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'item/getitems';
-        return this.http.post(url, search);
+        return this.http.post<Array<Item>>(url, query);
+    }
+    // get items count
+    getItemsCount(query):Observable<Number> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'item/getitemscount';
+        return this.http.post<Number>(url, query);
     }
 }

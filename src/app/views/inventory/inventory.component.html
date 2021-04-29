@@ -121,24 +121,24 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of items; index as i;">
-                                <td>Carwyn Fachtna</td>
-                                <td>2012/01/01</td>
-                                <td>987654632</td>
-                                <td>450
-                                </td>
-                                <td>900000</td>
+                                <td>{{ i }}</td>
+                                <td>{{ item.itemname }}</td>
+                                <td>{{ item.itemcode }}</td>
+                                <td>{{ item.description }}</td>
+                                <td>{{ item.qty }}</td>
+                                <td>{{ item.price }}</td>
+                                <td>{{ item.totalsold }}</td>
+                                <td>{{ item.totalearned }}</td>
+                                <td>update</td>
                             </tr>
                         </tbody>
                     </table>
                     <ul class="pagination">
-                        <li class="page-item"><button class="page-link">Prev</button></li>
-                        <li class="page-item active">
-                            <button class="page-link">1</button>
+                        <li class="page-item" (click)="getItemTable(-1)"><button class="page-link">Prev</button></li>
+                        <li class="page-item active" *ngFor="let page of pages;" [ngClass]="{'active': page == itemPage}" (click)="getItemTable(page)">
+                            <button class="page-link">{{ page }}</button>
                         </li>
-                        <li class="page-item"><button class="page-link">2</button></li>
-                        <li class="page-item"><button class="page-link">3</button></li>
-                        <li class="page-item"><button class="page-link">4</button></li>
-                        <li class="page-item"><button class="page-link">Next</button></li>
+                        <li class="page-item" (click)="getItemTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
             </div>

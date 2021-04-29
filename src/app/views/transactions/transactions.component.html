@@ -11,66 +11,160 @@
                 </div>
                 <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
                     class="card-body">
-                    <form class="form-horizontal" #f="ngForm" novalidate>
-                        <div class="form-group row">
+                    <!--
                             <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">VAT (%)</label>
-                                <input type="text" class="form-control" placeholder="%">
+                                <ng-select [items]="people" bindLabel="name" autofocus bindValue="id" [(ngModel)]="selectedPersonId">
+                                </ng-select>
                             </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Discount (%)</label>
-                                <input type="text" class="form-control" placeholder="%">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Discount (value)</label>
-                                <input type="text" class="form-control" placeholder="Rs.">
-                            </div>
+                            -->
+                    <div class="form-group row" *ngFor="let item of items; index as i;">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Item</label>
+                            <input type="text" class="form-control" placeholder="Item" [(ngModel)]="item.itemname"
+                                readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Available Quantity</label>
+                            <input type="text" class="form-control" placeholder="Available Quantity"
+                                [(ngModel)]="item.qtyAvailable" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Unit Price</label>
+                            <input type="text" class="form-control" placeholder="Unit Price" [(ngModel)]="item.price"
+                                readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Quantity</label>
+                            <input type="text" class="form-control" placeholder="Quantity" [(ngModel)]="item.qty"
+                                (ngModelChange)="changeQTY(i);">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Total Price</label>
+                            <input type="text" class="form-control" placeholder="Total Price"
+                                [(ngModel)]="item.totalPrice" readonly>
+                        </div>
+                        <div class="col-md-1">
+                            <label class="col-form-label" for="prependedInput">&nbsp;</label>
+                            <br>
+                            <button class="btn btn-primary" type="button" (click)="removeItem(i)"><i
+                                    class="fa fa-close"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" type="button" (click)="addItem()"><i
+                                    class="fa fa-plus"></i>&nbsp;Add
+                                item</button>
+                        </div>
+                        <div class="col-md-3">
+                            <ng-select [searchFn]="searchFn" [items]="itemsList" bindLabel="itemname" autofocus
+                                bindValue="itemcode" [(ngModel)]="selectedItemCode" (search)="itemSearch($event)"
+                                (change)="itemChange($event)" placeholder="search item">
+                            </ng-select>
+                        </div>
+                    </div>
 
 
 
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="select1">Payment Mode</label>
-                                <select id="select1" name="select1" class="form-control">
-                                    <option value="0">Please select</option>
-                                    <option value="1">Option #1</option>
-                                    <option value="2">Option #2</option>
-                                    <option value="3">Option #3</option>
-                                </select>
-                            </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">VAT (%)</label>
+                            <input type="text" class="form-control" placeholder="%" [(ngModel)]="vat"
+                                (ngModelChange)="calculateTotalAmmount()">
                         </div>
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label class="col-form-label" for="prependedInput">Cumulative Amount</label>
-                                <input type="text" class="form-control" placeholder="0.00">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-form-label" for="prependedInput">Amount Tendered</label>
-                                <input type="text" class="form-control" placeholder="0.00">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-form-label" for="prependedInput">Change Due</label>
-                                <input type="text" class="form-control" placeholder="0.00">
-                            </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Discount (%)</label>
+                            <input type="text" class="form-control" placeholder="%" [(ngModel)]="discount"
+                                (ngModelChange)="calculateTotalAmmount()">
                         </div>
-                        <div class="form-group row">
-                            <div class="col-md-4">
-                                <label class="col-form-label" for="prependedInput">Customer Name</label>
-                                <input type="text" class="form-control" placeholder="Name">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-form-label" for="prependedInput">Customer Phone</label>
-                                <input type="text" class="form-control" placeholder="Phone Number">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="col-form-label" for="prependedInput">Customer Email</label>
-                                <input type="text" class="form-control" placeholder="E-mail Address">
-                            </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Discount (value)</label>
+                            <input type="text" class="form-control" placeholder="Rs." [(ngModel)]="discountValue"
+                                readonly>
                         </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                            <button class="btn btn-secondary" type="button">Cancel</button>
+
+
+
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="select1">Payment Mode</label>
+                            <select id="select1" name="select1" class="form-control" [(ngModel)]="paymentMode">
+                                <option value="0">Cash</option>
+                                <option value="1">POS</option>
+                                <option value="2">Cash and POS</option>
+                            </select>
                         </div>
-                    </form>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Cumulative Amount</label>
+                            <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="totalAmount"
+                                readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Amount Tendered</label>
+                            <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="totalTendered"
+                                (ngModelChange)="changeTendered();">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Change Due</label>
+                            <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="changeDue" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Credit Amount</label>
+                            <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="creditAmount"
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Customer ID</label>
+                            <input type="text" class="form-control" placeholder="ID" [(ngModel)]="customerID"
+                                (ngModelChange)="customerGet();">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Customer Name</label>
+                            <input type="text" class="form-control" placeholder="Name" [(ngModel)]="customerName">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Customer Phone</label>
+                            <input type="text" class="form-control" placeholder="Phone Number"
+                                [(ngModel)]="customerPhone" (ngModelChange)="customerGet();">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Customer Email</label>
+                            <input type="text" class="form-control" placeholder="E-mail Address"
+                                [(ngModel)]="customerEmail" (ngModelChange)="customerGet();">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Credit</label>
+                            <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="customerCredit"
+                                readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" type="button" (click)="customerAdd()"
+                                [disabled]="!customerNew">Add Customer</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" type="button" (click)="customerUpdate()"
+                                [disabled]="customerNew">Update Customer</button>
+                        </div>
+                        <div class="col-md-2">
+                            <input class="form-check-input" type="checkbox" value="option1" id="creditAdd"
+                                [disabled]="customerNew" [(ngModel)]="addCredit"
+                                (ngModelChange)="calculateTotalAmmount();">
+                            <label class="form-check-label" for="creditAdd">
+                                Add Credit to Amount
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="button" (click)="confirmTransaction()">Confirm</button>
+                        <button class="btn btn-secondary" type="button" (click)="cancelTransaction()">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>

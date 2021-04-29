@@ -12,6 +12,8 @@ import { IconModule, IconSetModule, IconSetService } from '@coreui/icons-angular
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { ToastrModule } from 'ngx-toastr';
+
 // Language.
 // Auth
 import { AuthService } from './auth-services/auth.service';
@@ -68,7 +70,8 @@ import { ChartsModule } from 'ng2-charts';
     IconModule,
     IconSetModule.forRoot(),
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot()
   ],
   declarations: [
     AppComponent,

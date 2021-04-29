@@ -11,6 +11,8 @@ import { Item } from '../../data/item';
 })
 export class InventoryComponent implements OnInit {
     items: Array<Item>;
+    pages: Array<number>;
+    itemPage = 1;
     itemLimit = 10;
     itemOrderBy = 'itemcode';
     itemOrder = 'asc';
@@ -23,9 +25,36 @@ export class InventoryComponent implements OnInit {
 
     ngOnInit(): void {
         // generate random values for mainChart
+        this.getItemTable(null);
     }
 
-    getItemTable() {
+    getItemTable(pageNo) {
+        if (pageNo != null) {
+            if (pageNo == -1) pageNo = this.itemPage - 1;
+            if (pageNo == -2) pageNo = this.itemPage + 1;
+            if (pageNo < 1 || pageNo > this.pages.length) return;
+            this.itemPage = pageNo;
+        }
+        else this.itemPage = 1;
+        let query = {
+            itemLimit: this.itemLimit,
+            itemOrderBy: this.itemOrderBy,
+            itemOrder: this.itemOrder,
+            itemSearch: this.itemSearch,
+            itemPage: this.itemPage
+        }
+        this.itemDataService.getItemsCount(query).subscribe (
+            resCount => {
+                console.log(resCount);
+                this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.itemLimit)}, (_, i) => i + 1);
+                this.itemDataService.getItems(query).subscribe (
+                    res => {
+                        console.log(res);
+                        this.items = res;
+                    }
+                );
+            }
+        );
         console.log(this.itemLimit, this.itemOrderBy, this.itemOrder, this.itemSearch);
     }
 
@@ -48,7 +77,7 @@ export class InventoryComponent implements OnInit {
     addItem(f: NgForm) {
         if (f.valid) {
             this.itemDataService.addItem(f.value).subscribe (
-                res=> {
+                res => {
                     console.log(res);
                 }
             );
