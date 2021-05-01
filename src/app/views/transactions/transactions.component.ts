@@ -1,40 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { NgSelectModule } from '@ng-select/ng-select';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 import { Router } from '@angular/router';
 import {NgForm} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+
+import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { ItemDataService } from '../../services/item-data.service';
 import { TransactionDataService } from '../../services/transaction-data.service';
 import { AuthService } from '../../auth-services/auth.service';
 import { environment } from '../../../environments/environment';
 import { Item, ItemTransaction } from '../../data/item';
+import { Transaction } from '../../data/transaction';
 
 @Component({
     templateUrl: 'transactions.component.html'
 })
+
 export class TransactionsComponent implements OnInit {
+    @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
 
     items: Array<ItemTransaction> = [];
     vat: string;
     discount: string;
     discountValue: string;
-    paymentMode: string;
+    paymentMode: string = 'cash';
     totalAmount: string;
     totalTendered: string;
     changeDue: string;
     creditAmount: string;
     addCredit: boolean = false;
 
-    customerID: string;
-    customerName: string;
-    customerPhone: string;
-    customerEmail: string;
+    customerID: string = '';
+    customerName: string = '';
+    customerPhone: string = '';
+    customerEmail: string = '';
     customerCredit: string;
     customerData: any = { };
     customerNew: boolean = true;
 
 
     constructor(
+        public authGuardService: AuthGuardService,
         public authService: AuthService,
         public router: Router,
         private itemDataService: ItemDataService,
@@ -118,21 +124,89 @@ export class TransactionsComponent implements OnInit {
 
     confirmTransaction() {
         if (this.customerNew) {
-            this.toastr.error('Attention', 'Save User First');
+            this.toastr.error('Save User First', 'Attention');
             return;
         }
-        var data = {
-            vat: 5
+        if (this.paymentMode == undefined) {
+            this.toastr.error('select payment mode', 'Attention');
+            return;
         }
+        let transactionItems = [];
+        for (let i = 0; i < this.items.length; i++) {
+            transactionItems.push({
+                itemcode: this.items[i].itemcode,
+                itemname: this.items[i].itemname,
+                price: this.items[i].price,
+                qty: this.items[i].qty,
+                totalPrice: this.items[i].totalPrice
+            });
+        }
+        if (this.addCredit) transactionItems.push({
+            itemcode: 'credit' + this.customerID,
+            itemname: 'credit amount',
+            price: this.customerCredit,
+            qty: '1',
+            totalPrice: this.customerCredit
+        });
+        if (transactionItems.length == 0) {
+            this.toastr.error('Nothing in the cart', 'Attention');
+            return;
+        }
+        let data = {
+            totalItem: this.items.length,
+            vat: isNaN(Number(this.vat)) ? 0 : Number(this.vat),
+            discount: isNaN(Number(this.discount)) ? 0 : Number(this.discount),
+            discountValue: isNaN(Number(this.discountValue)) ? 0 : Number(this.discountValue),
+            paymentMode: this.paymentMode,
+            totalAmount: isNaN(Number(this.totalAmount)) ? 0 : Number(this.totalAmount),
+            totalTendered: isNaN(Number(this.totalTendered)) ? 0 : Number(this.totalTendered),
+            changeDue: isNaN(Number(this.changeDue)) ? 0 : Number(this.changeDue),
+            creditAmount: isNaN(Number(this.creditAmount)) ? 0 : Number(this.creditAmount),
+            addCredit: this.addCredit ? 1 : 0,
+            customerID: this.customerID,
+            customerName: this.customerName,
+            customerPhone: this.customerPhone,
+            customerEmail: this.customerEmail,
+            customerCredit: isNaN(Number(this.customerCredit)) ? 0 : Number(this.customerCredit),
+            userID: this.authGuardService.id,
+            userName: this.authGuardService.name,
+            items: transactionItems
+        }
+        console.log(data);
+        this.transactionDataService.addTransaction(data).subscribe(res => {
+            console.log(res);
+            if (!res.err) {
+                this.toastr.success('Transaction successful', 'Done!');
+                this.cancelTransaction();
+            } else {
+                this.toastr.error('Transaction unsuccessful', 'Attention');
+            }
+        });
     }
     cancelTransaction() {
-        // console.log('cancel');
-        // this.transactionDataService.addTransaction({ msg: 'hi', data: [ { name: 'ram', roll: 4 }, { name: 'sham', roll: 8 } ] }).subscribe (
-        //     res => {
-        //         console.log(res);
-        //     }
-        // );
-        console.log(this.items, this.selectedItem);
+        this.items = [];
+        this.vat = '';
+        this.discount = '';
+        this.discountValue = '';
+        this.paymentMode = 'cash';
+        this.totalAmount = '';
+        this.totalTendered = '';
+        this.changeDue = '';
+        this.creditAmount = '';
+        this.addCredit = false;
+        this.customerID = '';
+        this.customerName = '';
+        this.customerPhone = '';
+        this.customerEmail = '';
+        this.customerCredit = '';
+        this.customerData = { };
+        this.customerNew = true;
+
+        this.selectedItem = null;
+        this.selectedItemCode = null;
+        this.itemsList = [ ];
+        this.ngSelectComponent.clearModel();
+        this.itemSearch({ term: null });
     }
 
     customerGet() {
@@ -178,13 +252,17 @@ export class TransactionsComponent implements OnInit {
             email: this.customerEmail,
             credit: '0.00'
         }
+        if (query.name == '' || query.phone == '') {
+            this.toastr.error('Enter user info', 'User Info');
+            return;
+        }
         console.log(query);
         this.transactionDataService.customerAdd(query).subscribe (
             res => {
                 console.log(res);
                 if (!res.err) {
                     this.customerID = res.id;
-                    this.toastr.success('User Info', 'Saved successfully!');
+                    this.toastr.success('Saved successfully!', 'User Info');
                     this.customerNew = false;
                     this.customerData = res;
                 }
@@ -204,7 +282,7 @@ export class TransactionsComponent implements OnInit {
             res => {
                 if (!res.err) {
                     console.log(res);
-                    this.toastr.success('User Info', 'Updated successfully!');
+                    this.toastr.success('Updated successfully!', 'User Info');
                 }
             }
         );
@@ -253,5 +331,43 @@ export class TransactionsComponent implements OnInit {
     }
     itemChange(event) {
         this.selectedItem = event;
+    }
+
+    //***********
+    transactions: Array<Transaction>;
+    pages: Array<number>;
+    transactionPage = 1;
+    transactionLimit = 10;
+    transactionOrderBy = '';
+    transactionOrder = 'asc';
+    transactionSearchText = '';
+    getTransactionTable(pageNo) {
+        if (pageNo != null) {
+            if (pageNo == -1) pageNo = this.transactionPage - 1;
+            if (pageNo == -2) pageNo = this.transactionPage + 1;
+            if (pageNo < 1 || pageNo > this.pages.length) return;
+            this.transactionPage = pageNo;
+        }
+        else this.transactionPage = 1;
+        let query = {
+            transactionLimit: this.transactionLimit,
+            transactionOrderBy: this.transactionOrderBy,
+            transactionOrder: this.transactionOrder,
+            transactionSearch: this.transactionSearchText,
+            transactionPage: this.transactionPage
+        }
+        this.transactionDataService.getTransactionsCount(query).subscribe (
+            resCount => {
+                console.log(resCount);
+                this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.transactionLimit)}, (_, i) => i + 1);
+                this.transactionDataService.getTransactions(query).subscribe (
+                    res => {
+                        console.log(res);
+                        this.transactions = res;
+                    }
+                );
+            }
+        );
+        console.log(this.transactionLimit, this.transactionOrderBy, this.transactionOrder, this.transactionSearchText);
     }
 }

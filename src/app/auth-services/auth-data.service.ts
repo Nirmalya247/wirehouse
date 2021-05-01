@@ -34,6 +34,14 @@ export class AuthDataService {
         let url = environment.PATH + 'users/logout';
         return this.http.post(url, auth);
     }
+
+    getUserData():Observable<any> {
+        let auth = {};
+        auth[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        auth[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/get';
+        return this.http.post(url, auth);
+    }
     /*
     // register
     register(

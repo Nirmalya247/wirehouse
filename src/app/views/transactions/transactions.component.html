@@ -58,7 +58,7 @@
                                 item</button>
                         </div>
                         <div class="col-md-3">
-                            <ng-select [searchFn]="searchFn" [items]="itemsList" bindLabel="itemname" autofocus
+                            <ng-select #FindItem [searchFn]="searchFn" [items]="itemsList" bindLabel="itemname" autofocus
                                 bindValue="itemcode" [(ngModel)]="selectedItemCode" (search)="itemSearch($event)"
                                 (change)="itemChange($event)" placeholder="search item">
                             </ng-select>
@@ -89,9 +89,9 @@
                         <div class="col-md-3">
                             <label class="col-form-label" for="select1">Payment Mode</label>
                             <select id="select1" name="select1" class="form-control" [(ngModel)]="paymentMode">
-                                <option value="0">Cash</option>
-                                <option value="1">POS</option>
-                                <option value="2">Cash and POS</option>
+                                <option value="cash">Cash</option>
+                                <option value="POS">POS</option>
+                                <option value="Cash and POS">Cash and POS</option>
                             </select>
                         </div>
                     </div>
@@ -171,4 +171,98 @@
         <!--/.col-->
     </div>
     <!--/.row-->
+
+
+    
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> MEDICINE TABLE
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Transaction Per Page</label>
+                            <select class="form-control" [(ngModel)]="transactionLimit" (ngModelChange)="getTransactionTable()">
+                                <option value="1">1</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Sort By</label>
+                            <select class="form-control" [(ngModel)]="transactionOrderBy" (ngModelChange)="getTransactionTable()">
+                                <option value="itemcode">Item Code</option>
+                                <option value="itemname">Item Name</option>
+                                <option value="price">Unit Price</option>
+                                <option value="qty">Quantity</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Order</label>
+                            <select class="form-control" [(ngModel)]="transactionOrder" (ngModelChange)="getTransactionTable()">
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Search</label>
+                            <div class="input-group">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                </div>
+                                <input type="email" id="input2-group1" name="input2-group1" class="form-control"
+                                    placeholder="Search" [(ngModel)]="transactionSearchText" (ngModelChange)="getTransactionTable()">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>SN</th>
+                                <th>Receipt No</th>
+                                <th>Total Item</th>
+                                <th>Total Amount</th>
+                                <th>Amount Tendered</th>
+                                <th>Change Due</th>
+                                <th>Mode of Payment</th>
+                                <th>Staff</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let transaction of transactions; index as i;">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ transaction.id }}</td>
+                                <td>{{ transaction.totalItem }}</td>
+                                <td>{{ transaction.totalAmount }}</td>
+                                <td>{{ transaction.totalTendered }}</td>
+                                <td>{{ transaction.changeDue }}</td>
+                                <td>{{ transaction.paymentMode }}</td>
+                                <td>{{ transaction.userName }}</td>
+                                <td>{{ transaction.customerName }}</td>
+                                <td>{{ transaction.createdAt }}</td>
+                                <td>update</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul class="pagination">
+                        <li class="page-item" (click)="getTransactionTable(-1)"><button class="page-link">Prev</button></li>
+                        <li class="page-item active" *ngFor="let page of pages;" [ngClass]="{'active': page == transactionPage}" (click)="getTransactionTable(page)">
+                            <button class="page-link">{{ page }}</button>
+                        </li>
+                        <li class="page-item" (click)="getTransactionTable(-2)"><button class="page-link">Next</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>

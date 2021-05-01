@@ -8,6 +8,10 @@ import { environment } from './../../environments/environment';
     providedIn: 'root'
 })
 export class AuthGuardService implements CanActivate {
+    id: number;
+    name: string;
+    email: string;
+    isadmin: number;
     constructor(
         public authService: AuthService,
         public router: Router,
@@ -20,11 +24,11 @@ export class AuthGuardService implements CanActivate {
             //console.log('************going');
             this.authDataService.check().subscribe (
                 res=> {
-                    console.log(res);
                     if (!res.err && res.loggedin) {
                         //console.log('************going ok');
                         observer.next(true);
                         observer.complete();
+                        this.getData();
                     } else {
                         //console.log('************going else');
                         this.router.navigate(['login']);
@@ -33,6 +37,16 @@ export class AuthGuardService implements CanActivate {
                     }
                 }
             );
+        });
+    }
+    getData() {
+        this.authDataService.getUserData().subscribe(res => {
+            if (!res.err) {
+                this.id = res.id;
+                this.name = res.name;
+                this.email = res.email;
+                this.isadmin = res.isadmin;
+            }
         });
     }
 }

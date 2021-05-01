@@ -10,9 +10,23 @@ export class TransactionDataService {
     constructor(private http:HttpClient) { }
     // add new transaction
     addTransaction(transaction):Observable<any> {
-        //item[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
-        //item[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        transaction[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        transaction[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'transaction/add';
+        return this.http.post(url, transaction);
+    }
+    // get transactions count
+    getTransactionsCount(transaction):Observable<any> {
+        transaction[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        transaction[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'transaction/gettransactionscount';
+        return this.http.post(url, transaction);
+    }
+    // get transactions
+    getTransactions(transaction):Observable<any> {
+        transaction[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        transaction[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'transaction/gettransactions';
         return this.http.post(url, transaction);
     }
 
