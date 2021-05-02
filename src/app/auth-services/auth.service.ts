@@ -22,15 +22,16 @@ export class AuthService {
                 this.loggedIn = !res.err && res.loggedin;
                 this.isAdmin = (!res.err && res.loggedin) ? res.isadmin : 0;
                 this.phoneno = parseInt(window.localStorage.getItem(SESSION_USERID));
-                let tAuth: Auth = new Auth(
-                    res.id,
-                    res.phoneno,
-                    null,
-                    res.name,
-                    res.isadmin,
-                    res.pincode,
-                    res.area
-                );
+                let tAuth: Auth;
+                //  = new Auth(
+                //     res.id,
+                //     res.phoneno,
+                //     null,
+                //     res.name,
+                //     res.isadmin,
+                //     res.pincode,
+                //     res.area
+                // );
                 this.userAuth = tAuth;
             }
         );
@@ -44,15 +45,16 @@ export class AuthService {
                     if (!res.err && res.loggedin) {
                         window.localStorage.setItem(SESSION_ID, res[SESSION_ID]);
                         window.localStorage.setItem(SESSION_USERID, res[SESSION_USERID]);
-                        let tAuth: Auth = new Auth(
-                            res.id,
-                            res.phoneno,
-                            null,
-                            res.name,
-                            res.isadmin,
-                            res.pincode,
-                            res.area
-                        );
+                        let tAuth: Auth;
+                        //  = new Auth(
+                        //     res.id,
+                        //     res.phoneno,
+                        //     null,
+                        //     res.name,
+                        //     res.isadmin,
+                        //     res.pincode,
+                        //     res.area
+                        // );
                         this.userAuth = tAuth;
                     }
                     observer.next(res);
@@ -66,8 +68,6 @@ export class AuthService {
             this.authDataService.logout().subscribe (
                 res=> {
                     if (!res.err) {
-                        window.localStorage.setItem(SESSION_ID, "null");
-                        window.localStorage.setItem(SESSION_USERID, "null");
                         this.loggedIn = !res.loggedout;
                         this.isAdmin = 0;
                     }

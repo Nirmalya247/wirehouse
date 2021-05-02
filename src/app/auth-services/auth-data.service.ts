@@ -42,41 +42,53 @@ export class AuthDataService {
         let url = environment.PATH + 'users/get';
         return this.http.post(url, auth);
     }
-    /*
-    // register
-    register(
-        otp_id: Number,
-        otp_code: Number,
-        otp_otp: Number,
-        phoneno: Number,
-        name: String,
-        password: String,
-        pincode: Number,
-        area: String
-        ):Observable<any> {
-            let data: FormData = new FormData();
-            data.append("otp_id", otp_id.toString());
-            data.append("otp_code", otp_code.toString());
-            data.append("otp_otp", otp_otp.toString());
-            data.append("phoneno", phoneno.toString());
-            data.append("name", name.toString());
-            data.append("password", password.toString());
-            data.append("pincode", pincode.toString());
-            data.append("area", area.toString());
-            let url = PATH + 'users/register';
-            return this.http.post(url, data);
+
+    create(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/create';
+        return this.http.post(url, data);
     }
-    // profile
-    profileEdit(name: String, pincode: Number, area: String, password: String): Observable<any> {
-        let data: FormData = new FormData();
-        data.append(SESSION_ID, window.localStorage.getItem(SESSION_ID));
-        data.append(SESSION_USERID, window.localStorage.getItem(SESSION_USERID));
-        data.append("name", name.toString());
-        data.append("pincode", pincode.toString());
-        data.append("area", area.toString());
-        data.append("password", password.toString());
-        let url = PATH + 'users/profileEdit';
-        return this.http.post<any>(url, data);
+
+    update(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/update';
+        return this.http.post(url, data);
     }
-    */
+
+    getUsers(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/getusers';
+        return this.http.post(url, data);
+    }
+
+    getUsersCount(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/getuserscount';
+        return this.http.post(url, data);
+    }
+
+    deactivate(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/deactivate';
+        return this.http.post(url, data);
+    }
+
+    activate(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/activate';
+        return this.http.post(url, data);
+    }
+
+    deleteUser(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/deleteuser';
+        return this.http.post(url, data);
+    }
 }

@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 import { Router } from '@angular/router';
-import {NgForm} from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { ItemDataService } from '../../services/item-data.service';
 import { TransactionDataService } from '../../services/transaction-data.service';
-import { AuthService } from '../../auth-services/auth.service';
 import { environment } from '../../../environments/environment';
 import { Item, ItemTransaction } from '../../data/item';
 import { Transaction } from '../../data/transaction';
@@ -41,7 +40,6 @@ export class TransactionsComponent implements OnInit {
 
     constructor(
         public authGuardService: AuthGuardService,
-        public authService: AuthService,
         public router: Router,
         private itemDataService: ItemDataService,
         private transactionDataService: TransactionDataService,
@@ -49,6 +47,7 @@ export class TransactionsComponent implements OnInit {
     ) { }
     ngOnInit(): void {
         this.itemSearch({ term: null });
+        this.getTransactionTable(null);
         // generate random values for mainChart
     }
     addItem() {
@@ -338,8 +337,8 @@ export class TransactionsComponent implements OnInit {
     pages: Array<number>;
     transactionPage = 1;
     transactionLimit = 10;
-    transactionOrderBy = '';
-    transactionOrder = 'asc';
+    transactionOrderBy = 'createdAt';
+    transactionOrder = 'desc';
     transactionSearchText = '';
     getTransactionTable(pageNo) {
         if (pageNo != null) {
@@ -363,6 +362,9 @@ export class TransactionsComponent implements OnInit {
                 this.transactionDataService.getTransactions(query).subscribe (
                     res => {
                         console.log(res);
+                        for (let i = 0; i < res.length; i++) {
+                            res[i].createdAt = new Date(res[i].createdAt.toString());
+                        }
                         this.transactions = res;
                     }
                 );

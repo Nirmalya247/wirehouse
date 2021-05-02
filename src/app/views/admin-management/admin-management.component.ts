@@ -1,11 +1,101 @@
-import { Component, OnInit } from '@angular/core';
-import { NgSelectModule } from '@ng-select/ng-select'; 
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
+import { AuthGuardService } from '../../auth-services/auth-guard.service';
+import { AuthDataService } from '../../auth-services/auth-data.service';
+import { environment } from '../../../environments/environment';
+import { Auth } from '../../auth-services/auth';
 @Component({
     templateUrl: 'admin-management.component.html'
 })
 export class AdminManagementComponent implements OnInit {
+    @ViewChild('myModal') public myModal: ModalDirective;
+    constructor(
+        public authGuardService: AuthGuardService,
+        public authDataService: AuthDataService,
+        public router: Router,
+        private toastr: ToastrService
+    ) { }
+    ngOnInit(): void {
+        this.getUserTable(null);
+        // generate random values for mainChart
+    }
 
+    usersList: Array<Auth>;
+    pages: Array<number>;
+    userPage = 1;
+    userLimit = 10;
+    userOrderBy = 'id';
+    userOrder = 'asc';
+    userSearchText = '';
+    getUserTable(pageNo) {
+        if (pageNo != null) {
+            if (pageNo == -1) pageNo = this.userPage - 1;
+            if (pageNo == -2) pageNo = this.userPage + 1;
+            if (pageNo < 1 || pageNo > this.pages.length) return;
+            this.userPage = pageNo;
+        }
+        else this.userPage = 1;
+        let query = {
+            userLimit: this.userLimit,
+            userOrderBy: this.userOrderBy,
+            userOrder: this.userOrder,
+            userSearch: this.userSearchText,
+            userPage: this.userPage
+        }
+        this.authDataService.getUsersCount(query).subscribe (
+            resCount => {
+                console.log(resCount);
+                this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.userLimit)}, (_, i) => i + 1);
+                this.authDataService.getUsers(query).subscribe (
+                    res => {
+                        console.log(res);
+                        for (let i = 0; i < res.length; i++) {
+                            res[i].createdAt = new Date(res[i].createdAt.toString());
+                        }
+                        this.usersList = res;
+                    }
+                );
+            }
+        );
+        console.log(this.userLimit, this.userOrderBy, this.userOrder, this.userSearchText);
+    }
+
+    changeActive(i) {
+        console.log(this.usersList[i].active);
+        if (this.usersList[i].active) {
+            this.authDataService.activate({ id: this.usersList[i].id }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success('activated!', 'User Info');
+                } else {
+                    this.toastr.error('could not activate', 'User Info');
+                    this.usersList[i].active = 1;
+                }
+            });
+        } else {
+            this.authDataService.deactivate({ id: this.usersList[i].id }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success('deactivated!', 'User Info');
+                } else {
+                    this.toastr.error('could not deactivate', 'User Info');
+                    this.usersList[i].active = 0;
+                }
+            });
+        }
+    }
+
+    getAdminRole(value) {
+        if (value == 10) return 'super admin';
+        if (value == 3) return 'admin';
+        if (value == 2) return 'inventory manager';
+        if (value == 1) return 'transaction';
+    }
+
+    //***********
     isCollapsed: boolean = false;
     iconCollapse: string = 'icon-arrow-up';
 
@@ -20,9 +110,5 @@ export class AdminManagementComponent implements OnInit {
     toggleCollapse(): void {
         this.isCollapsed = !this.isCollapsed;
         this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
-    }
-
-    ngOnInit(): void {
-        // generate random values for mainChart
     }
 }

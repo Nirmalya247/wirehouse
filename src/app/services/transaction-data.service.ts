@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
-//import { Transaction } from '../data/transaction';
+import { Transaction } from '../data/transaction';
 import { environment } from './../../environments/environment';
 @Injectable({
     providedIn: 'root'
@@ -23,11 +23,11 @@ export class TransactionDataService {
         return this.http.post(url, transaction);
     }
     // get transactions
-    getTransactions(transaction):Observable<any> {
+    getTransactions(transaction):Observable<Array<Transaction>> {
         transaction[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
         transaction[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'transaction/gettransactions';
-        return this.http.post(url, transaction);
+        return this.http.post<Array<Transaction>>(url, transaction);
     }
 
 

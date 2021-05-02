@@ -179,7 +179,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> MEDICINE TABLE
+                    <i class="fa fa-align-justify"></i> TRANSACTIONS
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -197,10 +197,9 @@
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Sort By</label>
                             <select class="form-control" [(ngModel)]="transactionOrderBy" (ngModelChange)="getTransactionTable()">
-                                <option value="itemcode">Item Code</option>
-                                <option value="itemname">Item Name</option>
-                                <option value="price">Unit Price</option>
-                                <option value="qty">Quantity</option>
+                                <option value="createdAt">Date</option>
+                                <option value="totalItem">Total Item</option>
+                                <option value="totalAmount">Total Price</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -248,8 +247,7 @@
                                 <td>{{ transaction.paymentMode }}</td>
                                 <td>{{ transaction.userName }}</td>
                                 <td>{{ transaction.customerName }}</td>
-                                <td>{{ transaction.createdAt }}</td>
-                                <td>update</td>
+                                <td>{{ transaction.createdAt.toLocaleString() }}</td>
                             </tr>
                         </tbody>
                     </table>

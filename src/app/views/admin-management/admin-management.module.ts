@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
@@ -12,11 +13,14 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgSelectModule } from '@ng-select/ng-select';
 
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 import { AdminManagementComponent } from './admin-management.component';
 import { AdminManagementRoutingModule } from './admin-management-routing.module';
 
 @NgModule({
   imports: [
+    CommonModule,
     FormsModule,
     AdminManagementRoutingModule,
     ChartsModule,
@@ -29,7 +33,8 @@ import { AdminManagementRoutingModule } from './admin-management-routing.module'
     ProgressbarModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
-    NgSelectModule
+    NgSelectModule,
+    ModalModule.forRoot()
   ],
   declarations: [ AdminManagementComponent ]
 })
