@@ -4,12 +4,12 @@
             <div class="card text-white bg-info">
                 <div class="card-body pb-0">
                     <button type="button" class="btn btn-transparent p-0 float-right">
-            <i class="icon-location-pin"></i>
-          </button>
+                        <i class="icon-basket-loaded"></i>
+                    </button>
                     <h1>
-                        <div>total income</div>
+                        <div>Total Item Sold Today</div>
                     </h1>
-                    <div class="text-value">9.823</div>
+                    <div class="text-value">{{ totalItemSold }}</div>
                 </div>
                 <div class="chart-wrapper mt-3 mx-3" style="height:50px;">
                 </div>
@@ -19,21 +19,13 @@
         <div class="col-sm-6 col-lg-4">
             <div class="card text-white bg-primary">
                 <div class="card-body pb-0">
-                    <div class="btn-group float-right" dropdown>
-                        <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
-              <i class="icon-settings"></i>
-            </button>
-                        <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-transparent p-0 float-right">
+                        <i class="icon-arrow-down"></i>
+                    </button>
                     <h1>
-                        <div>total trans.</div>
+                        <div>Total Earning Today</div>
                     </h1>
-                    <div class="text-value">9.823</div>
+                    <div class="text-value">{{ totalEarning }}</div>
                 </div>
                 <div class="chart-wrapper mt-3 mx-3" style="height:50px;">
                 </div>
@@ -43,20 +35,13 @@
         <div class="col-sm-6 col-lg-4">
             <div class="card text-white bg-warning">
                 <div class="card-body pb-0">
-                    <div class="btn-group float-right" dropdown>
-                        <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
-              <i class="icon-settings"></i>
-            </button>
-                        <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-transparent p-0 float-right">
+                        <i class="icon-arrow-up"></i>
+                    </button>
                     <h1>
-                        <div>left items</div>
+                        <div>Total Spending Today</div>
                     </h1>
-                    <div class="text-value">9.823</div>
+                    <div class="text-value">{{ totalSpending }}</div>
                 </div>
                 <div class="chart-wrapper mt-3 mx-3" style="height:50px;">
                 </div>
@@ -80,7 +65,10 @@
                 </div>
                 <div class="card-body">
                     <div class="chart-wrapper">
-                        <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" [colors]="barChartColours" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                        <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
+                            [colors]="barChartColours" (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)"></canvas>
                     </div>
                 </div>
             </div>

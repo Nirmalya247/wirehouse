@@ -9,8 +9,8 @@ import { environment } from './../../environments/environment';
 export class AuthDataService {
     constructor(private http:HttpClient) { }
     // check if logged in
-    check():Observable<any> {
-        let auth = {};
+    check(isadmin):Observable<any> {
+        let auth = { isadmin: isadmin };
         auth[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
         auth[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'users/checklogin';

@@ -131,7 +131,9 @@ export class TransactionsComponent implements OnInit {
             return;
         }
         let transactionItems = [];
+        let totalQTY = 0;
         for (let i = 0; i < this.items.length; i++) {
+            totalQTY += isNaN(Number(this.items[i].qty)) ? 0 : Number(this.items[i].qty);
             transactionItems.push({
                 itemcode: this.items[i].itemcode,
                 itemname: this.items[i].itemname,
@@ -153,6 +155,7 @@ export class TransactionsComponent implements OnInit {
         }
         let data = {
             totalItem: this.items.length,
+            totalQTY: totalQTY,
             vat: isNaN(Number(this.vat)) ? 0 : Number(this.vat),
             discount: isNaN(Number(this.discount)) ? 0 : Number(this.discount),
             discountValue: isNaN(Number(this.discountValue)) ? 0 : Number(this.discountValue),

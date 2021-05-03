@@ -15,7 +15,7 @@ export class LoginComponent {
         public router: Router,
         private authDataService: AuthDataService
     ) {
-        this.authService.check();
+        //this.authService.check();
     }
     ngOnInit(): void {
         // generate random values for mainChart

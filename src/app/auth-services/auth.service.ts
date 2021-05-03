@@ -16,8 +16,8 @@ export class AuthService {
     constructor(
         private authDataService: AuthDataService
     ) { }
-    check() {
-        this.authDataService.check().subscribe (
+    check(isadmin) {
+        this.authDataService.check(isadmin).subscribe (
             res=> {
                 this.loggedIn = !res.err && res.loggedin;
                 this.isAdmin = (!res.err && res.loggedin) ? res.isadmin : 0;

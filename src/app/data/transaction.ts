@@ -2,6 +2,7 @@ export class Transaction {
     constructor(
         public id: String,
         public totalItem: Number,
+        public totalQTY: Number,
         public vat: Number,
         public discount: Number,
         public discountValue: Number,

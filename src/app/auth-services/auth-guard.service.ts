@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthDataService } from './auth-data.service';
 import { AuthService } from './auth.service';
@@ -23,21 +23,27 @@ export class AuthGuardService implements CanActivate {
         public router: Router,
         private authDataService: AuthDataService
     ) {
-        this.authService.check();
+        //this.authService.check();
     }
-    canActivate(): Observable<boolean> {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+        let isadmin = 1;
+        if (state.url.indexOf('transactions') > 0) isadmin = 1;
+        if (state.url.indexOf('inventory') > 0) isadmin = 2;
+        if (state.url.indexOf('dashboard') > 0) isadmin = 3;
+        if (state.url.indexOf('admin-management') > 0) isadmin = 10;
         return Observable.create(observer => {
-            //console.log('************going');
-            this.authDataService.check().subscribe(
+            console.log('************going', route.url, state.url);
+            this.authDataService.check(isadmin).subscribe(
                 res => {
                     if (!res.err && res.loggedin) {
-                        //console.log('************going ok');
+                        console.log('************going ok');
                         observer.next(true);
                         observer.complete();
                         this.getData();
                     } else {
-                        //console.log('************going else');
-                        this.router.navigate(['login']);
+                        console.log('************going else');
+                        if (!state.url.indexOf('transactions')) this.router.navigate(['login']);
+                        else this.router.navigate(['login']);
                         observer.next(false);
                         observer.complete();
                     }
