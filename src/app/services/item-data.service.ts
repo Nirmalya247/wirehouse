@@ -29,4 +29,25 @@ export class ItemDataService {
         let url = environment.PATH + 'item/getitemscount';
         return this.http.post<Number>(url, query);
     }
+    // edit item
+    edit(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'item/edit';
+        return this.http.post(url, data);
+    }
+    // update item
+    update(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'item/update';
+        return this.http.post(url, data);
+    }
+    // delete item
+    delete(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'item/delete';
+        return this.http.post(url, data);
+    }
 }

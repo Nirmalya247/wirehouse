@@ -7,7 +7,7 @@
 
                     <div class="card-header-actions" style="height: 21px;">
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                            (click)="myModal.show()">Create New User</button>
+                            (click)="userFormShow('newUser', null)">Create New User</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -44,7 +44,7 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
-                                <input type="email" id="input2-group1" name="input2-group1" class="form-control"
+                                <input type="text" id="input2-group1" name="input2-group1" class="form-control"
                                     placeholder="Search" [(ngModel)]="userSearchText" (ngModelChange)="getUserTable()">
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                                 <td>{{ getAdminRole(user.isadmin) }}</td>
                                 <td>{{ user.createdAt.toLocaleString() }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-ghost-primary">
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="userFormShow('updateUser', i)">
                                         <i class="fa fa-pencil"></i>
                                     </button>
                                 </td>
@@ -108,22 +108,125 @@
     </div>
 </div>
 
-<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div bsModal #userForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userFormLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Modal title</h4>
-                <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+                <h4 class="modal-title">{{ userFormLabel }}</h4>
+                <button type="button" class="close" (click)="userFormHide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Name</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" id="input2-group1" name="input2-group1" class="form-control"
+                                placeholder="Name" [(ngModel)]="userDataName">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">e-mail</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                            </div>
+                            <input type="text" id="input2-group1" name="input2-group1" class="form-control"
+                                placeholder="e-mail" [(ngModel)]="userDataEmail">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Phone No.</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                            </div>
+                            <input type="text" id="input2-group1" name="input2-group1" class="form-control"
+                                placeholder="Phone No." [(ngModel)]="userDataPhoneno">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Other Phone No.</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                            </div>
+                            <input type="text" id="input2-group1" name="input2-group1" class="form-control"
+                                placeholder="Other Phone No." [(ngModel)]="userDataOtherPhoneno">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Pincode</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
+                            </div>
+                            <input type="text" id="input2-group1" name="input2-group1" class="form-control"
+                                placeholder="Pincode" [(ngModel)]="userDataPincode">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Admin Rights</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-gavel"></i></span>
+                            </div>
+                            <select class="form-control" placeholder="Admin Rights" [(ngModel)]="userDataIsAdmin">
+                                <option value="1">Transaction</option>
+                                <option value="2">Inventory Manager</option>
+                                <option value="3">Admin</option>
+                                <option value="10">Super Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label" for="prependedInput">Address</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                            </div>
+                            <input type="text" id="input2-group1" name="input2-group1" class="form-control"
+                                placeholder="Address" [(ngModel)]="userDataAddress">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Password</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
+                            </div>
+                            <input type="password" id="input2-group1" name="input2-group1" class="form-control"
+                                placeholder="Password" [(ngModel)]="userDataPassword">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Password Re-Type</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
+                            </div>
+                            <input type="password" id="input2-group1" name="input2-group1" class="form-control"
+                                placeholder="Password" [(ngModel)]="userDataPasswordRe">
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" (click)="userFormHide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="userFormSave()">Save</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

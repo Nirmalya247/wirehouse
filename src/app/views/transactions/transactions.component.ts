@@ -177,6 +177,7 @@ export class TransactionsComponent implements OnInit {
             if (!res.err) {
                 this.toastr.success('Transaction successful', 'Done!');
                 this.cancelTransaction();
+                this.getTransactionTable(this.transactionPage);
             } else {
                 this.toastr.error('Transaction unsuccessful', 'Attention');
             }
@@ -352,7 +353,7 @@ export class TransactionsComponent implements OnInit {
             transactionLimit: this.transactionLimit,
             transactionOrderBy: this.transactionOrderBy,
             transactionOrder: this.transactionOrder,
-            transactionSearch: this.transactionSearchText,
+            transactionSearchText: this.transactionSearchText,
             transactionPage: this.transactionPage
         }
         this.transactionDataService.getTransactionsCount(query).subscribe (
