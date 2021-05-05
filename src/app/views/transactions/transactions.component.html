@@ -238,7 +238,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let transaction of transactions; index as i;">
-                                <td>{{ i + 1 }}</td>
+                                <td>{{ i + 1 + (transactionPage - 1) * transactionLimit }}</td>
                                 <td>{{ transaction.id }}</td>
                                 <td>{{ transaction.totalItem }}</td>
                                 <td>{{ transaction.totalAmount }}</td>

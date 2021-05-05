@@ -32,17 +32,17 @@ export class AuthGuardService implements CanActivate {
         if (state.url.indexOf('dashboard') > 0) isadmin = 3;
         if (state.url.indexOf('admin-management') > 0) isadmin = 10;
         return Observable.create(observer => {
-            console.log('************going', route.url, state.url);
+            // console.log('************going', route.url, state.url);
             this.authDataService.check(isadmin).subscribe(
                 res => {
                     if (!res.err && res.loggedin) {
-                        console.log('************going ok');
+                        // console.log('************going ok');
                         observer.next(true);
                         observer.complete();
                         this.getData();
                     } else {
-                        console.log('************going else');
-                        if (!state.url.indexOf('transactions')) this.router.navigate(['login']);
+                        // console.log('************going else');
+                        if (state.url.indexOf('transactions') < 0) this.router.navigate(['transactions']);
                         else this.router.navigate(['login']);
                         observer.next(false);
                         observer.complete();

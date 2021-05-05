@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +16,7 @@ import { Item } from '../../data/item';
 export class InventoryComponent implements OnInit {
     @ViewChild('itemForm') public itemForm: ModalDirective;
     @ViewChild('itemUpdateForm') public itemUpdateForm: ModalDirective;
+    @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
     items: Array<Item>;
     pages: Array<number>;
     itemPage = 1;
@@ -32,6 +34,10 @@ export class InventoryComponent implements OnInit {
     ngOnInit(): void {
         // generate random values for mainChart
         this.getItemTable(null);
+        this.itemTypeSearch( { term: '' } );
+        let now = new Date();
+        let nowYear = now.getFullYear();
+        for (let i = 0; i < this.years.length; i++) this.years[i] += nowYear;
     }
 
     getItemTable(pageNo) {
@@ -40,8 +46,7 @@ export class InventoryComponent implements OnInit {
             if (pageNo == -2) pageNo = this.itemPage + 1;
             if (pageNo < 1 || pageNo > this.pages.length) return;
             this.itemPage = pageNo;
-        }
-        else this.itemPage = 1;
+        } else this.itemPage = 1;
         let query = {
             itemLimit: this.itemLimit,
             itemOrderBy: this.itemOrderBy,
@@ -72,10 +77,16 @@ export class InventoryComponent implements OnInit {
     itemQTY: string = '';
     itemUnitPrice: string = '';
     itemDescription: string = '';
+
     itemUpdateType: string = 'add';
     itemUpdateTotalPrice: string = '';
+    itemUpdateExpiryYear: string = '2100';
+    itemUpdateExpiryMonth: string = '13';
     itemDealerName: string = '';
     itemDealerPhone: string = '';
+
+    years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    months = [ [ '01', 'JAN' ], [ '02', 'FEB' ], [ '03', 'MAR' ], [ '04', 'APR' ], [ '05', 'MAY' ], [ '06', 'JUN' ], [ '07', 'JUL' ], [ '08', 'AUG' ], [ '09', 'SEP' ], [ '10', 'OCT' ], [ '11', 'NOV' ], [ '12', 'DEC' ] ];
 
     itemFormShow(i) {
         this.itemI = i;
@@ -145,6 +156,9 @@ export class InventoryComponent implements OnInit {
         this.itemQTY = '';
         this.itemUnitPrice = '';
         this.itemDescription = '';
+        this.itemUpdateTotalPrice = '';
+        this.itemUpdateExpiryYear = '2100';
+        this.itemUpdateExpiryMonth = '13';
         this.itemUpdateForm.hide();
     }
 
@@ -158,6 +172,10 @@ export class InventoryComponent implements OnInit {
             dealerphone: this.itemDealerPhone,
             type: this.itemUpdateType,
             description: this.itemDescription
+        }
+        if (this.itemUpdateType == 'add' && this.itemUpdateExpiryYear != '2100') {
+            let dt = this.itemUpdateExpiryYear + '-' + this.itemUpdateExpiryMonth + '-01';
+            data['expiry'] = dt;
         }
         this.itemDataService.update(data).subscribe (
             res => {
@@ -191,23 +209,83 @@ export class InventoryComponent implements OnInit {
         this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
     }
 
+
+    
+
+    selectedItemType: any = null;
+    selectedItemTypeID = null;
+    selectedItemTypeName;
+
+    itemTypesList: Array<any> = [ ];
+    itemTypeSearch(event) {
+        let query = { itemTypeSearch: event.term }
+        //this.itemTypesList = [{ id: 0, itemtypename: event.term }];
+        this.selectedItemTypeName = event.term;
+        this.itemDataService.getItemTypes(query).subscribe (res => {
+            this.itemTypesList = res;
+            let tadd = true;
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].itemtypename.toLowerCase() == event.term.toLowerCase()) {
+                    tadd = false;
+                    break;
+                }
+            }
+            if (event.term != '' && tadd) this.itemTypesList.unshift({ id: 0, itemtypename: event.term });
+        });
+    }
+    searchFn(term: string, item: any) {
+        return true;
+    }
+    itemTypeChange(event) {
+        console.log(event);
+        let tList = this.itemTypesList;
+        this.itemTypesList = [];
+        if (event == undefined) {
+            this.itemTypeSearch({ term: '' });
+            this.selectedItemType = null;
+        } else {
+            for (let i = 0; i < tList.length; i++) {
+                if (tList[i].id != 0) {
+                    this.itemTypesList.push(tList[i]);
+                    break;
+                }
+            }
+            this.selectedItemType = event;
+        }
+    }
     addItem(f: NgForm) {
-        if (f.valid) {
+        if (f.valid && this.selectedItemType != null) {
+            let data = f.value;
+            data['itemtypeid'] = this.selectedItemType.id;
+            data['itemtypename'] = this.selectedItemType.itemtypename;
             this.itemDataService.addItem(f.value).subscribe (
                 res => {
                     if (!res.err) {
                         this.getItemTable(this.itemPage);
                         this.toastr.success('item added', 'Done!');
                         f.resetForm();
+
+                        this.selectedItemType = null;
+                        this.selectedItemTypeID = null;
+                        this.itemTypesList = [ ];
+                        this.ngSelectComponent.clearModel();
+                        this.itemTypeSearch({ term: null });
                     } else {
                         this.toastr.error('could not add item', 'Attention');
                     }
                     console.log(res);
                 }
             );
+        } else {
+            this.toastr.error('fill all field', 'Attention');
         }
         //console.log(f.value, f.valid);
     }
     cancelItemAdd() {
+        this.selectedItemType = null;
+        this.selectedItemTypeID = null;
+        this.itemTypesList = [ ];
+        this.ngSelectComponent.clearModel();
+        this.itemTypeSearch({ term: null });
     }
 }

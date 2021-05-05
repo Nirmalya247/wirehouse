@@ -2,6 +2,8 @@ export class Item {
     constructor(
         public itemcode: String,
         public itemname: String,
+        public itemtypeid: Number,
+        public itemtypename: String,
         public manufacturer: String,
         public description: String,
         public qty: Number,

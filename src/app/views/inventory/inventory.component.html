@@ -13,7 +13,7 @@
                     class="card-body">
                     <form class="form-horizontal" #f="ngForm" (ngSubmit)="addItem(f)" novalidate>
                         <div class="form-group row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Item Code</label>
                                 <input type="text" class="form-control" placeholder="code" required name="itemcode"
                                     ngModel>
@@ -28,27 +28,29 @@
                                 <input type="text" class="form-control" placeholder="manufacturer" required
                                     name="manufacturer" ngModel>
                             </div>
-                            <div class="col-md-2">
-                                <label class="col-form-label" for="prependedInput">QTY in Stock</label>
-                                <input type="text" class="form-control" placeholder="0" required name="qty" ngModel>
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Price/Unit</label>
                                 <input type="text" class="form-control" placeholder="0.00" required name="price"
                                     ngModel>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-md-12">
-                                <label class="col-form-label" for="prependedInput">Description (max 1024
-                                    character)</label>
+                            <div class="col-md-3">
+                                <label class="col-form-label" for="prependedInput">Item Type</label>
+                                <ng-select #FindItem [searchFn]="searchFn" [items]="itemTypesList" bindLabel="itemtypename" autofocus
+                                    bindValue="id" [(ngModel)]="selectedItemTypeID" (search)="itemTypeSearch($event)"
+                                    (change)="itemTypeChange($event)" placeholder="search item" [ngModelOptions]="{standalone: true}">
+                                </ng-select>
+                            </div>
+                            <div class="col-md-9">
+                                <label class="col-form-label" for="prependedInput">Description (max 1024 character)</label>
                                 <input type="text" class="form-control" placeholder="description.." name="description"
                                     ngModel>
                             </div>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">Confirm</button>
-                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                            <button type="reset" class="btn btn-secondary" (click)="cancelItemAdd()">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -111,6 +113,7 @@
                                 <th>SN</th>
                                 <th>Item Name</th>
                                 <th>Item Code</th>
+                                <th>Item Type</th>
                                 <th>Description</th>
                                 <th>QTY in Stock</th>
                                 <th>Unit Price</th>
@@ -123,9 +126,10 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of items; index as i;">
-                                <td>{{ i + 1 }}</td>
+                                <td>{{ i + 1 + (itemPage - 1) * itemLimit }}</td>
                                 <td>{{ item.itemname }}</td>
                                 <td>{{ item.itemcode }}</td>
+                                <td>{{ item.itemtypename }}</td>
                                 <td>{{ item.description }}</td>
                                 <td>{{ item.qty }}</td>
                                 <td>{{ item.price }}</td>
@@ -276,6 +280,22 @@
                         <label class="col-form-label" for="prependedInput">Total Price</label>
                         <input type="text" class="form-control"
                         placeholder="Total Price" [(ngModel)]="itemUpdateTotalPrice">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Expiry Year</label>
+                        <select class="form-control" [(ngModel)]="itemUpdateExpiryYear" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Year" >
+                            <option value="2100">No Expiry</option>
+                            <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Dealer phone</label>
+                        <select class="form-control" [(ngModel)]="itemUpdateExpiryMonth" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Month" >
+                            <option value="13">No Expiry</option>
+                            <option *ngFor="let month of months" value="{{ month[0] }}">{{ month[1] }}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
