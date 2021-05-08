@@ -18,6 +18,17 @@ export class AuthGuardService implements CanActivate {
     name: string;
     pincode: string;
     address: string;
+
+    //
+    shopname: string = '';
+    shopdetails: string = '';
+    shopaddress: string = '';
+    shopphoneno: string = '';
+    shopotherphoneno: string = '';
+    vatno: string = '';
+    vat: string = '';
+    discount: string = '';
+
     constructor(
         public authService: AuthService,
         public router: Router,
@@ -64,6 +75,18 @@ export class AuthGuardService implements CanActivate {
                 this.name = res.name;
                 this.pincode = res.pincode;
                 this.address = res.address;
+            }
+        });
+        this.authDataService.getShopData({ id: 1}).subscribe(res => {
+            if (!res.err) {
+                this.shopname = res.shopname;
+                this.shopdetails = res.shopdetails;
+                this.shopaddress = res.shopaddress;
+                this.shopphoneno = res.shopphoneno;
+                this.shopotherphoneno = res.shopotherphoneno;
+                this.vatno = res.vatno;
+                this.vat = res.vat;
+                this.discount = res.discount;
             }
         });
     }

@@ -9,6 +9,13 @@ import { environment } from './../../environments/environment';
 export class AuthDataService {
     constructor(private http:HttpClient) { }
     // check if logged in
+    getShopData(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'shop/get';
+        return this.http.post(url, data);
+    }
+
     check(isadmin):Observable<any> {
         let auth = { isadmin: isadmin };
         auth[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);

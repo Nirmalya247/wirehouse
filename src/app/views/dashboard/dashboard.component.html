@@ -58,7 +58,7 @@
                 <div class="card-header">
                     Bar Chart
                     <div class="card-header-actions">
-                        <select class="form-control" [(ngModel)]="graphBy" (ngModelChange)="getGraphData()">
+                        <select class="form-select form-select-sm" [(ngModel)]="graphBy" (ngModelChange)="getGraphData()">
                             <option value="day">Graph by Day</option>
                             <option value="month">Graph by Month</option>
                             <option value="year">Graph by Year</option>
@@ -90,12 +90,60 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header">
+                                    <i class="fa fa-align-justify"></i> EXPIRY
+                                    <div class="card-header-actions">
+                                        <select class="form-select form-select-sm" [(ngModel)]="expiryOrder" (ngModelChange)="getExpiry(null)">
+                                            <option value="asc">Low to High</option>
+                                            <option value="desc">High to Low</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Item Code</th>
+                                                <th>Item Name</th>
+                                                <th>QTY</th>
+                                                <th>Expiry Date</th>
+                                                <th>Buying Date</th>
+                                                <th>Dealer Name</th>
+                                                <th>Dealer Phone</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of expiryData">
+                                                <td>{{ item.itemcode }}</td>
+                                                <td>{{ item.itemname }}</td>
+                                                <td>{{ item.qtystock }}</td>
+                                                <td>{{ item.expiry.toLocaleString().split(',')[0] }}</td>
+                                                <td>{{ item.createdAt.toLocaleString().split(',')[0] }}</td>
+                                                <td>{{ item.dealername }}</td>
+                                                <td>{{ item.dealerphone }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <ul class="pagination">
+                                        <li class="page-item" (click)="getExpiry(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item active" *ngFor="let page of expiryPages;"
+                                            [ngClass]="{'active': page == expiryPage}" (click)="getExpiry(page)">
+                                            <button class="page-link">{{ page }}</button>
+                                        </li>
+                                        <li class="page-item" (click)="getExpiry(-2)"><button class="page-link">Next</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
                                     <i class="fa fa-align-justify"></i> LOW STOCK
                                     <div class="card-header-actions">
-                                        <select class="form-control" [(ngModel)]="stockOrder" (ngModelChange)="getStock(null)">
-                                            <option value="day">Graph by Day</option>
-                                            <option value="month">Graph by Month</option>
-                                            <option value="year">Graph by Year</option>
+                                        <select class="form-select form-select-sm" [(ngModel)]="stockOrder" (ngModelChange)="getStock(null)">
+                                            <option value="asc">Low to High</option>
+                                            <option value="desc">High to Low</option>
                                         </select>
                                     </div>
                                 </div>
@@ -141,6 +189,12 @@
                             <div class="card">
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> ITEM IN DEMAND
+                                    <div class="card-header-actions">
+                                        <select class="form-select form-select-sm" [(ngModel)]="demandOrder" (ngModelChange)="getDemand(null)">
+                                            <option value="asc">Low to High</option>
+                                            <option value="desc">High to Low</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-sm">
@@ -178,6 +232,12 @@
                             <div class="card">
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> ITEM BY EARNING
+                                    <div class="card-header-actions">
+                                        <select class="form-select form-select-sm" [(ngModel)]="earningOrder" (ngModelChange)="getEarning(null)">
+                                            <option value="asc">Low to High</option>
+                                            <option value="desc">High to Low</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-sm">

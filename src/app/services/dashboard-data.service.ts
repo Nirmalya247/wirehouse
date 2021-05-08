@@ -49,4 +49,18 @@ export class DashboardDataService {
         let url = environment.PATH + 'saledata/getdemandcount';
         return this.http.post(url, data);
     }
+    // get expiry
+    getExpiry(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/getexpiry';
+        return this.http.post(url, data);
+    }
+    // get expiry count
+    getExpiryCount(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/getexpirycount';
+        return this.http.post(url, data);
+    }
 }

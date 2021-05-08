@@ -7,6 +7,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
+import { ShopDataService } from '../../services/shop-data.service';
 import { environment } from '../../../environments/environment';
 import { Auth } from '../../auth-services/auth';
 @Component({
@@ -17,11 +18,13 @@ export class AdminManagementComponent implements OnInit {
     constructor(
         public authGuardService: AuthGuardService,
         public authDataService: AuthDataService,
+        public shopDataService: ShopDataService,
         public router: Router,
         private toastr: ToastrService
     ) { }
     ngOnInit(): void {
         this.getUserTable(null);
+        this.getShop();
         // generate random values for mainChart
     }
 
@@ -47,11 +50,11 @@ export class AdminManagementComponent implements OnInit {
             userSearchText: this.userSearchText,
             userPage: this.userPage
         }
-        this.authDataService.getUsersCount(query).subscribe (
+        this.authDataService.getUsersCount(query).subscribe(
             resCount => {
                 console.log(resCount);
-                this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.userLimit)}, (_, i) => i + 1);
-                this.authDataService.getUsers(query).subscribe (
+                this.pages = Array.from({ length: Math.ceil(parseInt(resCount.toString()) / this.userLimit) }, (_, i) => i + 1);
+                this.authDataService.getUsers(query).subscribe(
                     res => {
                         console.log(res);
                         for (let i = 0; i < res.length; i++) {
@@ -190,6 +193,64 @@ export class AdminManagementComponent implements OnInit {
                 }
             });
         }
+    }
+
+    //***********
+
+    shopname: string = '';
+    shopdetails: string = '';
+    shopaddress: string = '';
+    shopphoneno: string = '';
+    shopotherphoneno: string = '';
+    vatno: string = '';
+    vat: string = '';
+    discount: string = '';
+    shopData: any = {};
+
+    getShop() {
+        this.shopDataService.getShop({}).subscribe(res => {
+            console.log(res);
+            this.shopname = res.shopname;
+            this.shopdetails = res.shopdetails;
+            this.shopaddress = res.shopaddress;
+            this.shopphoneno = res.shopphoneno;
+            this.shopotherphoneno = res.shopotherphoneno;
+            this.vatno = res.vatno;
+            this.vat = res.vat;
+            this.discount = res.discount;
+            this.shopData = res;
+        });
+    }
+
+    saveShop() {
+        this.shopDataService.saveShop({
+            id: 1,
+            shopname: this.shopname,
+            shopdetails: this.shopdetails,
+            shopaddress: this.shopaddress,
+            shopphoneno: this.shopphoneno,
+            shopotherphoneno: this.shopotherphoneno,
+            vatno: this.vatno,
+            vat: this.vat,
+            discount: this.discount
+        }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success('shop data saved', 'Shop Info');
+            } else {
+                this.toastr.error(res.msg, 'Shop Info');
+            }
+        });
+    }
+
+    cancelShop() {
+        this.shopname = this.shopData.shopname;
+        this.shopdetails = this.shopData.shopdetails;
+        this.shopaddress = this.shopData.shopaddress;
+        this.shopphoneno = this.shopData.shopphoneno;
+        this.shopotherphoneno = this.shopData.shopotherphoneno;
+        this.vatno = this.shopData.vatno;
+        this.vat = this.shopData.vat;
+        this.discount = this.shopData.discount;
     }
 
     //***********

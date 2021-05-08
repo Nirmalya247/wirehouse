@@ -16,4 +16,8 @@ export class DefaultLayoutComponent {
     toggleMinimize(e) {
         this.sidebarMinimized = e;
     }
+
+    logout() {
+        this.authGuardService.logout();
+    }
 }

@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
+import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ItemDataService } from '../../services/item-data.service';
 import { TransactionDataService } from '../../services/transaction-data.service';
 import { environment } from '../../../environments/environment';
@@ -40,6 +41,7 @@ export class TransactionsComponent implements OnInit {
 
     constructor(
         public authGuardService: AuthGuardService,
+        public authDataService: AuthDataService,
         public router: Router,
         private itemDataService: ItemDataService,
         private transactionDataService: TransactionDataService,
@@ -48,7 +50,16 @@ export class TransactionsComponent implements OnInit {
     ngOnInit(): void {
         this.itemSearch({ term: null });
         this.getTransactionTable(null);
+        this.getShopData();
         // generate random values for mainChart
+    }
+    getShopData() {
+        this.authDataService.getShopData({ id: 1}).subscribe(res => {
+            if (!res.err) {
+                this.vat = res.vat;
+                this.discount = res.discount;
+            }
+        });
     }
     addItem() {
         if (this.selectedItem != null || this.selectedItem != undefined) {
@@ -188,8 +199,8 @@ export class TransactionsComponent implements OnInit {
     }
     cancelTransaction() {
         this.items = [];
-        this.vat = '';
-        this.discount = '';
+        this.vat = this.authGuardService.vat;
+        this.discount = this.authGuardService.discount;
         this.discountValue = '';
         this.paymentMode = 'cash';
         this.totalAmount = '';
