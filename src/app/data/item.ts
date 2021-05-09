@@ -4,6 +4,9 @@ export class Item {
         public itemname: String,
         public itemtypeid: Number,
         public itemtypename: String,
+        public hsn: String,
+        public vat: Number,
+        public discount: Number,
         public manufacturer: String,
         public description: String,
         public qty: Number,
@@ -17,12 +20,21 @@ export class Item {
 }
 export class ItemTransaction {
     constructor(
+        public id: Number,
+        public stockid: String,
         public itemcode: String,
         public itemname: String,
-        public qtyAvailable: Number,
-        public price: Number,
+        public rack: String,
+        public hsn: String,
+        public qtystock: Number,
         public qty: Number,
-        public totalPrice: Number,
+        public price: Number,
+        public discount: Number,
+        public vat: Number,
+        public totalprice: Number,
+        public expiry: Number,
+        public dealername: String,
+        public dealerphone: String,
     ) {
     }
 }

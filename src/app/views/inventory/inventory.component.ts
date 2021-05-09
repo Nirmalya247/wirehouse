@@ -76,10 +76,11 @@ export class InventoryComponent implements OnInit {
     itemCode: string = '';
     itemQTY: string = '';
     itemUnitPrice: string = '';
+    itemRack: string = '';
     itemDescription: string = '';
 
     itemUpdateType: string = 'add';
-    itemUpdateTotalPrice: string = '';
+    itemUpdateUnitCost: string = '';
     itemUpdateExpiryYear: string = '2100';
     itemUpdateExpiryMonth: string = '13';
     itemDealerName: string = '';
@@ -155,8 +156,9 @@ export class InventoryComponent implements OnInit {
         this.itemCode = '';
         this.itemQTY = '';
         this.itemUnitPrice = '';
+        this.itemRack = '';
         this.itemDescription = '';
-        this.itemUpdateTotalPrice = '';
+        this.itemUpdateUnitCost = '';
         this.itemUpdateExpiryYear = '2100';
         this.itemUpdateExpiryMonth = '13';
         this.itemUpdateForm.hide();
@@ -167,10 +169,12 @@ export class InventoryComponent implements OnInit {
             itemcode: this.itemCode,
             itemname: this.itemName,
             qty: this.itemQTY,
-            price: this.itemUpdateTotalPrice,
+            price: this.itemUnitPrice,
+            cost: this.itemUpdateUnitCost,
             dealername: this.itemDealerName,
             dealerphone: this.itemDealerPhone,
             type: this.itemUpdateType,
+            rack: this.itemRack,
             description: this.itemDescription
         }
         if (this.itemUpdateType == 'add' && this.itemUpdateExpiryYear != '2100') {

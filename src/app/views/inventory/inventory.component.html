@@ -42,7 +42,24 @@
                                     (change)="itemTypeChange($event)" placeholder="search item" [ngModelOptions]="{standalone: true}">
                                 </ng-select>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-3">
+                                <label class="col-form-label" for="prependedInput">HSN</label>
+                                <input type="text" class="form-control" placeholder="HSN" name="hsn"
+                                    ngModel>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-form-label" for="prependedInput">VAT (%)</label>
+                                <input type="text" class="form-control" placeholder="VAT (%)" name="vat"
+                                    ngModel>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="col-form-label" for="prependedInput">Discount (%)</label>
+                                <input type="text" class="form-control" placeholder="Discount (%)" name="discount"
+                                    ngModel>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
                                 <label class="col-form-label" for="prependedInput">Description (max 1024 character)</label>
                                 <input type="text" class="form-control" placeholder="description.." name="description"
                                     ngModel>
@@ -69,8 +86,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="prependedInput">Item Per Page</label>
-                            <select class="form-control" [(ngModel)]="itemLimit" (ngModelChange)="getItemTable()">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Item Per Page</label>
+                            <select class="form-control form-control-sm" [(ngModel)]="itemLimit" (ngModelChange)="getItemTable()">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -80,8 +97,8 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Sort By</label>
-                            <select class="form-control" [(ngModel)]="itemOrderBy" (ngModelChange)="getItemTable()">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Sort By</label>
+                            <select class="form-control form-control-sm" [(ngModel)]="itemOrderBy" (ngModelChange)="getItemTable()">
                                 <option value="itemcode">Item Code</option>
                                 <option value="itemname">Item Name</option>
                                 <option value="price">Unit Price</option>
@@ -89,19 +106,19 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Order</label>
-                            <select class="form-control" [(ngModel)]="itemOrder" (ngModelChange)="getItemTable()">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Order</label>
+                            <select class="form-control form-control-sm" [(ngModel)]="itemOrder" (ngModelChange)="getItemTable()">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Search</label>
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Search</label>
                             <div class="input-group">
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
-                                <input type="email" id="input2-group1" name="input2-group1" class="form-control"
+                                <input type="email" id="input2-group1" name="input2-group1" class="form-control form-control-sm"
                                     placeholder="Search" [(ngModel)]="itemSearch" (ngModelChange)="getItemTable()">
                             </div>
                         </div>
@@ -193,25 +210,25 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <label class="col-form-label" for="prependedInput">Product Code</label>
-                        <input type="text" class="form-control"
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Product Code</label>
+                        <input type="text" class="form-control form-control-sm"
                         placeholder="Code" [(ngModel)]="itemCode">
                     </div>
                     <div class="col-md-5">
-                        <label class="col-form-label" for="prependedInput">Product Name</label>
-                        <input type="text" class="form-control"
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Product Name</label>
+                        <input type="text" class="form-control form-control-sm"
                         placeholder="Product Name" [(ngModel)]="itemName">
                     </div>
                     <div class="col-md-3">
-                        <label class="col-form-label" for="prependedInput">Unit Price</label>
-                        <input type="text" class="form-control"
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
+                        <input type="text" class="form-control form-control-sm"
                         placeholder="Unit Price" [(ngModel)]="itemUnitPrice">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="col-form-label" for="prependedInput">Description</label>
-                        <input type="text" class="form-control"
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Description</label>
+                        <input type="text" class="form-control form-control-sm"
                             placeholder="Description" [(ngModel)]="itemDescription">
                     </div>
                 </div>
@@ -248,51 +265,51 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <label class="col-form-label" for="prependedInput">Product Code</label>
-                        <input type="text" class="form-control"
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Product Code</label>
+                        <input type="text" class="form-control form-control-sm"
                         placeholder="Code" [(ngModel)]="itemCode" readonly>
                     </div>
                     <div class="col-md-5">
-                        <label class="col-form-label" for="prependedInput">Product Name</label>
-                        <input type="text" class="form-control"
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Product Name</label>
+                        <input type="text" class="form-control form-control-sm"
                         placeholder="Product Name" [(ngModel)]="itemName" readonly>
                     </div>
                     <div class="col-md-3">
-                        <label class="col-form-label" for="prependedInput">Unit Price</label>
-                        <input type="text" class="form-control"
-                        placeholder="Unit Price" [(ngModel)]="itemUnitPrice" readonly>
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
+                        <input type="text" class="form-control form-control-sm"
+                        placeholder="Unit Price" [(ngModel)]="itemUnitPrice">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <label class="col-form-label" for="prependedInput">Update Type</label>
-                        <select class="form-control" [(ngModel)]="itemUpdateType" (ngModelChange)="itemUpdateTypeChange()">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Update Type</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateType" (ngModelChange)="itemUpdateTypeChange()">
                             <option value="add">Add Product</option>
                             <option value="sub">Deficit</option>
                         </select>
                     </div>
-                    <div class="col-md-4">
-                        <label class="col-form-label" for="prependedInput">Quantity</label>
-                        <input type="text" class="form-control"
+                    <div class="col-md-5">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
+                        <input type="text" class="form-control form-control-sm"
                         placeholder="Quantity" [(ngModel)]="itemQTY">
                     </div>
-                    <div class="col-md-4">
-                        <label class="col-form-label" for="prependedInput">Total Price</label>
-                        <input type="text" class="form-control"
-                        placeholder="Total Price" [(ngModel)]="itemUpdateTotalPrice">
+                    <div class="col-md-3">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Cost</label>
+                        <input type="text" class="form-control form-control-sm"
+                        placeholder="Unit Cost" [(ngModel)]="itemUpdateUnitCost">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="col-form-label" for="prependedInput">Expiry Year</label>
-                        <select class="form-control" [(ngModel)]="itemUpdateExpiryYear" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Year" >
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Expiry Year</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryYear" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Year" >
                             <option value="2100">No Expiry</option>
                             <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="col-form-label" for="prependedInput">Dealer phone</label>
-                        <select class="form-control" [(ngModel)]="itemUpdateExpiryMonth" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Month" >
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Dealer phone</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryMonth" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Month" >
                             <option value="13">No Expiry</option>
                             <option *ngFor="let month of months" value="{{ month[0] }}">{{ month[1] }}</option>
                         </select>
@@ -300,20 +317,25 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="col-form-label" for="prependedInput">Dealer Name</label>
-                        <input type="text" class="form-control"
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Dealer Name</label>
+                        <input type="text" class="form-control form-control-sm"
                         placeholder="Dealer Name" [(ngModel)]="itemDealerName" [disabled]="itemUpdateType == 'sub'">
                     </div>
                     <div class="col-md-6">
-                        <label class="col-form-label" for="prependedInput">Dealer phone</label>
-                        <input type="text" class="form-control"
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Dealer phone</label>
+                        <input type="text" class="form-control form-control-sm"
                         placeholder="Dealer Phone" [(ngModel)]="itemDealerPhone" [disabled]="itemUpdateType == 'sub'">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        <label class="col-form-label" for="prependedInput">Description</label>
-                        <input type="text" class="form-control"
+                    <div class="col-md-4">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Rack No</label>
+                        <input type="text" class="form-control form-control-sm"
+                            placeholder="rack no" [(ngModel)]="itemRack">
+                    </div>
+                    <div class="col-md-8">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Description</label>
+                        <input type="text" class="form-control form-control-sm"
                             placeholder="Description" [(ngModel)]="itemDescription">
                     </div>
                 </div>
