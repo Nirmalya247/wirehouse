@@ -81,13 +81,12 @@
                                 </td>
                                 <td>
                                     <label class="switch switch-sm switch-3d switch-primary">
-                                        <input type="checkbox" class="switch-input" [(ngModel)]="user.active"
-                                            (ngModelChange)="changeActive(i)">
+                                        <input type="checkbox" class="switch-input" [(ngModel)]="user.active" (ngModelChange)="changeActive(i)">
                                         <span class="switch-slider"></span>
                                     </label>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-ghost-danger">
+                                    <button type="button" class="btn btn-sm btn-ghost-danger" (click)="deleteUser(i);">
                                         <i class="fa fa-user-times"></i>
                                     </button>
                                 </td>
@@ -146,15 +145,10 @@
                             <input type="text" class="form-control"
                                 placeholder="other phone no" [(ngModel)]="shopotherphoneno">
                         </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">VAT Percentage</label>
+                        <div class="col-md-6">
+                            <label class="col-form-label" for="prependedInput">License No</label>
                             <input type="text" class="form-control"
-                                placeholder="vat percentage" [(ngModel)]="vat">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Discount Percentage</label>
-                            <input type="text" class="form-control"
-                                placeholder="discount percentage" [(ngModel)]="discount">
+                                placeholder="License No" [(ngModel)]="licenseno">
                         </div>
                     </div>
                     <br>
@@ -287,6 +281,38 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="userFormHide()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="userFormSave()">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+<div bsModal #deleteConfirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Item</h4>
+                <button type="button" class="close" (click)="deleteConfirmFormHide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="deleteConfirmFormHide()">No</button>
+                <button type="button" class="btn btn-primary" (click)="deleteConfirmFormSave()">Yes</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

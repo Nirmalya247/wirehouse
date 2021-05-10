@@ -36,6 +36,13 @@ export class TransactionDataService {
         let url = environment.PATH + 'transaction/gettransactionitem';
         return this.http.post(url, transaction);
     }
+    // get transaction item by stock
+    getTransactionItemByStock(transaction):Observable<any> {
+        transaction[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        transaction[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'transaction/gettransactionitembystock';
+        return this.http.post(url, transaction);
+    }
 
 
 

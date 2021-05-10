@@ -26,8 +26,7 @@ export class AuthGuardService implements CanActivate {
     shopphoneno: string = '';
     shopotherphoneno: string = '';
     vatno: string = '';
-    vat: string = '';
-    discount: string = '';
+    licenseno: string = '';
 
     constructor(
         public authService: AuthService,
@@ -85,8 +84,7 @@ export class AuthGuardService implements CanActivate {
                 this.shopphoneno = res.shopphoneno;
                 this.shopotherphoneno = res.shopotherphoneno;
                 this.vatno = res.vatno;
-                this.vat = res.vat;
-                this.discount = res.discount;
+                this.licenseno = res.licenseno;
             }
         });
     }

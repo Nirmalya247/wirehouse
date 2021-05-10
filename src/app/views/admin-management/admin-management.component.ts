@@ -15,6 +15,7 @@ import { Auth } from '../../auth-services/auth';
 })
 export class AdminManagementComponent implements OnInit {
     @ViewChild('userForm') public userForm: ModalDirective;
+    @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
     constructor(
         public authGuardService: AuthGuardService,
         public authDataService: AuthDataService,
@@ -89,6 +90,29 @@ export class AdminManagementComponent implements OnInit {
                 }
             });
         }
+    }
+
+    deleteI = -1;
+    deleteUser(i) {
+        this.deleteI = i;
+        this.deleteConfirmForm.show();
+    }
+
+    deleteConfirmFormHide() {
+        this.deleteI = -1;
+        this.deleteConfirmForm.hide();
+    }
+
+    deleteConfirmFormSave() {
+        this.authDataService.deleteUser({ id: this.usersList[this.deleteI].id }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success('user deleted', 'Deleted!');
+                this.getUserTable(this.userPage);
+            } else {
+                this.toastr.error('user could not be deleted', 'Delete');
+            }
+            this.deleteConfirmFormHide();
+        });
     }
 
     getAdminRole(value) {
@@ -203,8 +227,7 @@ export class AdminManagementComponent implements OnInit {
     shopphoneno: string = '';
     shopotherphoneno: string = '';
     vatno: string = '';
-    vat: string = '';
-    discount: string = '';
+    licenseno: string = '';
     shopData: any = {};
 
     getShop() {
@@ -216,8 +239,7 @@ export class AdminManagementComponent implements OnInit {
             this.shopphoneno = res.shopphoneno;
             this.shopotherphoneno = res.shopotherphoneno;
             this.vatno = res.vatno;
-            this.vat = res.vat;
-            this.discount = res.discount;
+            this.licenseno = res.licenseno;
             this.shopData = res;
         });
     }
@@ -231,8 +253,7 @@ export class AdminManagementComponent implements OnInit {
             shopphoneno: this.shopphoneno,
             shopotherphoneno: this.shopotherphoneno,
             vatno: this.vatno,
-            vat: this.vat,
-            discount: this.discount
+            licenseno: this.licenseno
         }).subscribe(res => {
             if (!res.err) {
                 this.toastr.success('shop data saved', 'Shop Info');
@@ -249,8 +270,7 @@ export class AdminManagementComponent implements OnInit {
         this.shopphoneno = this.shopData.shopphoneno;
         this.shopotherphoneno = this.shopData.shopotherphoneno;
         this.vatno = this.shopData.vatno;
-        this.vat = this.shopData.vat;
-        this.discount = this.shopData.discount;
+        this.licenseno = this.shopData.licenseno;
     }
 
     //***********

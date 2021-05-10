@@ -20,7 +20,7 @@
                     <div class="form-group row" *ngFor="let item of items; index as i;">
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Stock ID</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Item Code" value="{{ item.stockid }}">
+                            <input type="text" class="form-control form-control-sm" placeholder="Item Code" [(ngModel)]="item.stockid" (ngModelChange)="stockChange(i);">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Item</label>
@@ -54,8 +54,7 @@
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="item.qty"
-                                (ngModelChange)="changeQTY(i);">
+                            <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="item.qty" (ngModelChange)="changeQTY(i);">
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Total Price</label>
@@ -254,7 +253,7 @@
                         <tbody>
                             <tr *ngFor="let transaction of transactions; index as i;">
                                 <td>{{ i + 1 + (transactionPage - 1) * transactionLimit }}</td>
-                                <td>{{ transaction.id }}</td>
+                                <td><a href="{{ serverPath + 'transaction-bill?transactionId=' + transaction.id.toString() + '&paper=A4' }}" target="_blank">{{ transaction.id }}</a></td>
                                 <td>{{ transaction.totalItem }}</td>
                                 <td>{{ transaction.totalAmount }}</td>
                                 <td>{{ transaction.totalTendered }}</td>

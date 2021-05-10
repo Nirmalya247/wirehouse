@@ -16,6 +16,7 @@ import { Item } from '../../data/item';
 export class InventoryComponent implements OnInit {
     @ViewChild('itemForm') public itemForm: ModalDirective;
     @ViewChild('itemUpdateForm') public itemUpdateForm: ModalDirective;
+    @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
     items: Array<Item>;
     pages: Array<number>;
@@ -193,6 +194,29 @@ export class InventoryComponent implements OnInit {
                 console.log(res);
             }
         );
+    }
+
+    deleteI = -1;
+    deleteItem(i) {
+        this.deleteI = i;
+        this.deleteConfirmForm.show();
+    }
+
+    deleteConfirmFormHide() {
+        this.deleteI = -1;
+        this.deleteConfirmForm.hide();
+    }
+
+    deleteConfirmFormSave() {
+        this.itemDataService.delete({ itemcode: this.items[this.deleteI].itemcode }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success('item deleted', 'Deleted!');
+                this.getItemTable(this.itemPage);
+            } else {
+                this.toastr.error('item could not be deleted', 'Delete');
+            }
+            this.deleteConfirmFormHide();
+        });
     }
 
     //***********

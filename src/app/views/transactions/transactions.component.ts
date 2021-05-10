@@ -19,6 +19,8 @@ import { Transaction } from '../../data/transaction';
 export class TransactionsComponent implements OnInit {
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
 
+    serverPath = environment.PATH;
+
     items: Array<ItemTransaction> = [];
     totalAmount: string;
     totalDiscount: string;
@@ -50,16 +52,31 @@ export class TransactionsComponent implements OnInit {
     ngOnInit(): void {
         this.itemSearch({ term: null });
         this.getTransactionTable(null);
-        this.getShopData();
         // generate random values for mainChart
     }
-    getShopData() {
-        // this.authDataService.getShopData({ id: 1}).subscribe(res => {
-        //     if (!res.err) {
-        //         this.vat = res.vat;
-        //         this.discount = res.discount;
-        //     }
-        // });
+    stockChange(i) {
+        console.log(this.items[i].stockid);
+        this.transactionDataService.getTransactionItemByStock({ stockid: this.items[i].stockid }).subscribe(res => {
+            console.log(res);
+            if (!res.err) {
+                this.items[i].id = null;
+                this.items[i].stockid = res.itemUpdate.id;
+                this.items[i].itemcode = res.item.itemcode;
+                this.items[i].itemname = res.item.itemname;
+                this.items[i].rack = res.itemUpdate.rack;
+                this.items[i].hsn = res.item.hsn;
+                this.items[i].qtystock = res.itemUpdate.qtystock;
+                this.items[i].qty = 1;
+                this.items[i].price = res.itemUpdate.price;
+                this.items[i].discount = res.item.discount;
+                this.items[i].vat = res.item.vat;
+                this.items[i].totalprice = res.itemUpdate.price;
+                this.items[i].expiry = res.itemUpdate.expiry;
+                this.items[i].dealername = res.itemUpdate.dealername;
+                this.items[i].dealerphone = res.itemUpdate.dealerphone;
+                this.calculateTotalAmmount();
+            }
+        });
     }
     addItem() {
         if (this.selectedItem != null || this.selectedItem != undefined) {
@@ -244,6 +261,7 @@ export class TransactionsComponent implements OnInit {
                 this.toastr.success('Transaction successful', 'Done!');
                 this.cancelTransaction();
                 this.getTransactionTable(this.transactionPage);
+                window.open(environment.PATH + 'transaction-bill?transactionId=' + res.id.toString() + '&paper=A4');
             } else {
                 this.toastr.error('Transaction unsuccessful', 'Attention');
             }
