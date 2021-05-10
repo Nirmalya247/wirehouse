@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Accounts Per Page</label>
-                            <select class="form-control" [(ngModel)]="userLimit" (ngModelChange)="getUserTable()">
+                            <select class="form-control" [(ngModel)]="userLimit" (ngModelChange)="getUserTable(1)">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Sort By</label>
-                            <select class="form-control" [(ngModel)]="userOrderBy" (ngModelChange)="getUserTable()">
+                            <select class="form-control" [(ngModel)]="userOrderBy" (ngModelChange)="getUserTable(1)">
                                 <option value="id">User ID</option>
                                 <option value="name">Nmae</option>
                                 <option value="isadmin">Role</option>
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Order</label>
-                            <select class="form-control" [(ngModel)]="userOrder" (ngModelChange)="getUserTable()">
+                            <select class="form-control" [(ngModel)]="userOrder" (ngModelChange)="getUserTable(1)">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
@@ -45,7 +45,7 @@
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
                                 <input type="text" class="form-control"
-                                    placeholder="Search" [(ngModel)]="userSearchText" (ngModelChange)="getUserTable()">
+                                    placeholder="Search" [(ngModel)]="userSearchText" (ngModelChange)="getUserTable(1)">
                             </div>
                         </div>
                     </div>
