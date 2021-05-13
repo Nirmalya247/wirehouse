@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
-import { Transaction } from '../data/transaction';
+import { Transaction, Purchase } from '../data/transaction';
 import { environment } from './../../environments/environment';
 @Injectable({
     providedIn: 'root'
@@ -43,6 +43,13 @@ export class TransactionDataService {
         let url = environment.PATH + 'transaction/gettransactionitembystock';
         return this.http.post(url, transaction);
     }
+    // get last transaction item
+    getLastTransactionItem(transaction):Observable<any> {
+        transaction[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        transaction[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'transaction/getlasttransactionitem';
+        return this.http.post(url, transaction);
+    }
 
 
 
@@ -65,6 +72,54 @@ export class TransactionDataService {
         query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
         query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'customer/update';
+        return this.http.post(url, query);
+    }
+
+
+
+    // add new purchase
+    addPurchase(purchase):Observable<any> {
+        purchase[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        purchase[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'purchase/add';
+        return this.http.post(url, purchase);
+    }
+    // get purchases count
+    getPurchasesCount(purchase):Observable<any> {
+        purchase[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        purchase[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'purchase/getpurchasescount';
+        return this.http.post(url, purchase);
+    }
+    // get purchases
+    getPurchases(purchase):Observable<Array<Purchase>> {
+        purchase[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        purchase[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'purchase/getpurchases';
+        return this.http.post<Array<Purchase>>(url, purchase);
+    }
+
+
+
+    // get salesman data
+    salesmanGet(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'salesman/get';
+        return this.http.post(url, query);
+    }
+    // add salesman
+    salesmanAdd(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'salesman/add';
+        return this.http.post(url, query);
+    }
+    // update salesman
+    salesmanUpdate(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'salesman/update';
         return this.http.post(url, query);
     }
 }

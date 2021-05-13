@@ -107,8 +107,8 @@
                                                 <th>QTY</th>
                                                 <th>Expiry Date</th>
                                                 <th>Buying Date</th>
-                                                <th>Dealer Name</th>
-                                                <th>Dealer Phone</th>
+                                                <th>Salesman Name</th>
+                                                <th>Salesman Phone</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -118,8 +118,8 @@
                                                 <td>{{ item.qtystock }}</td>
                                                 <td>{{ item.expiry.toLocaleString().split(',')[0] }}</td>
                                                 <td>{{ item.createdAt.toLocaleString().split(',')[0] }}</td>
-                                                <td>{{ item.dealername }}</td>
-                                                <td>{{ item.dealerphone }}</td>
+                                                <td>{{ item.salesmanname }}</td>
+                                                <td>{{ item.salesmanphone }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

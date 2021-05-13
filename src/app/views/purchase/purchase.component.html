@@ -3,7 +3,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-edit"></i>New Transaction
+                    <i class="fa fa-edit"></i>New Purchase
                     <div class="card-header-actions">
                         <button type="button" class="card-header-action btn btn-link btn-minimize"
                             (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
@@ -18,10 +18,6 @@
                             </div>
                             -->
                     <div class="form-group row" *ngFor="let item of items; index as i;">
-                        <div class="col-md-1">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Stock ID</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Item Code" [(ngModel)]="item.stockid" (ngModelChange)="stockChange(i);">
-                        </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Item</label>
                             <input type="text" class="form-control form-control-sm" placeholder="Item" value="{{ item.itemname }}"
@@ -29,12 +25,13 @@
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Rack</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Rack" value="{{ item.rack }}"
-                                readonly>
+                            <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="item.rack">
+                                <option *ngFor="let rack of racks" value="{{ rack.id }}">{{ rack.id + ', ' + rack.label }}</option>
+                            </select>
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Exp</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Exp" value="{{ item.expiry.toString().substr(0, 7) }}" readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="yyyy-mm" [(ngModel)]="item.expiry">
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Available</label>
@@ -42,7 +39,7 @@
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Unit Price" value="{{ item.price }}" readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="item.price">
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">VAT (%)</label>
@@ -53,12 +50,16 @@
                             <input type="text" class="form-control form-control-sm" placeholder="Discount" [(ngModel)]="item.discount" (ngModelChange)="changeQTY(i);">
                         </div>
                         <div class="col-md-1">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Cost</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Cost" [(ngModel)]="item.cost" (ngModelChange)="changeQTY(i);">
+                        </div>
+                        <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
                             <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="item.qty" (ngModelChange)="changeQTY(i);">
                         </div>
                         <div class="col-md-1">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Total Price</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Total Price" value="{{ item.totalprice }}" readonly>
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Total Cost</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Total Cost" value="{{ item.totalcost }}" readonly>
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">&nbsp;</label>
@@ -132,43 +133,48 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="prependedInput">Customer ID</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ID" [(ngModel)]="customerID"
-                                (ngModelChange)="customerGet();">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Customer Name</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Name" [(ngModel)]="customerName">
+                            <label class="col-form-label" for="prependedInput">Salesman ID</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="ID" [(ngModel)]="salesmanID"
+                                (ngModelChange)="salesmanGet();">
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label" for="prependedInput">Customer Phone</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Phone Number"
-                                [(ngModel)]="customerPhone" (ngModelChange)="customerGet();">
+                            <label class="col-form-label" for="prependedInput">Salesman Name</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Name" [(ngModel)]="salesmanName">
                         </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Customer Email</label>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Salesman Phone</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Phone Number"
+                                [(ngModel)]="salesmanPhone" (ngModelChange)="salesmanGet();">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Salesman Email</label>
                             <input type="text" class="form-control form-control-sm" placeholder="E-mail Address"
-                                [(ngModel)]="customerEmail" (ngModelChange)="customerGet();">
+                                [(ngModel)]="salesmanEmail" (ngModelChange)="salesmanGet();">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Vat No</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Vat No"
+                                [(ngModel)]="salesmanVatno" (ngModelChange)="salesmanGet();">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Credit</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="customerCredit"
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="salesmanCredit"
                                 readonly>
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <div class="col-md-2">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="customerAdd()"
-                                [disabled]="!customerNew">Add Customer</button>
+                            <button class="btn btn-primary btn-sm" type="button" (click)="salesmanAdd()"
+                                [disabled]="!salesmanNew">Add Salesman</button>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="customerUpdate()"
-                                [disabled]="customerNew">Update Customer</button>
+                            <button class="btn btn-primary btn-sm" type="button" (click)="salesmanUpdate()"
+                                [disabled]="salesmanNew">Update Salesmab</button>
                         </div>
                         <div class="col-md-2">
                             <input class="form-check-input" type="checkbox" value="option1" id="creditAdd"
-                                [disabled]="customerNew" [(ngModel)]="addCredit"
+                                [disabled]="salesmanNew" [(ngModel)]="addCredit"
                                 (ngModelChange)="calculateTotalAmmount();">
                             <label class="form-check-label" for="creditAdd">
                                 Add Credit to Amount
@@ -176,8 +182,8 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button class="btn btn-primary" type="button" (click)="confirmTransaction()">Confirm</button>
-                        <button class="btn btn-secondary" type="button" (click)="cancelTransaction()">Cancel</button>
+                        <button class="btn btn-primary" type="button" (click)="confirmPurchase()">Confirm</button>
+                        <button class="btn btn-secondary" type="button" (click)="cancelPurchase()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -193,13 +199,13 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> TRANSACTIONS
+                    <i class="fa fa-align-justify"></i> PURCHASES
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="prependedInput">Transaction Per Page</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="transactionLimit" (ngModelChange)="getTransactionTable(1)">
+                            <label class="col-form-label" for="prependedInput">Purchase Per Page</label>
+                            <select class="form-control form-control-sm" [(ngModel)]="purchaseLimit" (ngModelChange)="getPurchaseTable(1)">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -210,7 +216,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Sort By</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="transactionOrderBy" (ngModelChange)="getTransactionTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="purchaseOrderBy" (ngModelChange)="getPurchaseTable(1)">
                                 <option value="createdAt">Date</option>
                                 <option value="totalItem">Total Item</option>
                                 <option value="totalAmount">Total Price</option>
@@ -218,7 +224,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Order</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="transactionOrder" (ngModelChange)="getTransactionTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="purchaseOrder" (ngModelChange)="getPurchaseTable(1)">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
@@ -230,7 +236,7 @@
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
                                 <input type="text" id="input2-group1" name="input2-group1" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="transactionSearchText" (ngModelChange)="getTransactionTable(1)">
+                                    placeholder="Search" [(ngModel)]="purchaseSearchText" (ngModelChange)="getPurchaseTable(1)">
                             </div>
                         </div>
                     </div>
@@ -240,37 +246,37 @@
                             <tr>
                                 <th>SN</th>
                                 <th>Receipt No</th>
-                                <th>Total Item</th>
+                                <th>Total QTY</th>
                                 <th>Total Amount</th>
                                 <th>Amount Tendered</th>
                                 <th>Change Due</th>
                                 <th>Mode of Payment</th>
                                 <th>Staff</th>
-                                <th>Customer</th>
+                                <th>Salesman</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let transaction of transactions; index as i;">
-                                <td>{{ i + 1 + (transactionPage - 1) * transactionLimit }}</td>
-                                <td><a href="{{ serverPath + 'transaction-bill?transactionId=' + transaction.id.toString() + '&paper=A4' }}" target="_blank">{{ transaction.id }}</a></td>
-                                <td>{{ transaction.totalItem }}</td>
-                                <td>{{ transaction.totalAmount }}</td>
-                                <td>{{ transaction.totalTendered }}</td>
-                                <td>{{ transaction.changeDue }}</td>
-                                <td>{{ transaction.paymentMode }}</td>
-                                <td>{{ transaction.userName }}</td>
-                                <td>{{ transaction.customerName }}</td>
-                                <td>{{ transaction.createdAt.toLocaleString() }}</td>
+                            <tr *ngFor="let purchase of purchases; index as i;">
+                                <td>{{ i + 1 + (purchasePage - 1) * purchaseLimit }}</td>
+                                <td><a href="{{ serverPath + 'purchase-bill?purchaseId=' + purchase.id.toString() + '&paper=A4' }}" target="_blank">{{ purchase.id }}</a></td>
+                                <td>{{ purchase.totalQTY }}</td>
+                                <td>{{ purchase.totalAmount }}</td>
+                                <td>{{ purchase.totalTendered }}</td>
+                                <td>{{ purchase.changeDue }}</td>
+                                <td>{{ purchase.paymentMode }}</td>
+                                <td>{{ purchase.userName }}</td>
+                                <td>{{ purchase.salesmanName }}</td>
+                                <td>{{ purchase.createdAt.toLocaleString() }}</td>
                             </tr>
                         </tbody>
                     </table>
                     <ul class="pagination">
-                        <li class="page-item" (click)="getTransactionTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of pages;" [ngClass]="{'active': page == transactionPage}" (click)="getTransactionTable(page)">
+                        <li class="page-item" (click)="getPurchaseTable(-1)"><button class="page-link">Prev</button></li>
+                        <li class="page-item active" *ngFor="let page of pages;" [ngClass]="{'active': page == purchasePage}" (click)="getPurchaseTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
-                        <li class="page-item" (click)="getTransactionTable(-2)"><button class="page-link">Next</button></li>
+                        <li class="page-item" (click)="getPurchaseTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
             </div>

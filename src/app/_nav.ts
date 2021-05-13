@@ -12,6 +12,11 @@ export const navItems: INavData[] = [
     icon: 'icon-wallet'
   },
   {
+    name: 'Purchase',
+    url: '/purchase',
+    icon: 'icon-social-dropbox'
+  },
+  {
     name: 'Inventory',
     url: '/inventory',
     icon: 'icon-social-dropbox'

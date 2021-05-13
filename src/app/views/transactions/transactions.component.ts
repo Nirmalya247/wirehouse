@@ -72,8 +72,10 @@ export class TransactionsComponent implements OnInit {
                 this.items[i].vat = res.item.vat;
                 this.items[i].totalprice = res.itemUpdate.price;
                 this.items[i].expiry = res.itemUpdate.expiry;
-                this.items[i].dealername = res.itemUpdate.dealername;
-                this.items[i].dealerphone = res.itemUpdate.dealerphone;
+                this.items[i].salesmanid = res.itemUpdate.salesmanid;
+                this.items[i].salesmanname = res.itemUpdate.salesmanname;
+                this.items[i].salesmanphone = res.itemUpdate.salesmanphone;
+                this.items[i].salesmanemail = res.itemUpdate.salesmanemail;
                 this.calculateTotalAmmount();
             }
         });
@@ -104,8 +106,10 @@ export class TransactionsComponent implements OnInit {
                             vat: this.selectedItem.vat,
                             totalprice: res[i].price,
                             expiry: res[i].expiry,
-                            dealername: res[i].dealername,
-                            dealerphone: res[i].dealerphone
+                            salesmanid: res[i].salesmanid,
+                            salesmanname: res[i].salesmanname,
+                            salesmanphone: res[i].salesmanphone,
+                            salesmanemail: res[i].salesmanemail
                         };
                         this.items.push(newItem);
                         this.changeQTY(this.items.length - 1);

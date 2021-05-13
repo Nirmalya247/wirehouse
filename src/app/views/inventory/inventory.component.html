@@ -306,7 +306,7 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Dealer phone</label>
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Salesman phone</label>
                         <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryMonth" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Month" >
                             <option value="13">No Expiry</option>
                             <option *ngFor="let month of months" value="{{ month[0] }}">{{ month[1] }}</option>
@@ -315,14 +315,14 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Dealer Name</label>
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Salesman Name</label>
                         <input type="text" class="form-control form-control-sm"
-                        placeholder="Dealer Name" [(ngModel)]="itemDealerName" [disabled]="itemUpdateType == 'sub'">
+                        placeholder="Salesman Name" [(ngModel)]="itemSalesmanName" [disabled]="itemUpdateType == 'sub'">
                     </div>
                     <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Dealer phone</label>
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Salesman phone</label>
                         <input type="text" class="form-control form-control-sm"
-                        placeholder="Dealer Phone" [(ngModel)]="itemDealerPhone" [disabled]="itemUpdateType == 'sub'">
+                        placeholder="Salesman Phone" [(ngModel)]="itemSalesmanPhone" [disabled]="itemUpdateType == 'sub'">
                     </div>
                 </div>
                 <div class="row">

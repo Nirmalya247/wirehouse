@@ -33,8 +33,30 @@ export class ItemTransaction {
         public vat: Number,
         public totalprice: Number,
         public expiry: Number,
-        public dealername: String,
-        public dealerphone: String,
+        public salesmanid: String,
+        public salesmanname: String,
+        public salesmanphone: String,
+        public salesmanemail: String,
+    ) {
+    }
+}
+export class ItemUpdate {
+    constructor(
+        public id: Number,
+        public purchaseId: String,
+        public itemcode: String,
+        public itemname: String,
+        public qty: Number,
+        public qtystock: Number,
+        public price: Number,
+        public discount: Number,
+        public vat: Number,
+        public cost: Number,
+        public totalcost: Number,
+        public expiry: String,
+        public rack: String,
+        public salesmanid: String,
+        public description: String
     ) {
     }
 }

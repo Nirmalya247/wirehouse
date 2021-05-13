@@ -84,8 +84,8 @@ export class InventoryComponent implements OnInit {
     itemUpdateUnitCost: string = '';
     itemUpdateExpiryYear: string = '2100';
     itemUpdateExpiryMonth: string = '13';
-    itemDealerName: string = '';
-    itemDealerPhone: string = '';
+    itemSalesmanName: string = '';
+    itemSalesmanPhone: string = '';
 
     years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     months = [ [ '01', 'JAN' ], [ '02', 'FEB' ], [ '03', 'MAR' ], [ '04', 'APR' ], [ '05', 'MAY' ], [ '06', 'JUN' ], [ '07', 'JUL' ], [ '08', 'AUG' ], [ '09', 'SEP' ], [ '10', 'OCT' ], [ '11', 'NOV' ], [ '12', 'DEC' ] ];
@@ -139,15 +139,15 @@ export class InventoryComponent implements OnInit {
         this.itemDescription = '';
         this.itemUpdateType = 'add';
         this.itemQTY = '';
-        this.itemDealerName = '';
-        this.itemDealerPhone = '';
+        this.itemSalesmanName = '';
+        this.itemSalesmanPhone = '';
         this.itemUpdateForm.show();
     }
 
     itemUpdateTypeChange() {
         if (this.itemUpdateType == 'sub') {
-            this.itemDealerName = '';
-            this.itemDealerPhone = '';
+            this.itemSalesmanName = '';
+            this.itemSalesmanPhone = '';
         }
     }
 
@@ -172,8 +172,8 @@ export class InventoryComponent implements OnInit {
             qty: this.itemQTY,
             price: this.itemUnitPrice,
             cost: this.itemUpdateUnitCost,
-            dealername: this.itemDealerName,
-            dealerphone: this.itemDealerPhone,
+            salesmanname: this.itemSalesmanName,
+            salesmanphone: this.itemSalesmanPhone,
             type: this.itemUpdateType,
             rack: this.itemRack,
             description: this.itemDescription

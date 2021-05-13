@@ -57,4 +57,11 @@ export class ItemDataService {
         let url = environment.PATH + 'item/getitemtypes';
         return this.http.post(url, data);
     }
+    // get racks
+    getRacks(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'item/racks';
+        return this.http.post(url, data);
+    }
 }
