@@ -34,7 +34,7 @@
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Exp</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Exp" value="{{ item.expiry.toString().substr(0, 7) }}" readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="Exp" value="{{ item.expiry.toString().substr(0, 7) }}" [ngClass]="{'error' : expError(item.expiry.toString()) }" readonly>
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Available</label>
@@ -136,7 +136,7 @@
                             <input type="text" class="form-control form-control-sm" placeholder="ID" [(ngModel)]="customerID"
                                 (ngModelChange)="customerGet();">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Customer Name</label>
                             <input type="text" class="form-control form-control-sm" placeholder="Name" [(ngModel)]="customerName">
                         </div>
@@ -145,7 +145,7 @@
                             <input type="text" class="form-control form-control-sm" placeholder="Phone Number"
                                 [(ngModel)]="customerPhone" (ngModelChange)="customerGet();">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Customer Email</label>
                             <input type="text" class="form-control form-control-sm" placeholder="E-mail Address"
                                 [(ngModel)]="customerEmail" (ngModelChange)="customerGet();">
@@ -154,6 +154,10 @@
                             <label class="col-form-label" for="prependedInput">Credit</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="customerCredit"
                                 readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">CreditLimit</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="customerCreditLimit" [ngClass]="{'error' : customerCreditError }">
                         </div>
                     </div>
 

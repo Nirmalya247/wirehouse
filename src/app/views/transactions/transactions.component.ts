@@ -13,7 +13,8 @@ import { Item, ItemTransaction } from '../../data/item';
 import { Transaction } from '../../data/transaction';
 
 @Component({
-    templateUrl: 'transactions.component.html'
+    templateUrl: 'transactions.component.html',
+    styleUrls: ['transactions.css']
 })
 
 export class TransactionsComponent implements OnInit {
@@ -37,6 +38,8 @@ export class TransactionsComponent implements OnInit {
     customerPhone: string = '';
     customerEmail: string = '';
     customerCredit: string;
+    customerCreditLimit: string;
+    customerCreditError = false;
     customerData: any = { };
     customerNew: boolean = true;
 
@@ -79,6 +82,11 @@ export class TransactionsComponent implements OnInit {
                 this.calculateTotalAmmount();
             }
         });
+    }
+    expError(exp) {
+        let today = new Date();
+        let expdate = new Date(exp)
+        return Math.ceil(Math.abs(today.getTime() - expdate.getTime()) / (1000 * 60 * 60 * 24)) < 90;
     }
     addItem() {
         if (this.selectedItem != null || this.selectedItem != undefined) {
@@ -172,6 +180,10 @@ export class TransactionsComponent implements OnInit {
             totalDiscount += discount;
             taxable += (amount - discount);
             cumulativeAmount += Number(this.items[i].totalprice);
+        }
+        console.log((Number(this.totalTendered) - cumulativeAmount) + Number(this.customerCredit), Number(this.customerCreditLimit))
+        if ((cumulativeAmount - Number(this.totalTendered)) + Number(this.customerCredit) > Number(this.customerCreditLimit)) {
+            this.customerCreditError = true;
         }
         cumulativeAmount += oldCredit;
 
@@ -290,6 +302,7 @@ export class TransactionsComponent implements OnInit {
         this.customerPhone = '';
         this.customerEmail = '';
         this.customerCredit = '';
+        this.customerCreditLimit = '';
         this.customerData = { };
         this.customerNew = true;
 
@@ -328,8 +341,10 @@ export class TransactionsComponent implements OnInit {
                         this.customerPhone = res.phone;
                         this.customerEmail = res.email;
                         this.customerCredit = res.credit;
+                        this.customerCreditLimit = res.creditlimit;
                         this.customerNew = false;
                         this.customerData = res;
+                        this.calculateTotalAmmount();
                     }
                     //this.itemsList = res;
                 }
@@ -341,7 +356,8 @@ export class TransactionsComponent implements OnInit {
             name: this.customerName,
             phone: this.customerPhone,
             email: this.customerEmail,
-            credit: '0.00'
+            credit: '0.00',
+            creditlimit: this.customerCreditLimit
         }
         if (query.name == '' || query.phone == '') {
             this.toastr.error('Enter user info', 'User Info');
@@ -366,7 +382,8 @@ export class TransactionsComponent implements OnInit {
             name: this.customerName,
             phone: this.customerPhone,
             email: this.customerEmail,
-            credit: this.customerCredit
+            credit: this.customerCredit,
+            creditlimit: this.customerCreditLimit
         }
         console.log(query);
         this.transactionDataService.customerUpdate(query).subscribe (
