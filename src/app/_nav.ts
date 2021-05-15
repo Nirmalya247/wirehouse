@@ -14,12 +14,17 @@ export const navItems: INavData[] = [
   {
     name: 'Purchase',
     url: '/purchase',
-    icon: 'icon-social-dropbox'
+    icon: 'icon-handbag'
   },
   {
     name: 'Inventory',
     url: '/inventory',
     icon: 'icon-social-dropbox'
+  },
+  {
+    name: 'Accounting',
+    url: '/accounting',
+    icon: 'icon-calculator'
   },
   {
     name: 'Admin Management',
