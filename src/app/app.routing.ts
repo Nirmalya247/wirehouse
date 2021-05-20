@@ -72,6 +72,11 @@ export const routes: Routes = [
         loadChildren: () => import('./views/purchase/purchase.module').then(m => m.PurchaseModule)
       },
       {
+        path: 'customer',
+        canActivate: [AuthGuardService],
+        loadChildren: () => import('./views/customer/customer.module').then(m => m.CustomerModule)
+      },
+      {
         path: 'admin-management',
         canActivate: [AuthGuardService],
         loadChildren: () => import('./views/admin-management/admin-management.module').then(m => m.AdminManagementModule)

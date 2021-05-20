@@ -18,54 +18,58 @@
                             </div>
                             -->
                     <div class="form-group row" *ngFor="let item of items; index as i;">
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Item</label>
                             <input type="text" class="form-control form-control-sm" placeholder="Item" value="{{ item.itemname }}"
                                 readonly>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Rack</label>
                             <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="item.rack">
                                 <option *ngFor="let rack of racks" value="{{ rack.id }}">{{ rack.id + ', ' + rack.label }}</option>
                             </select>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Exp</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="yyyy-mm" [(ngModel)]="item.expiry">
+                            <input class="form-control form-control-sm" type="date" placeholder="yyyy-mm" [(ngModel)]="item.expiry">
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Available</label>
                             <input type="text" class="form-control form-control-sm" placeholder="Available" value="{{ item.qtystock }}" readonly>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
                             <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="item.price">
-                        </div>
-                        <div class="col-md-1">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">VAT (%)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="VAT" [(ngModel)]="item.vat" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-1">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (%)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Discount" [(ngModel)]="item.discount" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-1">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Cost</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Cost" [(ngModel)]="item.cost" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-1">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="item.qty" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-1">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Total Cost</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Total Cost" value="{{ item.totalcost }}" readonly>
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">&nbsp;</label>
                             <br>
                             <button class="btn btn-primary btn-sm" type="button" (click)="removeItem(i)"><i
                                     class="fa fa-close"></i></button>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">VAT (%)</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="VAT" [(ngModel)]="item.vat" (ngModelChange)="changeQTY(i);">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (%)</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Discount" [(ngModel)]="item.discount" (ngModelChange)="changeQTY(i);">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (amount)</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Discount amount" [(ngModel)]="item.discountamount" (ngModelChange)="changeQTY(i);">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Cost</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Cost" [(ngModel)]="item.cost" (ngModelChange)="changeQTY(i);">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="item.qty" (ngModelChange)="changeQTY(i);">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Total Cost</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Total Cost" value="{{ item.totalcost }}" readonly>
                         </div>
                     </div>
 

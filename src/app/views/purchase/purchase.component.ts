@@ -67,7 +67,7 @@ export class PurchaseComponent implements OnInit {
         if (this.selectedItem != null || this.selectedItem != undefined) {
             this.transactionDataService.getLastTransactionItem({ itemcode: this.selectedItem.itemcode }).subscribe(res => {
                 console.log('@@@@@@@@@@@', res);
-                let newItem = <ItemUpdate>{
+                let newItem = <ItemUpdate> {
                     id: null,
                     purchaseId: null,
                     itemcode: this.selectedItem.itemcode,
@@ -76,11 +76,12 @@ export class PurchaseComponent implements OnInit {
                     qtystock: this.selectedItem.qty,
                     price: (res.err ? '' : res.price),
                     discount: (res.err ? '' : res.discount),
+                    discountamount: 0,
                     vat: (res.err ? '' : res.vat),
                     cost: (res.err ? '' : res.cost),
                     totalcost: (res.err ? '' : res.cost),
                     expiry: '',
-                    rack: '',
+                    rack: (res.err ? '' : res.rack),
                     salesmanid: '',
                     description: ''
                 };
@@ -98,16 +99,22 @@ export class PurchaseComponent implements OnInit {
     changeQTY(i) {
         let vat = Number(this.items[i].vat);
         let discount = Number(this.items[i].discount);
+        let discountamount = Number(this.items[i].discountamount);
         if (isNaN(vat)) vat = 0;
         if (isNaN(discount)) discount = 0;
+        if (isNaN(discountamount)) discountamount = 0;
 
 
         if (isNaN(Number(this.items[i].qty))) this.items[i].qty = 1;
-        if (this.items[i].qty > this.items[i].qtystock) this.items[i].qty = this.items[i].qtystock;
-        if (this.items[i].qty < 0) this.items[i].qty = 0;
+        // if (this.items[i].qty > this.items[i].qtystock) this.items[i].qty = this.items[i].qtystock;
+        // if (this.items[i].qty < 0) this.items[i].qty = 0;
         let total = Number(this.items[i].qty) * Number(this.items[i].price);
         discount = total * discount / 100;
-        total = (total - discount) * (1 + vat / 100);
+        if (total - discount - discountamount <= 0) {
+            discountamount = total - discount;
+            this.items[i].discountamount = discountamount;
+        }
+        total = (total - discount - discountamount) * (1 + vat / 100);
         this.items[i].totalcost = total;
         if (isNaN(Number(this.items[i].totalcost))) this.items[i].totalcost = 0;
         this.items[i].totalcost = Number(this.items[i].totalcost.toFixed(2));
@@ -124,7 +131,7 @@ export class PurchaseComponent implements OnInit {
 
         for (let i = 0; i < this.items.length; i++) {
             let amount = Number(this.items[i].qty) * Number(this.items[i].price);
-            let discount = amount * Number(this.items[i].discount) / 100;
+            let discount = amount * Number(this.items[i].discount) / 100 + Number(this.items[i].discountamount);
             totalAmount += amount;
             totalDiscount += discount;
             taxable += (amount - discount);

@@ -27,6 +27,11 @@ export const navItems: INavData[] = [
     icon: 'icon-calculator'
   },
   {
+    name: 'Customer',
+    url: '/customer',
+    icon: 'icon-people'
+  },
+  {
     name: 'Admin Management',
     url: '/admin-management',
     icon: 'icon-user'

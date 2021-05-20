@@ -72,6 +72,7 @@ export class TransactionsComponent implements OnInit {
                 this.items[i].qty = 1;
                 this.items[i].price = res.itemUpdate.price;
                 this.items[i].discount = res.item.discount;
+                this.items[i].discountamount = 0;
                 this.items[i].vat = res.item.vat;
                 this.items[i].totalprice = res.itemUpdate.price;
                 this.items[i].expiry = res.itemUpdate.expiry;
@@ -111,6 +112,7 @@ export class TransactionsComponent implements OnInit {
                             qty: 1,
                             price: res[i].price,
                             discount: this.selectedItem.discount,
+                            discountamount: 0,
                             vat: this.selectedItem.vat,
                             totalprice: res[i].price,
                             expiry: res[i].expiry,
@@ -149,8 +151,10 @@ export class TransactionsComponent implements OnInit {
     changeQTY(i) {
         let vat = Number(this.items[i].vat);
         let discount = Number(this.items[i].discount);
+        let discountamount = Number(this.items[i].discountamount);
         if (isNaN(vat)) vat = 0;
         if (isNaN(discount)) discount = 0;
+        if (isNaN(discountamount)) discountamount = 0;
 
 
         if (isNaN(Number(this.items[i].qty))) this.items[i].qty = 1;
@@ -158,7 +162,11 @@ export class TransactionsComponent implements OnInit {
         if (this.items[i].qty < 0) this.items[i].qty = 0;
         let total = Number(this.items[i].qty) * Number(this.items[i].price);
         discount = total * discount / 100;
-        total = (total - discount) * (1 + vat / 100);
+        if (total - discount - discountamount <= 0) {
+            discountamount = total - discount;
+            this.items[i].discountamount = discountamount;
+        }
+        total = (total - discount - discountamount) * (1 + vat / 100);
         this.items[i].totalprice = total;
         if (isNaN(Number(this.items[i].totalprice))) this.items[i].totalprice = 0;
         this.items[i].totalprice = Number(this.items[i].totalprice.toFixed(2));
@@ -175,16 +183,13 @@ export class TransactionsComponent implements OnInit {
 
         for (let i = 0; i < this.items.length; i++) {
             let amount = Number(this.items[i].qty) * Number(this.items[i].price);
-            let discount = amount * Number(this.items[i].discount) / 100;
+            let discount = amount * Number(this.items[i].discount) / 100 + Number(this.items[i].discountamount);
             totalAmount += amount;
             totalDiscount += discount;
             taxable += (amount - discount);
             cumulativeAmount += Number(this.items[i].totalprice);
         }
         console.log((Number(this.totalTendered) - cumulativeAmount) + Number(this.customerCredit), Number(this.customerCreditLimit))
-        if ((cumulativeAmount - Number(this.totalTendered)) + Number(this.customerCredit) > Number(this.customerCreditLimit)) {
-            this.customerCreditError = true;
-        }
         cumulativeAmount += oldCredit;
 
         this.totalAmount = totalAmount.toFixed(2);
@@ -206,10 +211,13 @@ export class TransactionsComponent implements OnInit {
             if (due >= 0) {
                 this.changeDue = due.toFixed(2);
                 this.creditAmount = '0.00';
+                this.customerCreditError = false;
             } else {
                 due *= -1;
                 this.creditAmount = due.toFixed(2);
                 this.changeDue = '0.00';
+                if (!this.addCredit && (Number(this.customerCredit) + due) > Number(this.customerCreditLimit)) this.customerCreditError = true;
+                else this.customerCreditError = false;
             }
         }
     }
@@ -235,6 +243,7 @@ export class TransactionsComponent implements OnInit {
                 price: this.items[i].price,
                 qty: this.items[i].qty,
                 discount: this.items[i].discount,
+                discountamount: this.items[i].discountamount,
                 vat: this.items[i].vat,
                 totalPrice: this.items[i].totalprice,
                 expiry: this.items[i].expiry
@@ -257,6 +266,7 @@ export class TransactionsComponent implements OnInit {
             paymentMode: this.paymentMode,
             totalTaxable: isNaN(Number(this.taxable)) ? 0 : Number(this.taxable),
             totalAmount: isNaN(Number(this.totalAmount)) ? 0 : Number(this.totalAmount),
+            cumulativeAmount: isNaN(Number(this.cumulativeAmount)) ? 0 : Number(this.cumulativeAmount),
             totalTendered: isNaN(Number(this.totalTendered)) ? 0 : Number(this.totalTendered),
             changeDue: isNaN(Number(this.changeDue)) ? 0 : Number(this.changeDue),
             creditAmount: isNaN(Number(this.creditAmount)) ? 0 : Number(this.creditAmount),
@@ -357,7 +367,10 @@ export class TransactionsComponent implements OnInit {
             phone: this.customerPhone,
             email: this.customerEmail,
             credit: '0.00',
-            creditlimit: this.customerCreditLimit
+            creditlimit: this.customerCreditLimit,
+            qty: 0,
+            amount: 0,
+            count: 0
         }
         if (query.name == '' || query.phone == '') {
             this.toastr.error('Enter user info', 'User Info');
