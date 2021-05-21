@@ -5,193 +5,118 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
+import { AuthGuardService } from '../../auth-services/auth-guard.service';
+import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ItemDataService } from '../../services/item-data.service';
+import { TransactionDataService } from '../../services/transaction-data.service';
 import { AuthService } from '../../auth-services/auth.service';
 import { environment } from '../../../environments/environment';
-import { Item } from '../../data/item';
+import { Customer } from '../../data/customer';
 
 @Component({
     templateUrl: 'customer.component.html'
 })
 export class CustomerComponent implements OnInit {
-    @ViewChild('itemForm') public itemForm: ModalDirective;
-    @ViewChild('itemUpdateForm') public itemUpdateForm: ModalDirective;
+    @ViewChild('updateForm') public updateForm: ModalDirective;
     @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
-    items: Array<Item>;
+    customers: Array<Customer>;
     pages: Array<number>;
-    itemPage = 1;
-    itemLimit = 10;
-    itemOrderBy = 'itemcode';
-    itemOrder = 'asc';
-    itemSearch = '';
+    page = 1;
+    limit = 10;
+    orderBy = 'updatedAt';
+    order = 'asc';
+    searchText = '';
     constructor(
-        public authService: AuthService,
+        public authGuardService: AuthGuardService,
+        public authDataService: AuthDataService,
         public router: Router,
         private itemDataService: ItemDataService,
+        private transactionDataService: TransactionDataService,
         private toastr: ToastrService
     ) { }
 
     ngOnInit(): void {
         // generate random values for mainChart
         this.getItemTable(null);
-        this.itemTypeSearch( { term: '' } );
-        let now = new Date();
-        let nowYear = now.getFullYear();
-        for (let i = 0; i < this.years.length; i++) this.years[i] += nowYear;
     }
 
     getItemTable(pageNo) {
         if (pageNo != null) {
-            if (pageNo == -1) pageNo = this.itemPage - 1;
-            if (pageNo == -2) pageNo = this.itemPage + 1;
+            if (pageNo == -1) pageNo = this.page - 1;
+            if (pageNo == -2) pageNo = this.page + 1;
             if (pageNo < 1 || pageNo > this.pages.length) return;
-            this.itemPage = pageNo;
-        } else this.itemPage = 1;
+            this.page = pageNo;
+        } else this.page = 1;
         let query = {
-            itemLimit: this.itemLimit,
-            itemOrderBy: this.itemOrderBy,
-            itemOrder: this.itemOrder,
-            itemSearch: this.itemSearch,
-            itemPage: this.itemPage
+            limit: this.limit,
+            orderby: this.orderBy,
+            order: this.order,
+            searchText: this.searchText,
+            page: this.page
         }
-        this.itemDataService.getItemsCount(query).subscribe (
+        this.transactionDataService.getCustomerCount(query).subscribe(
             resCount => {
-                console.log(resCount);
-                this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.itemLimit)}, (_, i) => i + 1);
-                this.itemDataService.getItems(query).subscribe (
+                console.log('@@@@@@@@@@@', resCount);
+                this.pages = Array.from({ length: Math.ceil(parseInt(resCount) / this.limit) }, (_, i) => i + 1);
+                this.transactionDataService.getCustomer(query).subscribe(
                     res => {
                         console.log(res);
-                        this.items = res;
+                        for (let i = 0; i < res.length; i++) {
+                            res[i].updatedAt = new Date(res[i].updatedAt.toString());
+                        }
+                        this.customers = res;
                     }
                 );
             }
         );
-        console.log(this.itemLimit, this.itemOrderBy, this.itemOrder, this.itemSearch);
     }
 
     //***********
 
-    itemI: number = -1;
-    itemName: string = '';
-    itemCode: string = '';
-    itemQTY: string = '';
-    itemUnitPrice: string = '';
-    itemRack: string = '';
-    itemDescription: string = '';
+    customerI: number = -1;
+    customerName: string = '';
+    customerPhone: string = '';
+    customerEmail: string = '';
+    customerCreditLimit: string = '';
 
-    itemUpdateType: string = 'add';
-    itemUpdateUnitCost: string = '';
-    itemUpdateExpiryYear: string = '2100';
-    itemUpdateExpiryMonth: string = '13';
-    itemSalesmanName: string = '';
-    itemSalesmanPhone: string = '';
-
-    years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-    months = [ [ '01', 'JAN' ], [ '02', 'FEB' ], [ '03', 'MAR' ], [ '04', 'APR' ], [ '05', 'MAY' ], [ '06', 'JUN' ], [ '07', 'JUL' ], [ '08', 'AUG' ], [ '09', 'SEP' ], [ '10', 'OCT' ], [ '11', 'NOV' ], [ '12', 'DEC' ] ];
-
-    itemFormShow(i) {
-        this.itemI = i;
-        this.itemName = this.items[i].itemname.toString();
-        this.itemCode = this.items[i].itemcode.toString();
-        this.itemUnitPrice = this.items[i].price.toString();
-        this.itemDescription = this.items[i].description.toString();
-        this.itemForm.show();
+    updateFormShow(i) {
+        this.customerI = i;
+        this.customerName = this.customers[i].name.toString();
+        this.customerPhone = this.customers[i].phone.toString();
+        this.customerEmail = this.customers[i].email.toString();
+        this.customerCreditLimit = this.customers[i].creditlimit.toString();
+        this.updateForm.show();
     }
 
-    itemFormHide() {
-        this.itemI = -1;
-        this.itemName = '';
-        this.itemCode = '';
-        this.itemQTY = '';
-        this.itemUnitPrice = '';
-        this.itemDescription = '';
-        this.itemForm.hide();
+    updateFormHide() {
+        this.customerI = -1;
+        this.customerName = '';
+        this.customerPhone = '';
+        this.customerEmail = '';
+        this.customerCreditLimit = '';
+        this.updateForm.hide();
     }
 
-    itemFormSave() {
-        let data = {
-            oldcode: this.items[this.itemI].itemcode.toString(),
-            itemcode: this.itemCode,
-            itemname: this.itemName,
-            price: this.itemUnitPrice,
-            description: this.itemDescription
+    updateFormSave() {
+        let query = {
+            id: this.customers[this.customerI].id.toString(),
+            name: this.customerName,
+            phone: this.customerPhone,
+            email: this.customerEmail,
+            creditlimit: this.customerCreditLimit
         }
-        this.itemDataService.edit(data).subscribe (
+        console.log(query);
+        this.transactionDataService.customerUpdate(query).subscribe (
             res => {
                 if (!res.err) {
-                    this.getItemTable(this.itemPage);
-                    this.toastr.success('item edited', 'Done!');
-                    this.itemFormHide();
+                    console.log(res);
+                    this.toastr.success('Updated successfully!', 'User Info');
+                    this.getItemTable(this.page);
                 } else {
-                    this.toastr.error(res.msg, 'Attention');
+                    this.toastr.error('could not update customer', 'Attention');
                 }
-                console.log(res);
-            }
-        );
-    }
-
-    itemUpdateFormShow(i) {
-        this.itemI = i;
-        this.itemName = this.items[i].itemname.toString();
-        this.itemCode = this.items[i].itemcode.toString();
-        this.itemUnitPrice = this.items[i].price.toString();
-        this.itemDescription = '';
-        this.itemUpdateType = 'add';
-        this.itemQTY = '';
-        this.itemSalesmanName = '';
-        this.itemSalesmanPhone = '';
-        this.itemUpdateForm.show();
-    }
-
-    itemUpdateTypeChange() {
-        if (this.itemUpdateType == 'sub') {
-            this.itemSalesmanName = '';
-            this.itemSalesmanPhone = '';
-        }
-    }
-
-    itemUpdateFormHide() {
-        this.itemI = -1;
-        this.itemName = '';
-        this.itemCode = '';
-        this.itemQTY = '';
-        this.itemUnitPrice = '';
-        this.itemRack = '';
-        this.itemDescription = '';
-        this.itemUpdateUnitCost = '';
-        this.itemUpdateExpiryYear = '2100';
-        this.itemUpdateExpiryMonth = '13';
-        this.itemUpdateForm.hide();
-    }
-
-    itemUpdateFormSave() {
-        let data = {
-            itemcode: this.itemCode,
-            itemname: this.itemName,
-            qty: this.itemQTY,
-            price: this.itemUnitPrice,
-            cost: this.itemUpdateUnitCost,
-            salesmanname: this.itemSalesmanName,
-            salesmanphone: this.itemSalesmanPhone,
-            type: this.itemUpdateType,
-            rack: this.itemRack,
-            description: this.itemDescription
-        }
-        if (this.itemUpdateType == 'add' && this.itemUpdateExpiryYear != '2100') {
-            let dt = this.itemUpdateExpiryYear + '-' + this.itemUpdateExpiryMonth + '-01';
-            data['expiry'] = dt;
-        }
-        this.itemDataService.update(data).subscribe (
-            res => {
-                if (!res.err) {
-                    this.getItemTable(this.itemPage);
-                    this.toastr.success('item updated', 'Done!');
-                    this.itemUpdateFormHide();
-                } else {
-                    this.toastr.error('could not update item', 'Attention');
-                }
-                console.log(res);
+                this.updateFormHide();
             }
         );
     }
@@ -208,12 +133,12 @@ export class CustomerComponent implements OnInit {
     }
 
     deleteConfirmFormSave() {
-        this.itemDataService.delete({ itemcode: this.items[this.deleteI].itemcode }).subscribe(res => {
+        this.transactionDataService.customerDelete({ id: this.customers[this.deleteI].id }).subscribe(res => {
             if (!res.err) {
-                this.toastr.success('item deleted', 'Deleted!');
-                this.getItemTable(this.itemPage);
+                this.toastr.success('customer deleted', 'Deleted!');
+                this.getItemTable(this.page);
             } else {
-                this.toastr.error('item could not be deleted', 'Delete');
+                this.toastr.error(res.msg, 'Delete');
             }
             this.deleteConfirmFormHide();
         });
@@ -237,83 +162,39 @@ export class CustomerComponent implements OnInit {
         this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
     }
 
-
-    
-
-    selectedItemType: any = null;
-    selectedItemTypeID = null;
-    selectedItemTypeName;
-
-    itemTypesList: Array<any> = [ ];
-    itemTypeSearch(event) {
-        let query = { itemTypeSearch: event.term }
-        //this.itemTypesList = [{ id: 0, itemtypename: event.term }];
-        this.selectedItemTypeName = event.term;
-        this.itemDataService.getItemTypes(query).subscribe (res => {
-            this.itemTypesList = res;
-            let tadd = true;
-            for (let i = 0; i < res.length; i++) {
-                if (res[i].itemtypename.toLowerCase() == event.term.toLowerCase()) {
-                    tadd = false;
-                    break;
-                }
+    add(f: NgForm) {
+        if (f.valid) {
+            let query = {
+                name: f.value.name,
+                phone: f.value.phone,
+                email: f.value.email,
+                credit: '0.00',
+                creditlimit: f.value.creditlimit,
+                qty: 0,
+                amount: 0,
+                count: 0
             }
-            if (event.term != '' && tadd) this.itemTypesList.unshift({ id: 0, itemtypename: event.term });
-        });
-    }
-    searchFn(term: string, item: any) {
-        return true;
-    }
-    itemTypeChange(event) {
-        console.log(event);
-        let tList = this.itemTypesList;
-        this.itemTypesList = [];
-        if (event == undefined) {
-            this.itemTypeSearch({ term: '' });
-            this.selectedItemType = null;
-        } else {
-            for (let i = 0; i < tList.length; i++) {
-                if (tList[i].id != 0) {
-                    this.itemTypesList.push(tList[i]);
-                    break;
-                }
+            if (f.value.name == '' || f.value.phone == '') {
+                this.toastr.error('Enter user info', 'User Info');
+                return;
             }
-            this.selectedItemType = event;
-        }
-    }
-    addItem(f: NgForm) {
-        if (f.valid && this.selectedItemType != null) {
-            let data = f.value;
-            data['itemtypeid'] = this.selectedItemType.id;
-            data['itemtypename'] = this.selectedItemType.itemtypename;
-            this.itemDataService.addItem(f.value).subscribe (
+            this.transactionDataService.customerAdd(query).subscribe(
                 res => {
                     if (!res.err) {
-                        this.getItemTable(this.itemPage);
-                        this.toastr.success('item added', 'Done!');
+                        this.getItemTable(this.page);
+                        this.toastr.success('customer added', 'Done!');
                         f.resetForm();
-
-                        this.selectedItemType = null;
-                        this.selectedItemTypeID = null;
-                        this.itemTypesList = [ ];
                         this.ngSelectComponent.clearModel();
-                        this.itemTypeSearch({ term: null });
                     } else {
-                        this.toastr.error('could not add item', 'Attention');
+                        this.toastr.error('could not add customer', 'Attention');
                     }
-                    console.log(res);
                 }
             );
         } else {
             this.toastr.error('fill all field', 'Attention');
         }
-        //console.log(f.value, f.valid);
     }
-    cancelItemAdd() {
-        this.selectedItemType = null;
-        this.selectedItemTypeID = null;
-        this.itemTypesList = [ ];
+    cancelAdd() {
         this.ngSelectComponent.clearModel();
-        this.itemTypeSearch({ term: null });
     }
 }

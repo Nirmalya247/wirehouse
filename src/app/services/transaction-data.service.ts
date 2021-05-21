@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { Transaction, Purchase } from '../data/transaction';
+import { Customer } from '../data/customer';
 import { environment } from './../../environments/environment';
 @Injectable({
     providedIn: 'root'
@@ -72,6 +73,34 @@ export class TransactionDataService {
         query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
         query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'customer/update';
+        return this.http.post(url, query);
+    }
+    // delete customer
+    customerDelete(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'customer/delete';
+        return this.http.post(url, query);
+    }
+    // get customer info
+    customerInfo(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'customer/customerinfo';
+        return this.http.post(url, query);
+    }
+    // get customer
+    getCustomer(query):Observable<Array<Customer>> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'customer/getcustomer';
+        return this.http.post<Array<Customer>>(url, query);
+    }
+    // get customer count
+    getCustomerCount(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'customer/getcustomercount';
         return this.http.post(url, query);
     }
 

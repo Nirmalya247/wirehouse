@@ -327,9 +327,9 @@ export class TransactionsComponent implements OnInit {
         let query = { }
         let ch = false;
         if (this.customerID != null || this.customerID != '' || this.customerID != this.customerData.id) {
-            this.customerNew = true;
-        } else {
             this.customerNew = false;
+        } else {
+            this.customerNew = true;
         }
         if (this.customerID != null && this.customerID != '' && this.customerID.length == 8 && this.customerID != this.customerData.id) {
             console.log(this.customerID != this.customerData.id, this.customerID, this.customerData.id);
@@ -395,7 +395,6 @@ export class TransactionsComponent implements OnInit {
             name: this.customerName,
             phone: this.customerPhone,
             email: this.customerEmail,
-            credit: this.customerCredit,
             creditlimit: this.customerCreditLimit
         }
         console.log(query);
@@ -407,6 +406,16 @@ export class TransactionsComponent implements OnInit {
                 }
             }
         );
+    }
+    customerClear() {
+        this.customerID = '';
+        this.customerName = '';
+        this.customerPhone = '';
+        this.customerEmail = '';
+        this.customerCredit = '';
+        this.customerCreditLimit = '';
+        this.customerData = { };
+        this.customerNew = true;
     }
 
 

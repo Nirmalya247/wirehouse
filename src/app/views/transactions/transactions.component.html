@@ -175,6 +175,10 @@
                                 [disabled]="customerNew">Update Customer</button>
                         </div>
                         <div class="col-md-2">
+                            <button class="btn btn-primary btn-sm" type="button" (click)="customerClear()"
+                                [disabled]="customerNew">Clear Customer</button>
+                        </div>
+                        <div class="col-md-2">
                             <input class="form-check-input" type="checkbox" value="option1" id="creditAdd"
                                 [disabled]="customerNew" [(ngModel)]="addCredit"
                                 (ngModelChange)="calculateTotalAmmount();">
