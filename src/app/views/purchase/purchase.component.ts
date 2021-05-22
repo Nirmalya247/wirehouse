@@ -24,6 +24,7 @@ export class PurchaseComponent implements OnInit {
     racks = [];
 
     items: Array<ItemUpdate> = [];
+    billID: string;
     totalAmount: string;
     totalDiscount: string;
     taxable: string;
@@ -196,6 +197,7 @@ export class PurchaseComponent implements OnInit {
             return;
         }
         let data = {
+            billID: this.billID,
             totalItem: this.items.length,
             totalQTY: totalQTY,
             paymentMode: this.paymentMode,
@@ -232,12 +234,12 @@ export class PurchaseComponent implements OnInit {
 
     cancelPurchase() {
         this.items = [];
+        this.billID = '';
         this.totalAmount = '';
         this.totalDiscount = '';
         this.taxable = '';
         this.cumulativeAmount = '';
         this.paymentMode = 'cash';
-        this.totalAmount = '';
         this.totalTendered = '';
         this.changeDue = '';
         this.creditAmount = '';
@@ -262,9 +264,9 @@ export class PurchaseComponent implements OnInit {
         let query = { }
         let ch = false;
         if (this.salesmanID != null || this.salesmanID != '' || this.salesmanID != this.salesmanData.id) {
-            this.salesmanNew = true;
-        } else {
             this.salesmanNew = false;
+        } else {
+            this.salesmanNew = true;
         }
         if (this.salesmanID != null && this.salesmanID != '' && this.salesmanID.length == 8 && this.salesmanID != this.salesmanData.id) {
             console.log(this.salesmanID != this.salesmanData.id, this.salesmanID, this.salesmanData.id);
@@ -338,6 +340,16 @@ export class PurchaseComponent implements OnInit {
                 }
             }
         );
+    }
+    salesmanClear() {
+        this.salesmanID = '';
+        this.salesmanName = '';
+        this.salesmanPhone = '';
+        this.salesmanEmail = '';
+        this.salesmanVatno = '';
+        this.salesmanCredit = '';
+        this.salesmanData = { };
+        this.salesmanNew = true;
     }
 
 

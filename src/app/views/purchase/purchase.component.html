@@ -91,6 +91,12 @@
 
                     <div class="form-group row">
                         <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Bill ID</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Bill ID" [(ngModel)]="billID">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Total Amount</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalAmount" readonly>
                         </div>
@@ -175,6 +181,10 @@
                         <div class="col-md-2">
                             <button class="btn btn-primary btn-sm" type="button" (click)="salesmanUpdate()"
                                 [disabled]="salesmanNew">Update Salesmab</button>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary btn-sm" type="button" (click)="salesmanClear()"
+                                [disabled]="salesmanNew">Clear Salesman</button>
                         </div>
                         <div class="col-md-2">
                             <input class="form-check-input" type="checkbox" value="option1" id="creditAdd"
@@ -263,7 +273,7 @@
                         <tbody>
                             <tr *ngFor="let purchase of purchases; index as i;">
                                 <td>{{ i + 1 + (purchasePage - 1) * purchaseLimit }}</td>
-                                <td><a href="{{ serverPath + 'purchase-bill?purchaseId=' + purchase.id.toString() + '&paper=A4' }}" target="_blank">{{ purchase.id }}</a></td>
+                                <td>{{ purchase.billID }}</td>
                                 <td>{{ purchase.totalQTY }}</td>
                                 <td>{{ purchase.totalAmount }}</td>
                                 <td>{{ purchase.totalTendered }}</td>

@@ -6,8 +6,7 @@
                     <i class="fa fa-align-justify"></i> ACCOUNTING
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="getCSV()">Download CSV</button>
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="getPDF()">Download PDF</button>
+                        <a href="{{ serverPath + 'accounting/csv?type=' + dataType + '&orderBy=' + dataOrderBy + '&order=' + dataOrder + '&from=' + dataFrom + '&to=' + dataTo }}" target="_blank">Download CSV</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -80,7 +79,7 @@
                             <tr *ngFor="let data of datas; index as i;">
                                 <td>{{ i + 1 + (dataPage - 1) * dataLimit }}</td>
                                 <td><a href="{{ serverPath + 'transaction-bill?transactionId=' + data.id.toString() + '&paper=A4' }}"
-                                        target="_blank">{{ data.id }}</a></td>
+                                        target="_blank" *ngIf=" dataType == 'sales' ">{{ data.id }}</a><div *ngIf=" dataType != 'sales' ">{{ dataType == 'sales' ? data.id : data.billID }}</div></td>
                                 <td>{{ data.totalItem }}</td>
                                 <td>{{ data.totalAmount }}</td>
                                 <td>{{ data.totalTendered }}</td>

@@ -3,8 +3,9 @@ export class Transaction {
         public id: String,
         public totalItem: Number,
         public totalQTY: Number,
-        public totalTaxable: Number,
         public totalAmount: Number,
+        public totalTaxable: Number,
+        public totalCost: Number,
         public totalTendered: Number,
         public changeDue: Number,
         public creditAmount: Number,
@@ -25,6 +26,7 @@ export class Transaction {
 export class Purchase {
     constructor(
         public id: String,
+        public billID: String,
         public totalItem: Number,
         public totalQTY: Number,
         public totalAmount: Number,

@@ -166,7 +166,14 @@ export class AccountingComponent implements OnInit {
         console.log(this.dataLimit, this.dataOrderBy, this.dataOrder, this.dataSearchText);
     }
     getCSV() {
-
+        let query = {
+            transactionLimit: this.dataLimit,
+            transactionOrderBy: this.dataOrderBy,
+            transactionOrder: this.dataOrder,
+            transactionPage: this.dataPage,
+            from: this.dataFrom,
+            to: this.dataTo
+        }
     }
 
     getPDF() {
