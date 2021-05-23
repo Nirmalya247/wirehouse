@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
         this.getExpiryCount();
         this.getStockCount();
         this.getDemandCount();
+        this.getCreditCount();
         // generate random values for mainChart
     }
     
@@ -140,6 +141,7 @@ export class DashboardComponent implements OnInit {
             this.expiryPage = pageNo;
         } else this.expiryPage = 1;
         this.dashboardDataService.getExpiry({ page: this.expiryPage, limit: this.dataLimit, order: this.expiryOrder }).subscribe(res => {
+            console.log('###########', res)
             for (let i = 0; i < res.length; i++) {
                 res[i].expiry = new Date(res[i].expiry.toString());
                 res[i].createdAt = new Date(res[i].createdAt.toString());
@@ -180,6 +182,7 @@ export class DashboardComponent implements OnInit {
     getDemandCount() {
         this.dashboardDataService.getDemandCount({ }).subscribe(res => {
             this.demandPages = Array.from({length: Math.ceil(parseInt(res.toString()) / this.dataLimit)}, (_, i) => i + 1);
+            this.earningPages = Array.from({length: Math.ceil(parseInt(res.toString()) / this.dataLimit)}, (_, i) => i + 1);
             this.getDemand(null);
             this.getEarning(null);
             console.log(res);
@@ -213,5 +216,38 @@ export class DashboardComponent implements OnInit {
             this.earningData = res;
             console.log(res);
         })
+    }
+    // credit
+    creditOrder = 'asc';
+    creditData = [ ];
+    creditPages = [ 1 ];
+    creditPage = 1;
+    getCreditCount() {
+        this.dashboardDataService.getCreditCount({ }).subscribe(res => {
+            this.creditPages = Array.from({length: Math.ceil(parseInt(res.toString()) / this.dataLimit)}, (_, i) => i + 1);
+            this.getCredit(null);
+            console.log(res);
+        })
+    }
+    getCredit(pageNo) {
+        if (pageNo != null) {
+            if (pageNo == -1) pageNo = this.creditPage - 1;
+            if (pageNo == -2) pageNo = this.creditPage + 1;
+            if (pageNo < 1 || pageNo > this.creditPages.length) return;
+            this.creditPage = pageNo;
+        } else this.creditPage = 1;
+        this.dashboardDataService.getCredit({ page: this.creditPage, limit: this.dataLimit, order: this.creditOrder, orderby: 'qty' }).subscribe(res => {
+            this.creditData = res;
+            console.log(res);
+        });
+    }
+    sendEmail(i) {
+        this.dashboardDataService.sendCreditEmail({ customerid: this.creditData[i].id }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Email');
+            } else {
+                this.toastr.error(res.msg, 'Email');
+            }
+        });
     }
 }

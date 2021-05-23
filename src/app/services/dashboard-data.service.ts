@@ -63,4 +63,25 @@ export class DashboardDataService {
         let url = environment.PATH + 'saledata/getexpirycount';
         return this.http.post(url, data);
     }
+    // get credit
+    getCredit(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/getcredit';
+        return this.http.post(url, data);
+    }
+    // get credit count
+    getCreditCount(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/getcreditcount';
+        return this.http.post(url, data);
+    }
+    // send credit email
+    sendCreditEmail(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/sendcreditemail';
+        return this.http.post(url, data);
+    }
 }

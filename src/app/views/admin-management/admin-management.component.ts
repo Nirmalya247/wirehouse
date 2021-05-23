@@ -226,18 +226,22 @@ export class AdminManagementComponent implements OnInit {
     shopaddress: string = '';
     shopphoneno: string = '';
     shopotherphoneno: string = '';
+    shopemail: string = '';
+    shopemailpassword: string = '';
     vatno: string = '';
     licenseno: string = '';
     shopData: any = {};
 
     getShop() {
-        this.shopDataService.getShop({}).subscribe(res => {
+        this.shopDataService.getShop({ }).subscribe(res => {
             console.log(res);
             this.shopname = res.shopname;
             this.shopdetails = res.shopdetails;
             this.shopaddress = res.shopaddress;
             this.shopphoneno = res.shopphoneno;
             this.shopotherphoneno = res.shopotherphoneno;
+            this.shopemail = res.shopemail;
+            this.shopemailpassword = res.shopemailpassword;
             this.vatno = res.vatno;
             this.licenseno = res.licenseno;
             this.shopData = res;
@@ -252,6 +256,8 @@ export class AdminManagementComponent implements OnInit {
             shopaddress: this.shopaddress,
             shopphoneno: this.shopphoneno,
             shopotherphoneno: this.shopotherphoneno,
+            shopemail: this.shopemail,
+            shopemailpassword: this.shopemailpassword,
             vatno: this.vatno,
             licenseno: this.licenseno
         }).subscribe(res => {

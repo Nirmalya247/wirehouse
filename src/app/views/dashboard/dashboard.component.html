@@ -80,7 +80,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    medicine &amp; Sales
+                    MEDICINE &amp; SALES
                 </div>
                 <div class="card-body">
 
@@ -118,8 +118,8 @@
                                                 <td>{{ item.qtystock }}</td>
                                                 <td>{{ item.expiry.toLocaleString().split(',')[0] }}</td>
                                                 <td>{{ item.createdAt.toLocaleString().split(',')[0] }}</td>
-                                                <td>{{ item.salesmanname }}</td>
-                                                <td>{{ item.salesmanphone }}</td>
+                                                <td>{{ item.salesmans.name }}</td>
+                                                <td>{{ item.salesmans.phone }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -276,3 +276,55 @@
         </div>
         <!--/.row-->
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    CUSTOMER CREDIT LIMIT
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Customer Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Credit</th>
+                                <th>Credit Limit</th>
+                                <th>Total Spending</th>
+                                <th>Send Mail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let credit of creditData; index as i;">
+                                <td>{{ credit.id }}</td>
+                                <td>{{ credit.name }}</td>
+                                <td>{{ credit.phone }}</td>
+                                <td>{{ credit.email }}</td>
+                                <td>{{ credit.credit }}</td>
+                                <td>{{ credit.creditlimit }}</td>
+                                <td>{{ credit.amount }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="sendEmail(i)">
+                                        send request
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul class="pagination">
+                        <li class="page-item" (click)="getCredit(-1)"><button class="page-link">Prev</button></li>
+                        <li class="page-item active" *ngFor="let page of creditPages;"
+                            [ngClass]="{'active': page == creditPage}" (click)="getCredit(page)">
+                            <button class="page-link">{{ page }}</button>
+                        </li>
+                        <li class="page-item" (click)="getCredit(-2)"><button class="page-link">Next</button></li>
+                    </ul>
+                </div>
+            </div>
+            <!--/.col-->
+        </div>
+        <!--/.row-->
+    </div>
+</div>

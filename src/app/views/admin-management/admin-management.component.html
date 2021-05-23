@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Accounts Per Page</label>
-                            <select class="form-control" [(ngModel)]="userLimit" (ngModelChange)="getUserTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="userLimit" (ngModelChange)="getUserTable(1)">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -25,7 +25,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Sort By</label>
-                            <select class="form-control" [(ngModel)]="userOrderBy" (ngModelChange)="getUserTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="userOrderBy" (ngModelChange)="getUserTable(1)">
                                 <option value="id">User ID</option>
                                 <option value="name">Nmae</option>
                                 <option value="isadmin">Role</option>
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Order</label>
-                            <select class="form-control" [(ngModel)]="userOrder" (ngModelChange)="getUserTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="userOrder" (ngModelChange)="getUserTable(1)">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
@@ -44,7 +44,7 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
-                                <input type="text" class="form-control"
+                                <input type="text" class="form-control form-control-sm"
                                     placeholder="Search" [(ngModel)]="userSearchText" (ngModelChange)="getUserTable(1)">
                             </div>
                         </div>
@@ -115,39 +115,51 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Shop Name</label>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="shop name" [(ngModel)]="shopname">
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Shop Details</label>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="shop details" [(ngModel)]="shopdetails">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="col-form-label" for="prependedInput">Shop Address</label>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="shop address" [(ngModel)]="shopaddress">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">VAT No.</label>
-                            <input type="text" class="form-control"
-                                placeholder="VAT No." [(ngModel)]="vatno">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Phone No</label>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="phone no" [(ngModel)]="shopphoneno">
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Other Phone No</label>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="other phone no" [(ngModel)]="shopotherphoneno">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Email</label>
+                            <input type="text" class="form-control form-control-sm"
+                                placeholder="Email" [(ngModel)]="shopemail">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Email Password</label>
+                            <input type="text" class="form-control form-control-sm"
+                                placeholder="Email Password" [(ngModel)]="shopemailpassword">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="col-form-label" for="prependedInput">VAT No.</label>
+                            <input type="text" class="form-control form-control-sm"
+                                placeholder="VAT No." [(ngModel)]="vatno">
                         </div>
                         <div class="col-md-6">
                             <label class="col-form-label" for="prependedInput">License No</label>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="License No" [(ngModel)]="licenseno">
                         </div>
                     </div>
@@ -161,6 +173,17 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
 
 <div bsModal #userForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userFormLabel"
     aria-hidden="true">
@@ -180,7 +203,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                             </div>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="Name" [(ngModel)]="userDataName">
                         </div>
                     </div>
@@ -190,7 +213,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                             </div>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="e-mail" [(ngModel)]="userDataEmail">
                         </div>
                     </div>
@@ -202,7 +225,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-phone"></i></span>
                             </div>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="Phone No." [(ngModel)]="userDataPhoneno">
                         </div>
                     </div>
@@ -212,7 +235,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-phone"></i></span>
                             </div>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="Other Phone No." [(ngModel)]="userDataOtherPhoneno">
                         </div>
                     </div>
@@ -224,7 +247,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
                             </div>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="Pincode" [(ngModel)]="userDataPincode">
                         </div>
                     </div>
@@ -234,7 +257,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-gavel"></i></span>
                             </div>
-                            <select class="form-control" placeholder="Admin Rights" [(ngModel)]="userDataIsAdmin">
+                            <select class="form-control form-control-sm" placeholder="Admin Rights" [(ngModel)]="userDataIsAdmin">
                                 <option value="1">Transaction</option>
                                 <option value="2">Inventory Manager</option>
                                 <option value="3">Admin</option>
@@ -250,7 +273,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
                             </div>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control form-control-sm"
                                 placeholder="Address" [(ngModel)]="userDataAddress">
                         </div>
                     </div>
@@ -262,7 +285,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
                             </div>
-                            <input type="password" class="form-control"
+                            <input type="password" class="form-control form-control-sm"
                                 placeholder="Password" [(ngModel)]="userDataPassword">
                         </div>
                     </div>
@@ -272,7 +295,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
                             </div>
-                            <input type="password" class="form-control"
+                            <input type="password" class="form-control form-control-sm"
                                 placeholder="Password" [(ngModel)]="userDataPasswordRe">
                         </div>
                     </div>
