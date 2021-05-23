@@ -1,81 +1,123 @@
 <div class="animated fadeIn">
+
     <div class="row">
-        <div class="col-sm-6 col-lg-4">
+        <div class="col-sm-6 col-lg-3">
             <div class="card text-white bg-info">
                 <div class="card-body pb-0">
-                    <button type="button" class="btn btn-transparent p-0 float-right">
-                        <i class="icon-basket-loaded"></i>
-                    </button>
-                    <h1>
-                        <div>Total Item Sold Today</div>
-                    </h1>
                     <div class="text-value">{{ totalItemSold }}</div>
+                    <div>{{ timString }} item sold</div>
                 </div>
-                <div class="chart-wrapper mt-3 mx-3" style="height:50px;">
+                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas
+                        baseChart class="chart"
+                        [datasets]="itemSoldChartData"
+                        [labels]="itemSoldChartLabels"
+                        [options]="itemSoldChartOptions"
+                        [colors]="itemSoldChartColours"
+                        [legend]="itemSoldChartLegend"
+                        [chartType]="itemSoldChartType">
+                    </canvas>
                 </div>
             </div>
         </div>
         <!--/.col-->
-        <div class="col-sm-6 col-lg-4">
+        <div class="col-sm-6 col-lg-3">
             <div class="card text-white bg-primary">
                 <div class="card-body pb-0">
-                    <button type="button" class="btn btn-transparent p-0 float-right">
-                        <i class="icon-arrow-down"></i>
-                    </button>
-                    <h1>
-                        <div>Total Earning Today</div>
-                    </h1>
                     <div class="text-value">{{ totalEarning }}</div>
+                    <div>{{ timString }} earning</div>
                 </div>
-                <div class="chart-wrapper mt-3 mx-3" style="height:50px;">
+                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas
+                        baseChart class="chart"
+                        [datasets]="earningChartData"
+                        [labels]="earningChartLabels"
+                        [options]="earningChartOptions"
+                        [colors]="earningChartColours"
+                        [legend]="earningChartLegend"
+                        [chartType]="earningChartType">
+                    </canvas>
                 </div>
             </div>
         </div>
         <!--/.col-->
-        <div class="col-sm-6 col-lg-4">
+        <div class="col-sm-6 col-lg-3">
             <div class="card text-white bg-warning">
                 <div class="card-body pb-0">
-                    <button type="button" class="btn btn-transparent p-0 float-right">
-                        <i class="icon-arrow-up"></i>
-                    </button>
-                    <h1>
-                        <div>Total Spending Today</div>
-                    </h1>
-                    <div class="text-value">{{ totalSpending }}</div>
+                    <div class="text-value">{{ totalItemBought }}</div>
+                    <div>{{ timString }} item bought</div>
                 </div>
-                <div class="chart-wrapper mt-3 mx-3" style="height:50px;">
+                <div class="chart-wrapper mt-3" style="height:70px;">
+                    <canvas
+                        baseChart class="chart"
+                        [datasets]="itemBoughtChartData"
+                        [labels]="itemBoughtChartLabels"
+                        [options]="itemBoughtChartOptions"
+                        [colors]="itemBoughtChartColours"
+                        [legend]="itemBoughtChartLegend"
+                        [chartType]="itemBoughtChartType">
+                    </canvas>
                 </div>
             </div>
         </div>
         <!--/.col-->
-
-    </div>
-    <!--/.row-->
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    Bar Chart
-                    <div class="card-header-actions">
-                        <select class="form-select form-select-sm" [(ngModel)]="graphBy" (ngModelChange)="getGraphData()">
-                            <option value="day">Graph by Day</option>
-                            <option value="month">Graph by Month</option>
-                            <option value="year">Graph by Year</option>
-                        </select>
-                    </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card text-white bg-danger">
+                <div class="card-body pb-0">
+                    <div class="text-value">{{ totalSpending }}</div>
+                    <div>{{ timString }} spending</div>
                 </div>
-                <div class="card-body">
-                    <div class="chart-wrapper">
-                        <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
-                            [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
-                            [colors]="barChartColours" (chartHover)="chartHovered($event)"
-                            (chartClick)="chartClicked($event)"></canvas>
-                    </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+                    <canvas
+                        baseChart class="chart"
+                        [datasets]="spendingChartData"
+                        [labels]="spendingChartLabels"
+                        [options]="spendingChartOptions"
+                        [colors]="spendingChartColours"
+                        [legend]="spendingChartLegend"
+                        [chartType]="spendingChartType">
+                    </canvas>
                 </div>
             </div>
         </div>
+        <!--/.col-->
     </div>
+    <!--/.row-->
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="card-title mb-0">Traffic</h4>
+                    <div class="small text-muted">November 2017</div>
+                </div>
+                <!--/.col-->
+                <div class="col-sm-7 d-none d-md-block">
+                    <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="day"
+                            id="option1" (ngModelChange)="getGraphData()">Day</label>
+                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="month"
+                            id="option2" (ngModelChange)="getGraphData()">Month</label>
+                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="year"
+                            id="option3" (ngModelChange)="getGraphData()">Year</label>
+                    </div>
+                </div>
+                <!--/.col-->
+            </div>
+            <!--/.row-->
+            <div class="chart-wrapper" style="height:300px;margin-top:40px;">
+                <canvas
+                    baseChart class="chart"
+                    [datasets]="mainChartData"
+                    [labels]="mainChartLabels"
+                    [options]="mainChartOptions"
+                    [colors]="mainChartColours"
+                    [legend]="mainChartLegend"
+                    [chartType]="mainChartType">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -92,7 +134,8 @@
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> EXPIRY
                                     <div class="card-header-actions">
-                                        <select class="form-select form-select-sm" [(ngModel)]="expiryOrder" (ngModelChange)="getExpiry(null)">
+                                        <select class="form-select form-select-sm" [(ngModel)]="expiryOrder"
+                                            (ngModelChange)="getExpiry(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
@@ -124,12 +167,14 @@
                                         </tbody>
                                     </table>
                                     <ul class="pagination">
-                                        <li class="page-item" (click)="getExpiry(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item" (click)="getExpiry(-1)"><button
+                                                class="page-link">Prev</button></li>
                                         <li class="page-item active" *ngFor="let page of expiryPages;"
                                             [ngClass]="{'active': page == expiryPage}" (click)="getExpiry(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
-                                        <li class="page-item" (click)="getExpiry(-2)"><button class="page-link">Next</button></li>
+                                        <li class="page-item" (click)="getExpiry(-2)"><button
+                                                class="page-link">Next</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -141,7 +186,8 @@
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> LOW STOCK
                                     <div class="card-header-actions">
-                                        <select class="form-select form-select-sm" [(ngModel)]="stockOrder" (ngModelChange)="getStock(null)">
+                                        <select class="form-select form-select-sm" [(ngModel)]="stockOrder"
+                                            (ngModelChange)="getStock(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
@@ -173,12 +219,14 @@
                                         </tbody>
                                     </table>
                                     <ul class="pagination">
-                                        <li class="page-item" (click)="getStock(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item" (click)="getStock(-1)"><button
+                                                class="page-link">Prev</button></li>
                                         <li class="page-item active" *ngFor="let page of stockPages;"
                                             [ngClass]="{'active': page == stockPage}" (click)="getStock(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
-                                        <li class="page-item" (click)="getStock(-2)"><button class="page-link">Next</button></li>
+                                        <li class="page-item" (click)="getStock(-2)"><button
+                                                class="page-link">Next</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -190,7 +238,8 @@
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> ITEM IN DEMAND
                                     <div class="card-header-actions">
-                                        <select class="form-select form-select-sm" [(ngModel)]="demandOrder" (ngModelChange)="getDemand(null)">
+                                        <select class="form-select form-select-sm" [(ngModel)]="demandOrder"
+                                            (ngModelChange)="getDemand(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
@@ -216,12 +265,14 @@
                                         </tbody>
                                     </table>
                                     <ul class="pagination">
-                                        <li class="page-item" (click)="getDemand(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item" (click)="getDemand(-1)"><button
+                                                class="page-link">Prev</button></li>
                                         <li class="page-item active" *ngFor="let page of demandPages;"
                                             [ngClass]="{'active': page == demandPage}" (click)="getDemand(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
-                                        <li class="page-item" (click)="getDemand(-2)"><button class="page-link">Next</button></li>
+                                        <li class="page-item" (click)="getDemand(-2)"><button
+                                                class="page-link">Next</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -233,7 +284,8 @@
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> ITEM BY EARNING
                                     <div class="card-header-actions">
-                                        <select class="form-select form-select-sm" [(ngModel)]="earningOrder" (ngModelChange)="getEarning(null)">
+                                        <select class="form-select form-select-sm" [(ngModel)]="earningOrder"
+                                            (ngModelChange)="getEarning(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
@@ -259,12 +311,14 @@
                                         </tbody>
                                     </table>
                                     <ul class="pagination">
-                                        <li class="page-item" (click)="getEarning(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item" (click)="getEarning(-1)"><button
+                                                class="page-link">Prev</button></li>
                                         <li class="page-item active" *ngFor="let page of earningPages;"
                                             [ngClass]="{'active': page == earningPage}" (click)="getEarning(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
-                                        <li class="page-item" (click)="getEarning(-2)"><button class="page-link">Next</button></li>
+                                        <li class="page-item" (click)="getEarning(-2)"><button
+                                                class="page-link">Next</button></li>
                                     </ul>
                                 </div>
                             </div>
