@@ -52,14 +52,19 @@ export const routes: Routes = [
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
-        path: 'transactions',
+        path: 'sales',
         canActivate: [AuthGuardService],
-        loadChildren: () => import('./views/transactions/transactions.module').then(m => m.TransactionsModule)
+        loadChildren: () => import('./views/sales/sales.module').then(m => m.SalesModule)
       },
       {
         path: 'inventory',
         canActivate: [AuthGuardService],
         loadChildren: () => import('./views/inventory/inventory.module').then(m => m.InventoryModule)
+      },
+      {
+        path: 'return-item',
+        canActivate: [AuthGuardService],
+        loadChildren: () => import('./views/return-item/return-item.module').then(m => m.ReturnItemModule)
       },
       {
         path: 'accounting',

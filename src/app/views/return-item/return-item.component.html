@@ -19,31 +19,27 @@
                             -->
                     <div class="form-group row" *ngFor="let item of items; index as i;">
                         <div class="col-md-2">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Batch ID</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Item" value="{{ item.batchno }}" readonly>
+                        </div>
+                        <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Item</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Item" value="{{ item.itemname }}"
-                                readonly>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Rack</label>
-                            <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="item.rack">
-                                <option *ngFor="let rack of racks" value="{{ rack.id }}">{{ rack.id + ', ' + rack.label }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Mfg</label>
-                            <input class="form-control form-control-sm" type="date" placeholder="yyyy-mm" [(ngModel)]="item.mfg">
+                            <input type="text" class="form-control form-control-sm" placeholder="Item" value="{{ item.itemname }}" readonly>
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Exp</label>
-                            <input class="form-control form-control-sm" type="date" placeholder="yyyy-mm" [(ngModel)]="item.expiry">
-                        </div>
-                        <div class="col-md-1">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Available</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Available" value="{{ item.qtystock }}" readonly>
+                            <input class="form-control form-control-sm" type="date" placeholder="yyyy-mm" value="{{ item.mfg }}" readonly>
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="item.price" (ngModelChange)="changeQTY(i)">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Exp</label>
+                            <input class="form-control form-control-sm" type="date" placeholder="yyyy-mm" value="{{ item.expiry }}" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Reason</label>
+                            <ng-select #FindItem [items]="reasons" bindLabel="label" autofocus
+                                bindValue="label" [(ngModel)]="item.reason" (search)="reasonSearch($event, i)"
+                                (change)="reasonChange($event)" placeholder="search item">
+                            </ng-select>
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">&nbsp;</label>
@@ -52,28 +48,28 @@
                                     class="fa fa-close"></i></button>
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">VAT (%)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="VAT" [(ngModel)]="item.vat" (ngModelChange)="changeQTY(i);">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Available</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Available" value="{{ item.qtystock }}" readonly>
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (%)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Discount" [(ngModel)]="item.discount" (ngModelChange)="changeQTY(i);">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">QTY</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="QTY" [(ngModel)]="item.qty" (ngModelChange)="changeQTY(i)">
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (amount)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Discount amount" [(ngModel)]="item.discountamount" (ngModelChange)="changeQTY(i);">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="item.price" (ngModelChange)="changeQTY(i)">
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Cost</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Cost" [(ngModel)]="item.cost" (ngModelChange)="changeQTY(i);">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Discount (%)</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Discount (%)" [(ngModel)]="item.discount" (ngModelChange)="changeQTY(i)">
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="item.qty" (ngModelChange)="changeQTY(i);">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Discount Amount</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Discount Amount" [(ngModel)]="item.discountamount" (ngModelChange)="changeQTY(i)">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Total Cost</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Total Cost" value="{{ item.totalcost }}" readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="Available" value="{{ item.totalcost }}" readonly>
                         </div>
                     </div>
 
@@ -83,9 +79,9 @@
                                     class="fa fa-plus"></i>&nbsp;Add
                                 item</button>
                         </div>
-                        <div class="col-md-3">
-                            <ng-select #FindItem [searchFn]="searchFn" [items]="itemsList" bindLabel="itemname" autofocus
-                                bindValue="itemcode" [(ngModel)]="selectedItemCode" (search)="itemSearch($event)"
+                        <div class="col-md-5">
+                            <ng-select #FindItem [searchFn]="searchFn" [items]="itemsList" bindLabel="itemlabel" autofocus
+                                bindValue="id" [(ngModel)]="selectedItemCode" (search)="itemSearch($event)"
                                 (change)="itemChange($event)" placeholder="search item">
                             </ng-select>
                         </div>
@@ -95,12 +91,12 @@
 
                     <div class="form-group row">
                         <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Bill ID</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Bill ID" [(ngModel)]="billID">
+                            <label class="col-form-label" for="prependedInput">Vendor ID</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="" value="{{ items.length > 0 ? items[0].vendorid : '' }}" readonly>
                         </div>
                         <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Due Date</label>
-                            <input type="date" class="form-control form-control-sm" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate">
+                            <label class="col-form-label" for="prependedInput">Vendor Name</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="" value="{{ items.length > 0 ? vendorFName + ' ' + vendorLName : '' }}" readonly>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -147,70 +143,6 @@
                             <label class="col-form-label" for="prependedInput">Due Amount</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="dueAmount"
                                 readonly>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Vendor ID</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ID" [(ngModel)]="vendorID"
-                                (ngModelChange)="vendorGet();">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">First Name</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="First Name" [(ngModel)]="vendorFName">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Last Name</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Last Name" [(ngModel)]="vendorLName">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Vendor Company</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Name" [(ngModel)]="vendorCompany">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Vendor Phone</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Phone Number"
-                                [(ngModel)]="vendorPhone" (ngModelChange)="vendorGet();">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Vendor Email</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="E-mail Address"
-                                [(ngModel)]="vendorEmail" (ngModelChange)="vendorGet();">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Vat No/Pan No</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Vat No"
-                                [(ngModel)]="vendorVatno" (ngModelChange)="vendorGet();">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Due</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="vendorDue"
-                                readonly>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-md-2">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="vendorAdd()"
-                                [disabled]="!vendorNew">Add Vendor</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="vendorUpdate()"
-                                [disabled]="vendorNew">Update Salesmab</button>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="vendorClear()"
-                                [disabled]="vendorNew">Clear Vendor</button>
-                        </div>
-                        <div class="col-md-2">
-                            <input class="form-check-input" type="checkbox" value="option1" id="dueAdd"
-                                [disabled]="vendorNew" [(ngModel)]="addDue"
-                                (ngModelChange)="calculateTotalAmmount();">
-                            <label class="form-check-label" for="dueAdd">
-                                Add Due to Amount
-                            </label>
                         </div>
                     </div>
                     <div class="form-actions">

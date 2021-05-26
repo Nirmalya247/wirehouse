@@ -6,24 +6,25 @@ import { ToastrService } from 'ngx-toastr';
 
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
-import { ItemDataService } from '../../services/item-data.service';
+import { ReturnDataService } from '../../services/return-data.service';
 import { SaleDataService } from '../../services/sale-data.service';
 import { environment } from '../../../environments/environment';
-import { Item, ItemSale, ItemUpdate } from '../../data/item';
-import { Sale, Purchase } from '../../data/transaction';
+import { ReturnCreate, ReturnItemCreate } from '../../data/return';
 
 @Component({
-    templateUrl: 'purchase.component.html'
+    templateUrl: 'return-item.component.html',
+    styleUrls: ['return-item.css']
 })
 
-export class PurchaseComponent implements OnInit {
+export class ReturnItemComponent implements OnInit {
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
 
     serverPath = environment.PATH;
 
-    racks = [];
+    items: Array<ReturnItemCreate> = [];
 
-    items: Array<ItemUpdate> = [];
+
+
     billID: string;
     dueDate: string;
     totalAmount: string;
@@ -44,68 +45,75 @@ export class PurchaseComponent implements OnInit {
     vendorEmail: string = '';
     vendorVatno: string = '';
     vendorDue: string;
-    vendorData: any = { };
-    vendorNew: boolean = true;
+
+    reasons = [
+        { label: 'Expired' }, { label: 'Not Selling' }
+    ];
 
 
     constructor(
         public authGuardService: AuthGuardService,
         public authDataService: AuthDataService,
         public router: Router,
-        private itemDataService: ItemDataService,
+        private returnDataService: ReturnDataService,
         private saleDataService: SaleDataService,
         private toastr: ToastrService
     ) { }
     ngOnInit(): void {
         this.itemSearch({ term: null });
         this.getPurchaseTable(null);
-        this.getRacks();
         // generate random values for mainChart
     }
-    getRacks() {
-        this.itemDataService.getRacks({ }).subscribe(res => {
-            this.racks = res;
-        })
+    reasonSearch(event, i) {
+        this.items[i].reason = event.term;
+    }
+    reasonChange(event) {
+
     }
     addItem() {
-        if (this.selectedItem != null || this.selectedItem != undefined) {
-            this.saleDataService.getLastSaleItem({ itemcode: this.selectedItem.itemcode }).subscribe(res => {
-                console.log('@@@@@@@@@@@', res);
-                let newItem = <ItemUpdate> {
-                    id: null,
-                    purchaseId: null,
-                    itemcode: this.selectedItem.itemcode,
-                    itemname: this.selectedItem.itemname,
-                    qty: 1,
-                    qtystock: this.selectedItem.qty,
-                    price: (res.err ? '' : res.price),
-                    discount: (res.err ? '' : res.discount),
-                    discountamount: 0,
-                    vat: (res.err ? '' : res.vat),
-                    cost: (res.err ? '' : res.cost),
-                    totalcost: (res.err ? '' : res.cost),
-                    mfg: '',
-                    expiry: '',
-                    rack: (res.err ? '' : res.rack),
-                    vendorid: '',
-                    description: ''
-                };
-                this.items.push(newItem);
-                this.changeQTY(this.items.length - 1);
-            });
+        if ((this.selectedItem != null || this.selectedItem != undefined) && ! this.items.some(item => item.batchno == this.selectedItem.id)) {
+            let newItem = <ReturnItemCreate> {
+                id: null,
+                returnid: null,
+                itemcode: this.selectedItem.itemcode,
+                itemname: this.selectedItem.itemname,
+                batchno: this.selectedItem.id,
+                qtystock: this.selectedItem.qtystock,
+                qty: 1,
+                price: this.selectedItem.cost,
+                discount: this.selectedItem.discount,
+                discountamount: 0,
+                totalcost: 0, 
+                purchasedate: this.selectedItem.createdAt,
+                mfg: this.selectedItem.mfg,
+                expiry: this.selectedItem.expiry,
+                vendorid: this.selectedItem.vendorid,
+                reason: ''
+            };
+            this.items.push(newItem);
+            if (this.items.length == 1) {
+                this.saleDataService.vendorGet({ id: this.selectedItem.vendorid }).subscribe (
+                    res => {
+                        if (res.found) {
+                            this.vendorID = res.id;
+                            this.vendorFName = res.fname;
+                            this.vendorLName = res.lname;
+                            this.vendorCompany = res.company;
+                            this.vendorPhone = res.phone;
+                            this.vendorEmail = res.email;
+                            this.vendorVatno = res.vatno;
+                            this.vendorDue = res.due;
+                        }
+                    }
+                );
+            }
+            this.itemSearch(this.selectedTerm);
+            this.changeQTY(this.items.length - 1);
         }
-    }
-    removeItem(i) {
-        if (i < this.items.length) {
-            this.items.splice(i, 1);
-        }
-        this.calculateTotalAmmount();
     }
     changeQTY(i) {
-        let vat = Number(this.items[i].vat);
         let discount = Number(this.items[i].discount);
         let discountamount = Number(this.items[i].discountamount);
-        if (isNaN(vat)) vat = 0;
         if (isNaN(discount)) discount = 0;
         if (isNaN(discountamount)) discountamount = 0;
 
@@ -119,7 +127,7 @@ export class PurchaseComponent implements OnInit {
             discountamount = total - discount;
             this.items[i].discountamount = discountamount;
         }
-        total = (total - discount - discountamount) * (1 + vat / 100);
+        total = (total - discount - discountamount);
         this.items[i].totalcost = total;
         if (isNaN(Number(this.items[i].totalcost))) this.items[i].totalcost = 0;
         this.items[i].totalcost = Number(this.items[i].totalcost.toFixed(2));
@@ -169,6 +177,25 @@ export class PurchaseComponent implements OnInit {
                 this.changeDue = '0.00';
             }
         }
+    }
+    confirmPurchase() {
+        console.log(this.items);
+    }
+    cancelPurchase() {
+
+    }
+    /*
+    addItem() {
+    }
+    */
+    removeItem(i) {
+        if (i < this.items.length) {
+            this.items.splice(i, 1);
+        }
+        // this.calculateTotalAmmount();
+    }
+    /*
+    changeTendered() {
     }
 
     confirmPurchase() {
@@ -269,98 +296,7 @@ export class PurchaseComponent implements OnInit {
         this.ngSelectComponent.clearModel();
         this.itemSearch({ term: null });
     }
-
-    vendorGet() {
-        let query = { }
-        let ch = false;
-        if (this.vendorID != null && this.vendorID != '' && this.vendorID.length == 8 && this.vendorID != this.vendorData.id) {
-            query['id'] = this.vendorID; ch = true;
-        } else if (this.vendorPhone != null && this.vendorPhone != '' && !isNaN(Number(this.vendorPhone)) && this.vendorPhone.length >= 10 && this.vendorPhone.length <= 12 && this.vendorPhone != this.vendorData.phone) {
-            query['phone'] = Number(this.vendorPhone); ch = true;
-        }else if (this.vendorEmail != null && this.vendorEmail != '' && this.vendorEmail != this.vendorData.email) {
-            console.log(this.vendorEmail != this.vendorData.email, this.vendorEmail, this.vendorData.email);
-            query['email'] = this.vendorEmail; ch = true;
-        }
-        if (ch) {
-            this.saleDataService.vendorGet(query).subscribe (
-                res => {
-                    if (res.found) {
-                        this.vendorID = res.id;
-                        this.vendorFName = res.fname;
-                        this.vendorLName = res.lname;
-                        this.vendorCompany = res.company;
-                        this.vendorPhone = res.phone;
-                        this.vendorEmail = res.email;
-                        this.vendorVatno = res.vatno;
-                        this.vendorDue = res.due;
-                        this.vendorNew = false;
-                        this.vendorData = res;
-                    }
-                    //this.itemsList = res;
-                }
-            );
-        }
-    }
-    vendorAdd() {
-        let query = {
-            fname: this.vendorFName,
-            lname: this.vendorLName,
-            company: this.vendorCompany,
-            phone: this.vendorPhone,
-            email: this.vendorEmail,
-            vatno: this.vendorVatno,
-            due: '0.00'
-        }
-        if (query.fname == '' || query.phone == '') {
-            this.toastr.error('Enter user info', 'User Info');
-            return;
-        }
-        console.log(query);
-        this.saleDataService.vendorAdd(query).subscribe (
-            res => {
-                console.log(res);
-                if (!res.err) {
-                    this.vendorID = res.id;
-                    this.toastr.success('Saved successfully!', 'User Info');
-                    this.vendorNew = false;
-                    this.vendorData = res;
-                }
-            }
-        );
-    }
-    vendorUpdate() {
-        let query = {
-            id: this.vendorID,
-            fname: this.vendorFName,
-            lname: this.vendorLName,
-            company: this.vendorCompany,
-            phone: this.vendorPhone,
-            email: this.vendorEmail,
-            vatno: this.vendorVatno,
-            due: this.vendorDue
-        }
-        console.log(query);
-        this.saleDataService.vendorUpdate(query).subscribe (
-            res => {
-                if (!res.err) {
-                    console.log(res);
-                    this.toastr.success('Updated successfully!', 'User Info');
-                }
-            }
-        );
-    }
-    vendorClear() {
-        this.vendorID = '';
-        this.vendorFName = '';
-        this.vendorLName = '';
-        this.vendorCompany = '';
-        this.vendorPhone = '';
-        this.vendorEmail = '';
-        this.vendorVatno = '';
-        this.vendorDue = '';
-        this.vendorData = { };
-        this.vendorNew = true;
-    }
+    */
 
 
 
@@ -382,20 +318,32 @@ export class PurchaseComponent implements OnInit {
         this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
     }
 
-    selectedItem: Item;
+    selectedItem: any;
     selectedItemCode;
+    selectedTerm;
 
-    itemsList: Array<Item>;
+    itemsList: Array<any>;
     itemSearch(event) {
+        this.selectedTerm = event;
         let query = {
-            itemLimit: 20,
-            itemOrderBy: 'itemname',
-            itemOrder: 'asc',
-            itemSearch: event.term,
-            itemPage: 1
+            limit: 20,
+            orderBy: 'itemname',
+            order: 'asc',
+            searchText: event.term,
+            page: 1
         }
-        this.itemDataService.getItems(query).subscribe (
+        if (this.items.length > 0) query['vendorid'] = this.items[0].vendorid;
+        this.returnDataService.getBatch(query).subscribe (
             res => {
+                console.log(res);
+                for (var i = 0; i < res.length; i++) {
+                    res[i]['itemlabel'] = `(${res[i].id}), (${res[i].purchaseId}) ${res[i].itemname}`;
+                    if (this.items.some(item => item.batchno == res[i].id)) {
+                        res.splice(i, 1);
+                        i--;
+                    }
+                }
+                console.log(res);
                 this.itemsList = res;
             }
         );
@@ -405,16 +353,21 @@ export class PurchaseComponent implements OnInit {
     }
     itemChange(event) {
         this.selectedItem = event;
+        console.log(this.selectedItem);
     }
 
     //***********
-    purchases: Array<Purchase>;
+    purchases: Array<ReturnCreate>;
     pages: Array<number>;
     purchasePage = 1;
     purchaseLimit = 10;
     purchaseOrderBy = 'createdAt';
     purchaseOrder = 'desc';
     purchaseSearchText = '';
+    getPurchaseTable(pageNo) {
+
+    }
+    /*
     getPurchaseTable(pageNo) {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.purchasePage - 1;
@@ -447,4 +400,5 @@ export class PurchaseComponent implements OnInit {
         );
         console.log(this.purchaseLimit, this.purchaseOrderBy, this.purchaseOrder, this.purchaseSearchText);
     }
+    */
 }

@@ -7,10 +7,10 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ItemDataService } from '../../services/item-data.service';
-import { TransactionDataService } from '../../services/transaction-data.service';
+import { SaleDataService } from '../../services/sale-data.service';
 import { environment } from '../../../environments/environment';
-import { Item, ItemTransaction } from '../../data/item';
-import { Transaction } from '../../data/transaction';
+import { Item, ItemSale } from '../../data/item';
+import { Sale } from '../../data/transaction';
 
 @Component({
     templateUrl: 'accounting.component.html'
@@ -26,7 +26,7 @@ export class AccountingComponent implements OnInit {
         public authDataService: AuthDataService,
         public router: Router,
         private itemDataService: ItemDataService,
-        private transactionDataService: TransactionDataService,
+        private saleDataService: SaleDataService,
         private toastr: ToastrService
     ) { }
     ngOnInit(): void {
@@ -105,10 +105,10 @@ export class AccountingComponent implements OnInit {
             this.dataTo = yyyy + '-' + tmm + '-01';
         }
         let query = {
-            transactionLimit: this.dataLimit,
-            transactionOrderBy: this.dataOrderBy,
-            transactionOrder: this.dataOrder,
-            transactionPage: this.dataPage,
+            saleLimit: this.dataLimit,
+            saleOrderBy: this.dataOrderBy,
+            saleOrder: this.dataOrder,
+            salePage: this.dataPage,
             from: this.dataFrom,
             to: this.dataTo
         }
@@ -121,16 +121,16 @@ export class AccountingComponent implements OnInit {
                 from: this.dataFrom,
                 to: this.dataTo
             }
-            this.transactionDataService.getPurchasesCount(query).subscribe (
+            this.saleDataService.getPurchasesCount(query).subscribe (
                 resCount => {
                     console.log(resCount);
                     this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.dataLimit)}, (_, i) => i + 1);
-                    this.transactionDataService.getPurchases(query).subscribe (
+                    this.saleDataService.getPurchases(query).subscribe (
                         res => {
                             console.log(res);
                             for (let i = 0; i < res.length; i++) {
                                 res[i].createdAt = new Date(res[i].createdAt.toString());
-                                res[i]['personName'] = res[i].salesmanName;
+                                res[i]['personName'] = res[i].vendorFName.toString() + ' ' + res[i].vendorLName.toString();
                             }
                             this.datas = res;
                         }
@@ -139,18 +139,18 @@ export class AccountingComponent implements OnInit {
             );
         } else {
             let query = {
-                transactionLimit: this.dataLimit,
-                transactionOrderBy: this.dataOrderBy,
-                transactionOrder: this.dataOrder,
-                transactionPage: this.dataPage,
+                saleLimit: this.dataLimit,
+                saleOrderBy: this.dataOrderBy,
+                saleOrder: this.dataOrder,
+                salePage: this.dataPage,
                 from: this.dataFrom,
                 to: this.dataTo
             }
-            this.transactionDataService.getTransactionsCount(query).subscribe (
+            this.saleDataService.getSalesCount(query).subscribe (
                 resCount => {
                     console.log(resCount);
                     this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.dataLimit)}, (_, i) => i + 1);
-                    this.transactionDataService.getTransactions(query).subscribe (
+                    this.saleDataService.getSales(query).subscribe (
                         res => {
                             console.log(res);
                             for (let i = 0; i < res.length; i++) {
@@ -167,10 +167,10 @@ export class AccountingComponent implements OnInit {
     }
     getCSV() {
         let query = {
-            transactionLimit: this.dataLimit,
-            transactionOrderBy: this.dataOrderBy,
-            transactionOrder: this.dataOrder,
-            transactionPage: this.dataPage,
+            saleLimit: this.dataLimit,
+            saleOrderBy: this.dataOrderBy,
+            saleOrder: this.dataOrder,
+            salePage: this.dataPage,
             from: this.dataFrom,
             to: this.dataTo
         }

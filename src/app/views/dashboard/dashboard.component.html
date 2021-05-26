@@ -117,7 +117,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -150,8 +150,8 @@
                                                 <th>QTY</th>
                                                 <th>Expiry Date</th>
                                                 <th>Buying Date</th>
-                                                <th>Salesman Name</th>
-                                                <th>Salesman Phone</th>
+                                                <th>Vendor Name</th>
+                                                <th>Vendor Phone</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -161,8 +161,8 @@
                                                 <td>{{ item.qtystock }}</td>
                                                 <td>{{ item.expiry.toLocaleString().split(',')[0] }}</td>
                                                 <td>{{ item.createdAt.toLocaleString().split(',')[0] }}</td>
-                                                <td>{{ item.salesmans.name }}</td>
-                                                <td>{{ item.salesmans.phone }}</td>
+                                                <td>{{ item.vendors.name }}</td>
+                                                <td>{{ item.vendors.phone }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

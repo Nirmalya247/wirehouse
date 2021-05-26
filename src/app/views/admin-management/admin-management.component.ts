@@ -119,7 +119,7 @@ export class AdminManagementComponent implements OnInit {
         if (value == 10) return 'super admin';
         if (value == 3) return 'admin';
         if (value == 2) return 'inventory manager';
-        if (value == 1) return 'transaction';
+        if (value == 1) return 'sales';
     }
 
     //*********** userData

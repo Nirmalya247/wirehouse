@@ -7,14 +7,19 @@ export const navItems: INavData[] = [
     icon: 'icon-speedometer'
   },
   {
-    name: 'Transactions',
-    url: '/transactions',
+    name: 'Sales',
+    url: '/sales',
     icon: 'icon-wallet'
   },
   {
     name: 'Purchase',
     url: '/purchase',
     icon: 'icon-handbag'
+  },
+  {
+    name: 'Return Item',
+    url: '/return-item',
+    icon: 'cil-chevron-left'
   },
   {
     name: 'Inventory',

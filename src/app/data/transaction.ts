@@ -1,4 +1,4 @@
-export class Transaction {
+export class Sale {
     constructor(
         public id: String,
         public totalItem: Number,
@@ -34,13 +34,15 @@ export class Purchase {
         public totalCost: Number,
         public totalTendered: Number,
         public changeDue: Number,
-        public creditAmount: Number,
+        public dueAmount: Number,
         public paymentMode: String,
-        public addCredit: Number,
-        public salesmanID: String,
-        public salesmanName: String,
-        public salesmanPhone: String,
-        public salesmanEmail: String,
+        public addDue: Number,
+        public vendorID: String,
+        public vendorFName: String,
+        public vendorLName: String,
+        public vendorCompany: String,
+        public vendorPhone: String,
+        public vendorEmail: String,
         public userID: String,
         public userName: String,
         public createdAt: Date,

@@ -37,10 +37,11 @@ export class AuthGuardService implements CanActivate {
     }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         let isadmin = 1;
-        if (state.url.indexOf('transactions') > 0) isadmin = 1;
+        if (state.url.indexOf('sales') > 0) isadmin = 1;
         if (state.url.indexOf('purchase') > 0) isadmin = 2;
         if (state.url.indexOf('inventory') > 0) isadmin = 2;
         if (state.url.indexOf('accounting') > 0) isadmin = 2;
+        if (state.url.indexOf('customer') > 0) isadmin = 2;
         if (state.url.indexOf('dashboard') > 0) isadmin = 3;
         if (state.url.indexOf('admin-management') > 0) isadmin = 10;
         return Observable.create(observer => {
@@ -54,7 +55,7 @@ export class AuthGuardService implements CanActivate {
                         this.getData();
                     } else {
                         // console.log('************going else');
-                        if (state.url.indexOf('transactions') < 0) this.router.navigate(['transactions']);
+                        if (state.url.indexOf('sales') < 0) this.router.navigate(['sales']);
                         else this.router.navigate(['login']);
                         observer.next(false);
                         observer.complete();

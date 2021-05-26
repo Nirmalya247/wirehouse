@@ -1,0 +1,7 @@
+.ng-select .ng-select-container {
+    min-height: 20px;
+}
+
+.ng-select.ng-select-single .ng-select-container {
+    height: 20px;
+}

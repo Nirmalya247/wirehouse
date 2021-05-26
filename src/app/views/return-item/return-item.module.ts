@@ -13,14 +13,14 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgSelectModule } from '@ng-select/ng-select';
 
-import { TransactionsComponent } from './transactions.component';
-import { TransactionsRoutingModule } from './transactions-routing.module';
+import { ReturnItemComponent } from './return-item.component';
+import { ReturnItemRoutingModule } from './return-item-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    TransactionsRoutingModule,
+    ReturnItemRoutingModule,
     ChartsModule,
     BsDropdownModule,
     ButtonsModule.forRoot(),
@@ -33,6 +33,6 @@ import { TransactionsRoutingModule } from './transactions-routing.module';
     BsDropdownModule.forRoot(),
     NgSelectModule
   ],
-  declarations: [ TransactionsComponent ]
+  declarations: [ ReturnItemComponent ]
 })
-export class TransactionsModule { }
+export class ReturnItemModule { }

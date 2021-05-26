@@ -84,8 +84,10 @@ export class InventoryComponent implements OnInit {
     itemUpdateUnitCost: string = '';
     itemUpdateExpiryYear: string = '2100';
     itemUpdateExpiryMonth: string = '13';
-    itemSalesmanName: string = '';
-    itemSalesmanPhone: string = '';
+    itemVendorFName: string = '';
+    itemVendorLName: string = '';
+    itemVendorCompany: string = '';
+    itemVendorPhone: string = '';
 
     years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     months = [ [ '01', 'JAN' ], [ '02', 'FEB' ], [ '03', 'MAR' ], [ '04', 'APR' ], [ '05', 'MAY' ], [ '06', 'JUN' ], [ '07', 'JUL' ], [ '08', 'AUG' ], [ '09', 'SEP' ], [ '10', 'OCT' ], [ '11', 'NOV' ], [ '12', 'DEC' ] ];
@@ -139,15 +141,19 @@ export class InventoryComponent implements OnInit {
         this.itemDescription = '';
         this.itemUpdateType = 'add';
         this.itemQTY = '';
-        this.itemSalesmanName = '';
-        this.itemSalesmanPhone = '';
+        this.itemVendorFName = '';
+        this.itemVendorLName = '';
+        this.itemVendorCompany = '';
+        this.itemVendorPhone = '';
         this.itemUpdateForm.show();
     }
 
     itemUpdateTypeChange() {
         if (this.itemUpdateType == 'sub') {
-            this.itemSalesmanName = '';
-            this.itemSalesmanPhone = '';
+            this.itemVendorFName = '';
+            this.itemVendorLName = '';
+            this.itemVendorCompany = '';
+            this.itemVendorPhone = '';
         }
     }
 
@@ -172,8 +178,10 @@ export class InventoryComponent implements OnInit {
             qty: this.itemQTY,
             price: this.itemUnitPrice,
             cost: this.itemUpdateUnitCost,
-            salesmanname: this.itemSalesmanName,
-            salesmanphone: this.itemSalesmanPhone,
+            vendorfname: this.itemVendorFName,
+            vendorlname: this.itemVendorLName,
+            vendorcompany: this.itemVendorCompany,
+            vendorphone: this.itemVendorPhone,
             type: this.itemUpdateType,
             rack: this.itemRack,
             description: this.itemDescription

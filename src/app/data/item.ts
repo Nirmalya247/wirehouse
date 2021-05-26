@@ -19,9 +19,9 @@ export class Item {
     ) {
     }
 }
-export class ItemTransaction {
+export class ItemSale {
     constructor(
-        public id: Number,
+        public id: String,
         public stockid: String,
         public itemcode: String,
         public itemname: String,
@@ -34,17 +34,20 @@ export class ItemTransaction {
         public discountamount: Number,
         public vat: Number,
         public totalprice: Number,
-        public expiry: Number,
-        public salesmanid: String,
-        public salesmanname: String,
-        public salesmanphone: String,
-        public salesmanemail: String,
+        public mfg: String,
+        public expiry: String,
+        public vendorid: String,
+        public vendorfname: String,
+        public vendorlname: String,
+        public vendorcompany: String,
+        public vendorphone: String,
+        public vendoremail: String,
     ) {
     }
 }
 export class ItemUpdate {
     constructor(
-        public id: Number,
+        public id: String,
         public purchaseId: String,
         public itemcode: String,
         public itemname: String,
@@ -56,9 +59,10 @@ export class ItemUpdate {
         public vat: Number,
         public cost: Number,
         public totalcost: Number,
+        public mfg: String,
         public expiry: String,
         public rack: String,
-        public salesmanid: String,
+        public vendorid: String,
         public description: String
     ) {
     }

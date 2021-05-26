@@ -71,14 +71,14 @@
                                 <th>Change Due</th>
                                 <th>Mode of Payment</th>
                                 <th>Staff</th>
-                                <th>{{dataType == 'sales' ? 'Customer' : 'Salesman' }}</th>
+                                <th>{{dataType == 'sales' ? 'Customer' : 'Vendor' }}</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let data of datas; index as i;">
                                 <td>{{ i + 1 + (dataPage - 1) * dataLimit }}</td>
-                                <td><a href="{{ serverPath + 'transaction-bill?transactionId=' + data.id.toString() + '&paper=A4' }}"
+                                <td><a href="{{ serverPath + 'sale-bill?saleId=' + data.id.toString() + '&paper=A4' }}"
                                         target="_blank" *ngIf=" dataType == 'sales' ">{{ data.id }}</a><div *ngIf=" dataType != 'sales' ">{{ dataType == 'sales' ? data.id : data.billID }}</div></td>
                                 <td>{{ data.totalItem }}</td>
                                 <td>{{ data.totalAmount }}</td>

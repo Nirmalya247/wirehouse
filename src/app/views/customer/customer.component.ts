@@ -8,7 +8,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ItemDataService } from '../../services/item-data.service';
-import { TransactionDataService } from '../../services/transaction-data.service';
+import { SaleDataService } from '../../services/sale-data.service';
 import { AuthService } from '../../auth-services/auth.service';
 import { environment } from '../../../environments/environment';
 import { Customer } from '../../data/customer';
@@ -32,7 +32,7 @@ export class CustomerComponent implements OnInit {
         public authDataService: AuthDataService,
         public router: Router,
         private itemDataService: ItemDataService,
-        private transactionDataService: TransactionDataService,
+        private saleDataService: SaleDataService,
         private toastr: ToastrService
     ) { }
 
@@ -55,11 +55,11 @@ export class CustomerComponent implements OnInit {
             searchText: this.searchText,
             page: this.page
         }
-        this.transactionDataService.getCustomerCount(query).subscribe(
+        this.saleDataService.getCustomerCount(query).subscribe(
             resCount => {
                 console.log('@@@@@@@@@@@', resCount);
                 this.pages = Array.from({ length: Math.ceil(parseInt(resCount) / this.limit) }, (_, i) => i + 1);
-                this.transactionDataService.getCustomer(query).subscribe(
+                this.saleDataService.getCustomer(query).subscribe(
                     res => {
                         console.log(res);
                         for (let i = 0; i < res.length; i++) {
@@ -107,7 +107,7 @@ export class CustomerComponent implements OnInit {
             creditlimit: this.customerCreditLimit
         }
         console.log(query);
-        this.transactionDataService.customerUpdate(query).subscribe (
+        this.saleDataService.customerUpdate(query).subscribe (
             res => {
                 if (!res.err) {
                     console.log(res);
@@ -133,7 +133,7 @@ export class CustomerComponent implements OnInit {
     }
 
     deleteConfirmFormSave() {
-        this.transactionDataService.customerDelete({ id: this.customers[this.deleteI].id }).subscribe(res => {
+        this.saleDataService.customerDelete({ id: this.customers[this.deleteI].id }).subscribe(res => {
             if (!res.err) {
                 this.toastr.success('customer deleted', 'Deleted!');
                 this.getItemTable(this.page);
@@ -178,7 +178,7 @@ export class CustomerComponent implements OnInit {
                 this.toastr.error('Enter user info', 'User Info');
                 return;
             }
-            this.transactionDataService.customerAdd(query).subscribe(
+            this.saleDataService.customerAdd(query).subscribe(
                 res => {
                     if (!res.err) {
                         this.getItemTable(this.page);
