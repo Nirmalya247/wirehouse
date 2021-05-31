@@ -61,7 +61,7 @@ export class ReturnItemComponent implements OnInit {
     ) { }
     ngOnInit(): void {
         this.itemSearch({ term: null });
-        this.getPurchaseTable(null);
+        this.getReturnTable(null);
         // generate random values for mainChart
     }
     reasonSearch(event, i) {
@@ -211,7 +211,7 @@ export class ReturnItemComponent implements OnInit {
             if (!res.err) {
                 this.toastr.success('Retun successful', 'Done!');
                 this.cancelReturn();
-                this.getPurchaseTable(this.purchasePage);
+                this.getReturnTable(this.page);
                 // window.open(environment.PATH + 'purchase-bill?purchaseId=' + res.id.toString() + '&paper=A4');
             } else {
                 this.toastr.error('Retun unsuccessful', 'Attention');
@@ -250,44 +250,8 @@ export class ReturnItemComponent implements OnInit {
         if (i < this.items.length) {
             this.items.splice(i, 1);
         }
-        // this.calculateTotalAmmount();
+        this.calculateTotalAmmount();
     }
-    /*
-    confirmPurchase() {
-    }
-
-
-    cancelPurchase() {
-        this.items = [];
-        this.billID = '';
-        this.totalAmount = '';
-        this.totalDiscount = '';
-        this.taxable = '';
-        this.cumulativeAmount = '';
-        this.paymentMode = 'cash';
-        this.totalTendered = '';
-        this.changeDue = '';
-        this.dueAmount = '';
-        this.dueDate = '';
-        this.addDue = false;
-        this.vendorID = '';
-        this.vendorFName = '';
-        this.vendorLName = '';
-        this.vendorCompany = '';
-        this.vendorPhone = '';
-        this.vendorEmail = '';
-        this.vendorVatno = '';
-        this.vendorDue = '';
-        this.vendorData = { };
-        this.vendorNew = true;
-
-        this.selectedItem = null;
-        this.selectedItemCode = null;
-        this.itemsList = [ ];
-        this.ngSelectComponent.clearModel();
-        this.itemSearch({ term: null });
-    }
-    */
 
 
 
@@ -348,48 +312,44 @@ export class ReturnItemComponent implements OnInit {
     }
 
     //***********
-    purchases: Array<ReturnCreate>;
+    returns: Array<ReturnCreate>;
     pages: Array<number>;
-    purchasePage = 1;
-    purchaseLimit = 10;
-    purchaseOrderBy = 'createdAt';
-    purchaseOrder = 'desc';
-    purchaseSearchText = '';
-    getPurchaseTable(pageNo) {
+    page = 1;
+    limit = 10;
+    orderBy = 'createdAt';
+    order = 'desc';
+    searchText = '';
 
-    }
-    /*
-    getPurchaseTable(pageNo) {
+    getReturnTable(pageNo) {
         if (pageNo != null) {
-            if (pageNo == -1) pageNo = this.purchasePage - 1;
-            if (pageNo == -2) pageNo = this.purchasePage + 1;
+            if (pageNo == -1) pageNo = this.page - 1;
+            if (pageNo == -2) pageNo = this.page + 1;
             if (pageNo < 1 || pageNo > this.pages.length) return;
-            this.purchasePage = pageNo;
+            this.page = pageNo;
         }
-        else this.purchasePage = 1;
+        else this.page = 1;
         let query = {
-            purchaseLimit: this.purchaseLimit,
-            purchaseOrderBy: this.purchaseOrderBy,
-            purchaseOrder: this.purchaseOrder,
-            purchaseSearchText: this.purchaseSearchText,
-            purchasePage: this.purchasePage
+            limit: this.limit,
+            orderBy: this.orderBy,
+            order: this.order,
+            searchText: this.searchText,
+            page: this.page
         }
-        this.saleDataService.getPurchasesCount(query).subscribe (
+        this.returnDataService.getReturnsCount(query).subscribe (
             resCount => {
                 console.log(resCount);
-                this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.purchaseLimit)}, (_, i) => i + 1);
-                this.saleDataService.getPurchases(query).subscribe (
+                this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.limit)}, (_, i) => i + 1);
+                this.returnDataService.getReturns(query).subscribe (
                     res => {
                         console.log(res);
                         for (let i = 0; i < res.length; i++) {
                             res[i].createdAt = new Date(res[i].createdAt.toString());
                         }
-                        this.purchases = res;
+                        this.returns = res;
                     }
                 );
             }
         );
-        console.log(this.purchaseLimit, this.purchaseOrderBy, this.purchaseOrder, this.purchaseSearchText);
+        console.log(this.limit, this.orderBy, this.order, this.searchText);
     }
-    */
 }
