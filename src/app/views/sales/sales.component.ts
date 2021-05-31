@@ -295,7 +295,7 @@ export class SalesComponent implements OnInit {
                 this.toastr.success('Sale successful', 'Done!');
                 this.cancelSale();
                 this.getSaleTable(this.salePage);
-                window.open(environment.PATH + 'sale-bill?saleId=' + res.id.toString() + '&paper=A4');
+                window.open(environment.PATH + 'sale-bill?saleId=' + res.id.toString() + '&paper=A4V2');
             } else {
                 this.toastr.error('Sale unsuccessful', 'Attention');
             }

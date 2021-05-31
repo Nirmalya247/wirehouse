@@ -265,7 +265,7 @@
                         <tbody>
                             <tr *ngFor="let sale of sales; index as i;">
                                 <td>{{ i + 1 + (salePage - 1) * saleLimit }}</td>
-                                <td><a href="{{ serverPath + 'sale-bill?saleId=' + sale.id.toString() + '&paper=A4' }}" target="_blank">{{ sale.id }}</a></td>
+                                <td><a href="{{ serverPath + 'sale-bill?saleId=' + sale.id.toString() + '&paper=A4V2' }}" target="_blank">{{ sale.id }}</a></td>
                                 <td>{{ sale.totalItem }}</td>
                                 <td>{{ sale.totalAmount }}</td>
                                 <td>{{ sale.totalTendered }}</td>
