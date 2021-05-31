@@ -8,6 +8,7 @@ import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ItemDataService } from '../../services/item-data.service';
 import { SaleDataService } from '../../services/sale-data.service';
+import { AccountingDataService } from '../../services/accounting-data.service';
 import { environment } from '../../../environments/environment';
 import { Item, ItemSale } from '../../data/item';
 import { Sale } from '../../data/transaction';
@@ -17,7 +18,9 @@ import { Sale } from '../../data/transaction';
 })
 
 export class AccountingComponent implements OnInit {
-    @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
+    @ViewChild('TypeSel') typeSel: NgSelectComponent;
+    @ViewChild('AccountTypeSel') accountTypeSel: NgSelectComponent;
+    @ViewChild('AccountSel') accountSel: NgSelectComponent;
 
     serverPath = environment.PATH;
 
@@ -27,9 +30,14 @@ export class AccountingComponent implements OnInit {
         public router: Router,
         private itemDataService: ItemDataService,
         private saleDataService: SaleDataService,
+        private accountingDataService: AccountingDataService,
         private toastr: ToastrService
     ) { }
     ngOnInit(): void {
+        // this.dataSearch({ term: null }, 'type', 1);
+        this.dataSearch({ term: null }, 'accounttype', 2);
+        this.dataSearch({ term: null }, 'account', 3);
+
         let today = new Date();
         let dd = today.getDate();
         let mm = today.getMonth() + 1;
@@ -42,9 +50,127 @@ export class AccountingComponent implements OnInit {
 
         this.dataFrom = yyyy + '-' + tmm + '-' + tdd;
         this.dataTo = yyyy + '-' + tmm + '-01';
+        
+        this.duedate = yyyy + '-' + tmm + '-' + tdd;
 
         this.getDataTable(null);
         // generate random values for mainChart
+    }
+
+    // typesList = [];
+    selectedType = null;
+    // termType = null;
+    accountTypesList = [];
+    selectedAccountType = null;
+    termAccountType = null;
+    accountList = [];
+    selectedAccount = null;
+    termAccount = null;
+
+    duration = '';
+    amount = '';
+    tendered = '';
+    duedate = '';
+    comment = '';
+
+
+    dataSearch(event, on, n) {
+        let query = {
+            col: on,
+            page: 1,
+            limit: 20,
+            order: 'asc',
+            searchText: event.term
+        }
+
+        // if (n == 1) this.termType = event.term;
+        if (n == 2) this.selectedAccountType = event.term;
+        else if (n == 3) this.selectedAccount = event.term;
+
+        if (n > 1 && this.selectedType != null) {
+            query['whcol'] = 'type';
+            query['whval'] = this.selectedType;
+        }
+        if (n > 2 && this.selectedAccountType != null) {
+            query['whcol'] = 'accounttype';
+            query['whval'] = this.selectedAccountType;
+        }
+        if (n > 3 && this.selectedAccount != null) {
+            query['whcol'] = 'account';
+            query['whval'] = this.selectedAccount;
+        }
+        this.accountingDataService.getAccount(query).subscribe (
+            res => {
+                console.log(res);
+                if (n == 2) this.accountTypesList = res;
+                else if (n == 3) this.accountList = res;
+            }
+        );
+    }
+
+    dataChange(event, on, n) {
+        if (n == 2) {
+            this.selectedType = event.type;
+        }
+        else if (n == 3) {
+            this.selectedType = event.type;
+            this.selectedAccountType = event.type;
+            this.duration = event.duration;
+        }
+    }
+
+    add() {
+        var data = {
+            type: this.selectedType,
+            accounttype: this.selectedAccountType,
+            account: this.selectedAccount,
+            duration: this.duration,
+            amount: this.amount,
+            tendered: this.tendered,
+            duedate: this.duedate,
+            comment: this.comment
+        };
+        console.log(data);
+        this.accountingDataService.addAccountData(data).subscribe (
+            res => {
+                console.log(res);
+                if (res.err) this.toastr.error('Could not add', 'Attention');
+                else {
+                    this.toastr.success('Added', 'Done!');
+                    this.cancel();
+                }
+            }
+        );
+    }
+
+    cancel() {
+        this.selectedType = null;
+        this.accountTypesList = [];
+        this.selectedAccountType = null;
+        this.termAccountType = null;
+        this.accountList = [];
+        this.selectedAccount = null;
+        this.termAccount = null;
+    
+        this.duration = '';
+        this.amount = '';
+        this.tendered = '';
+        this.comment = '';
+
+        this.dataSearch({ term: null }, 'accounttype', 2);
+        this.dataSearch({ term: null }, 'account', 3);
+
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth() + 1;
+        let yyyy = today.getFullYear();
+
+        let tdd = dd.toString();
+        let tmm = dd.toString();
+        if (dd < 10) tdd = '0' + dd;
+        if (mm < 10) tmm = '0' + mm;
+        
+        this.duedate = yyyy + '-' + tmm + '-' + tdd;
     }
 
 

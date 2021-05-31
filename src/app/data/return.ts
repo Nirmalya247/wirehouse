@@ -9,7 +9,6 @@ export class ReturnCreate {
         public dueAmount,
         public dueDate,
         public paymentMode,
-        public addDue,
         public vendorID,
         public vendorFName,
         public vendorLName,

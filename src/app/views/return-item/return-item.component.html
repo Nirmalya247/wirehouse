@@ -3,7 +3,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-edit"></i>New Purchase
+                    <i class="fa fa-edit"></i>New Return
                     <div class="card-header-actions">
                         <button type="button" class="card-header-action btn btn-link btn-minimize"
                             (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Reason</label>
-                            <ng-select #FindItem [items]="reasons" bindLabel="label" autofocus
+                            <ng-select #FindItem [class]="custom" [items]="reasons" bindLabel="label" autofocus
                                 bindValue="label" [(ngModel)]="item.reason" (search)="reasonSearch($event, i)"
                                 (change)="reasonChange($event)" placeholder="search item">
                             </ng-select>
@@ -75,7 +75,7 @@
 
                     <div class="form-group row">
                         <div class="col-md-2">
-                            <button class="btn btn-primary" type="button" (click)="addItem()"><i
+                            <button class="btn btn-primary btn-sm" type="button" (click)="addItem()"><i
                                     class="fa fa-plus"></i>&nbsp;Add
                                 item</button>
                         </div>
@@ -97,6 +97,10 @@
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Vendor Name</label>
                             <input type="text" class="form-control form-control-sm" placeholder="" value="{{ items.length > 0 ? vendorFName + ' ' + vendorLName : '' }}" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Due Date</label>
+                            <input type="date" class="form-control form-control-sm" placeholder="yyyy-mm-dd" [(ngModel)]="dueDate">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -146,8 +150,8 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button class="btn btn-primary" type="button" (click)="confirmPurchase()">Confirm</button>
-                        <button class="btn btn-secondary" type="button" (click)="cancelPurchase()">Cancel</button>
+                        <button class="btn btn-primary" type="button" (click)="confirmReturn()">Confirm</button>
+                        <button class="btn btn-secondary" type="button" (click)="cancelReturn()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -163,7 +167,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-align-justify"></i> PURCHASES
+                    <i class="fa fa-align-justify"></i> RETURN
                 </div>
                 <div class="card-body">
                     <div class="row">

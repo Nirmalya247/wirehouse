@@ -1,7 +1,24 @@
-.ng-select .ng-select-container {
-    min-height: 20px;
+.ng-select.custom ::ng-deep {
+    height: 28px;
+    border-radius: 0;
+}
+.ng-select.custom ::ng-deep .ng-select-container  {            
+    height: 28px;
+    border-radius: 0;
+}
+.ng-select.custom ::ng-deep .ng-select-container ::ng-deep .ng-select-value {
+    height: 28px;
+    border-radius: 0;
 }
 
-.ng-select.ng-select-single .ng-select-container {
-    height: 20px;
+.ng-select ::ng-deep .ng-select-container {
+    height: 28px;
+}
+
+.ng-select.custom ::ng-deep .ng-dropdown-panel ::ng-deep ng-dropdown-panel-items ::ng-deep ng-option-label {
+    font-size: 12pt;
+}
+
+ng-option-label {
+    font-size: 12pt;
 }

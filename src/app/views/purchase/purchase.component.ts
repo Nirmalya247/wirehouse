@@ -185,7 +185,6 @@ export class PurchaseComponent implements OnInit {
         for (let i = 0; i < this.items.length; i++) {
             totalQTY += isNaN(Number(this.items[i].qty)) ? 0 : Number(this.items[i].qty);
             this.items[i].qtystock = this.items[i].qty;
-            this.items[i].expiry = this.items[i].expiry + '-01';
             this.items[i].vendorid = this.vendorID;
             purchaseItems.push(this.items[i]);
         }

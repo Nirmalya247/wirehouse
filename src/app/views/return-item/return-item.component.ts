@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -17,7 +17,7 @@ import { ReturnCreate, ReturnItemCreate } from '../../data/return';
 })
 
 export class ReturnItemComponent implements OnInit {
-    @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
+    @ViewChild('c') ngSelectComponent: NgSelectComponent;
 
     serverPath = environment.PATH;
 
@@ -178,16 +178,74 @@ export class ReturnItemComponent implements OnInit {
             }
         }
     }
-    confirmPurchase() {
-        console.log(this.items);
+    confirmReturn() {
+        let totalQTY = 0;
+        for (let i = 0; i < this.items.length; i++) {
+            totalQTY += isNaN(Number(this.items[i].qty)) ? 0 : Number(this.items[i].qty);
+        }
+        if (this.items.length == 0) {
+            this.toastr.error('Nothing in the cart', 'Attention');
+            return;
+        }
+        let data = {
+            totalItem:  this.items.length,
+            totalQTY: totalQTY,
+            totalAmount: isNaN(Number(this.totalAmount)) ? 0 : Number(this.totalAmount),
+            totalTendered: isNaN(Number(this.totalTendered)) ? 0 : Number(this.totalTendered),
+            changeDue: isNaN(Number(this.changeDue)) ? 0 : Number(this.changeDue),
+            dueAmount: isNaN(Number(this.dueAmount)) ? 0 : Number(this.dueAmount),
+            dueDate: this.dueDate,
+            paymentMode: this.paymentMode,
+            vendorID: this.vendorID,
+            vendorFName: this.vendorFName,
+            vendorLName: this.vendorLName,
+            vendorCompany: this.vendorCompany,
+            vendorPhone: this.vendorPhone,
+            vendorEmail: this.vendorEmail,
+            userID: this.authGuardService.id,
+            userName: this.authGuardService.name,
+            items: this.items
+        }
+        this.returnDataService.add(data).subscribe(res => {
+            // console.log(res);
+            if (!res.err) {
+                this.toastr.success('Retun successful', 'Done!');
+                this.cancelReturn();
+                this.getPurchaseTable(this.purchasePage);
+                // window.open(environment.PATH + 'purchase-bill?purchaseId=' + res.id.toString() + '&paper=A4');
+            } else {
+                this.toastr.error('Retun unsuccessful', 'Attention');
+            }
+        });
     }
-    cancelPurchase() {
+    cancelReturn() {
+        this.items = [];
+        this.billID = '';
+        this.totalAmount = '';
+        this.totalDiscount = '';
+        this.taxable = '';
+        this.cumulativeAmount = '';
+        this.paymentMode = 'cash';
+        this.totalTendered = '';
+        this.changeDue = '';
+        this.dueAmount = '';
+        this.dueDate = '';
+        this.addDue = false;
+        this.vendorID = '';
+        this.vendorFName = '';
+        this.vendorLName = '';
+        this.vendorCompany = '';
+        this.vendorPhone = '';
+        this.vendorEmail = '';
+        this.vendorVatno = '';
+        this.vendorDue = '';
 
+        this.selectedItem = null;
+        this.selectedItemCode = null;
+        this.itemsList = [ ];
+        this.ngSelectComponent.clearModel();
+        this.itemSearch({ term: null });
     }
-    /*
-    addItem() {
-    }
-    */
     removeItem(i) {
         if (i < this.items.length) {
             this.items.splice(i, 1);
@@ -195,74 +253,7 @@ export class ReturnItemComponent implements OnInit {
         // this.calculateTotalAmmount();
     }
     /*
-    changeTendered() {
-    }
-
     confirmPurchase() {
-        if (this.vendorNew) {
-            this.toastr.error('Save User First', 'Attention');
-            return;
-        }
-        if (this.paymentMode == undefined) {
-            this.toastr.error('select payment mode', 'Attention');
-            return;
-        }
-        let purchaseItems = [];
-        let totalQTY = 0;
-        for (let i = 0; i < this.items.length; i++) {
-            totalQTY += isNaN(Number(this.items[i].qty)) ? 0 : Number(this.items[i].qty);
-            this.items[i].qtystock = this.items[i].qty;
-            this.items[i].expiry = this.items[i].expiry + '-01';
-            this.items[i].vendorid = this.vendorID;
-            purchaseItems.push(this.items[i]);
-        }
-        if (this.addDue) purchaseItems.push({
-            itemcode: 'due' + this.vendorID,
-            itemname: 'due amount',
-            price: this.vendorDue,
-            qty: '1',
-            totalPrice: this.vendorDue
-        });
-        if (purchaseItems.length == 0) {
-            this.toastr.error('Nothing in the cart', 'Attention');
-            return;
-        }
-        let data = {
-            billID: this.billID,
-            totalItem: this.items.length,
-            totalQTY: totalQTY,
-            paymentMode: this.paymentMode,
-            totalAmount: isNaN(Number(this.totalAmount)) ? 0 : Number(this.totalAmount),
-            totalTaxable: isNaN(Number(this.taxable)) ? 0 : Number(this.taxable),
-            totalCost: isNaN(Number(this.cumulativeAmount)) ? 0 : Number(this.cumulativeAmount),
-            totalTendered: isNaN(Number(this.totalTendered)) ? 0 : Number(this.totalTendered),
-            changeDue: isNaN(Number(this.changeDue)) ? 0 : Number(this.changeDue),
-            dueAmount: isNaN(Number(this.dueAmount)) ? 0 : Number(this.dueAmount),
-            dueDate:this.dueDate,
-            addDue: this.addDue ? 1 : 0,
-            vendorID: this.vendorID,
-            vendorFName: this.vendorFName,
-            vendorLName: this.vendorLName,
-            vendorCompany: this.vendorCompany,
-            vendorPhone: this.vendorPhone,
-            vendorEmail: this.vendorEmail,
-            vendorDue: isNaN(Number(this.vendorDue)) ? 0 : Number(this.vendorDue),
-            userID: this.authGuardService.id,
-            userName: this.authGuardService.name,
-            items: purchaseItems
-        }
-        console.log(data);
-        this.saleDataService.addPurchase(data).subscribe(res => {
-            console.log(res);
-            if (!res.err) {
-                this.toastr.success('Purchase successful', 'Done!');
-                this.cancelPurchase();
-                this.getPurchaseTable(this.purchasePage);
-                // window.open(environment.PATH + 'purchase-bill?purchaseId=' + res.id.toString() + '&paper=A4');
-            } else {
-                this.toastr.error('Purchase unsuccessful', 'Attention');
-            }
-        });
     }
 
 

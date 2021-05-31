@@ -3,10 +3,86 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
+                    <i class="fa fa-edit"></i>Add New Transaction
+                    <div class="card-header-actions">
+                        <button type="button" class="card-header-action btn btn-link btn-minimize"
+                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                    </div>
+                </div>
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
+                    class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Type</label>
+                            <select class="form-control" placeholder="Type" [(ngModel)]="selectedType">
+                                <option value="asset">Asset</option>
+                                <option value="liability">Liability</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                                <option value="equity">Equity</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Account Type</label>
+                            <ng-select #AccountTypeSel [items]="accountTypesList" bindLabel="accounttype"
+                                autofocus bindValue="accounttype" [(ngModel)]="selectedAccountType"
+                                (search)="dataSearch($event, 'accounttype', 2)" (change)="dataChange($event, 'accounttype', 2)"
+                                placeholder="search account type">
+                            </ng-select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Account Name</label>
+                            <ng-select #AccountSel [items]="accountList" bindLabel="account"
+                                autofocus bindValue="account" [(ngModel)]="selectedAccount"
+                                (search)="dataSearch($event, 'account', 3)" (change)="dataChange($event, 'account', 3)"
+                                placeholder="search account type">
+                            </ng-select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Duration</label>
+                            <select class="form-control" placeholder="durection" [(ngModel)]="duration">
+                                <option value="short term">Short Term</option>
+                                <option value="long term">Long term</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Amount</label>
+                            <input type="text" class="form-control" placeholder="Amount" [(ngModel)]="amount" (ngModelChange)="tendered = amount;">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Tendered</label>
+                            <input type="text" class="form-control" placeholder="Tendered" [(ngModel)]="tendered">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Due Date</label>
+                            <input type="date" class="form-control" placeholder="Due Date" [(ngModel)]="duedate">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Comment</label>
+                            <input type="text" class="form-control" placeholder="Comment" [(ngModel)]="comment">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" (click)="add()">Add</button>
+                        <button type="reset" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
                     <i class="fa fa-align-justify"></i> ACCOUNTING
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <a href="{{ serverPath + 'accounting/csv?type=' + dataType + '&orderBy=' + dataOrderBy + '&order=' + dataOrder + '&from=' + dataFrom + '&to=' + dataTo }}" target="_blank">Download CSV</a>
+                        <a href="{{ serverPath + 'accounting/csv?type=' + dataType + '&orderBy=' + dataOrderBy + '&order=' + dataOrder + '&from=' + dataFrom + '&to=' + dataTo }}"
+                            target="_blank">Download CSV</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -79,7 +155,10 @@
                             <tr *ngFor="let data of datas; index as i;">
                                 <td>{{ i + 1 + (dataPage - 1) * dataLimit }}</td>
                                 <td><a href="{{ serverPath + 'sale-bill?saleId=' + data.id.toString() + '&paper=A4' }}"
-                                        target="_blank" *ngIf=" dataType == 'sales' ">{{ data.id }}</a><div *ngIf=" dataType != 'sales' ">{{ dataType == 'sales' ? data.id : data.billID }}</div></td>
+                                        target="_blank" *ngIf=" dataType == 'sales' ">{{ data.id }}</a>
+                                    <div *ngIf=" dataType != 'sales' ">{{ dataType == 'sales' ? data.id : data.billID }}
+                                    </div>
+                                </td>
                                 <td>{{ data.totalItem }}</td>
                                 <td>{{ data.totalAmount }}</td>
                                 <td>{{ data.totalTendered }}</td>
@@ -103,5 +182,4 @@
             </div>
         </div>
     </div>
-
 </div>

@@ -252,6 +252,7 @@ export class SalesComponent implements OnInit {
                 discountamount: this.items[i].discountamount,
                 vat: this.items[i].vat,
                 totalPrice: this.items[i].totalprice,
+                mfg: this.items[i].mfg,
                 expiry: this.items[i].expiry
             });
         }
