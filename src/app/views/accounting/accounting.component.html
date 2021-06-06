@@ -90,7 +90,7 @@
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Data</label>
                             <select class="form-control form-control-sm" [(ngModel)]="dataType"
-                                (ngModelChange)="getDataTable(1)">
+                                (ngModelChange)="getDataTable(null)">
                                 <option value="sales">sales</option>
                                 <option value="purchase">purchase</option>
                             </select>
@@ -98,17 +98,17 @@
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">From</label>
                             <input class="form-control form-control-sm" type="date" placeholder="from"
-                                [(ngModel)]="dataFrom" (ngModelChange)="getDataTable(1)">
+                                [(ngModel)]="dataFrom" (ngModelChange)="getDataTable(null)">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">To</label>
                             <input class="form-control form-control-sm" type="date" placeholder="to"
-                                [(ngModel)]="dataTo" (ngModelChange)="getDataTable(1);">
+                                [(ngModel)]="dataTo" (ngModelChange)="getDataTable(null);">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Data Per Page</label>
                             <select class="form-control form-control-sm" [(ngModel)]="dataLimit"
-                                (ngModelChange)="getDataTable(1)">
+                                (ngModelChange)="getDataTable(null)">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -120,7 +120,7 @@
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Sort By</label>
                             <select class="form-control form-control-sm" [(ngModel)]="dataOrderBy"
-                                (ngModelChange)="getDataTable(1)">
+                                (ngModelChange)="getDataTable(null)">
                                 <option value="createdAt">Date</option>
                                 <option value="totalItem">Total Item</option>
                                 <option value="totalAmount">Total Price</option>
@@ -129,7 +129,7 @@
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Order</label>
                             <select class="form-control form-control-sm" [(ngModel)]="dataOrder"
-                                (ngModelChange)="getDataTable(1)">
+                                (ngModelChange)="getDataTable(null)">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>

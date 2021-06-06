@@ -98,4 +98,11 @@ export class AuthDataService {
         let url = environment.PATH + 'users/deleteuser';
         return this.http.post(url, data);
     }
+
+    setSalary(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'users/setsalary';
+        return this.http.post(url, data);
+    }
 }

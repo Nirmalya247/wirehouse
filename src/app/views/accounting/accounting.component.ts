@@ -196,7 +196,7 @@ export class AccountingComponent implements OnInit {
     dataType = 'sales';
     dataFrom: string;
     dataTo: string;
-    datas = [];
+    datas = [ ];
     pages: Array<number>;
     dataPage = 1;
     dataLimit = 10;
@@ -229,14 +229,6 @@ export class AccountingComponent implements OnInit {
         }
         if (to > from) {
             this.dataTo = yyyy + '-' + tmm + '-01';
-        }
-        let query = {
-            saleLimit: this.dataLimit,
-            saleOrderBy: this.dataOrderBy,
-            saleOrder: this.dataOrder,
-            salePage: this.dataPage,
-            from: this.dataFrom,
-            to: this.dataTo
         }
         if (this.dataType == 'purchase') {
             let query = {

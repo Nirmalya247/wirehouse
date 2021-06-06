@@ -381,4 +381,106 @@
         </div>
         <!--/.row-->
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    PURCHASE DUE
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Vendor Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Due</th>
+                                <th>Due Date</th>
+                                <th>Bill Date</th>
+                                <th>Pay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let purchaseDue of purchaseDueData; index as i;">
+                                <td>{{ purchaseDue.billID }}</td>
+                                <td>{{ purchaseDue.vendorFName + ' ' + purchaseDue.vendorLName }}</td>
+                                <td>{{ purchaseDue.vendorPhone }}</td>
+                                <td>{{ purchaseDue.vendorEmail }}</td>
+                                <td>{{ purchaseDue.dueAmount }}</td>
+                                <td>{{ purchaseDue.dueDate ? purchaseDue.dueDate.toLocaleString().split(',')[0] : 'nill' }}</td>
+                                <td>{{ purchaseDue.createdAt.toLocaleString().split(',')[0] }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="removeDueByPurchase(i)">
+                                        Paid
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul class="pagination">
+                        <li class="page-item" (click)="getPurchaseDue(-1)"><button class="page-link">Prev</button></li>
+                        <li class="page-item active" *ngFor="let page of purchaseDuePages;"
+                            [ngClass]="{'active': page == purchaseDuePage}" (click)="getPurchaseDue(page)">
+                            <button class="page-link">{{ page }}</button>
+                        </li>
+                        <li class="page-item" (click)="getPurchaseDue(-2)"><button class="page-link">Next</button></li>
+                    </ul>
+                </div>
+            </div>
+            <!--/.col-->
+        </div>
+        <!--/.row-->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    RETURN DUE
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Vendor Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Due</th>
+                                <th>Due Date</th>
+                                <th>Bill Date</th>
+                                <th>Received</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let returnDue of returnDueData; index as i;">
+                                <td>{{ returnDue.id }}</td>
+                                <td>{{ returnDue.vendorFName + ' ' + returnDue.vendorLName }}</td>
+                                <td>{{ returnDue.vendorPhone }}</td>
+                                <td>{{ returnDue.vendorEmail }}</td>
+                                <td>{{ returnDue.dueAmount }}</td>
+                                <td>{{ returnDue.dueDate ? returnDue.dueDate.toLocaleString().split(',')[0] : 'nill' }}</td>
+                                <td>{{ returnDue.createdAt.toLocaleString().split(',')[0] }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="removeDueByReturn(i)">
+                                        Received
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <ul class="pagination">
+                        <li class="page-item" (click)="getReturnDue(-1)"><button class="page-link">Prev</button></li>
+                        <li class="page-item active" *ngFor="let page of returnDuePages;"
+                            [ngClass]="{'active': page == returnDuePage}" (click)="getReturnDue(page)">
+                            <button class="page-link">{{ page }}</button>
+                        </li>
+                        <li class="page-item" (click)="getReturnDue(-2)"><button class="page-link">Next</button></li>
+                    </ul>
+                </div>
+            </div>
+            <!--/.col-->
+        </div>
+        <!--/.row-->
+    </div>
 </div>

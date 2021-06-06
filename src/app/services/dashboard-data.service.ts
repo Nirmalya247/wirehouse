@@ -84,4 +84,39 @@ export class DashboardDataService {
         let url = environment.PATH + 'saledata/sendcreditemail';
         return this.http.post(url, data);
     }
+    // get purchase due
+    getPurchaseDue(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/getpurchasedue';
+        return this.http.post(url, data);
+    }
+    // get purchase due count
+    getPurchaseDueCount(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/getpurchaseduecount';
+        return this.http.post(url, data);
+    }
+    // get returne due
+    getReturnDue(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/getreturndue';
+        return this.http.post(url, data);
+    }
+    // get return due count
+    getReturnDueCount(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'saledata/getreturnduecount';
+        return this.http.post(url, data);
+    }
+    // remove due by return
+    removeDueByReturn(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'return/removeduebyreturn';
+        return this.http.post(url, data);
+    }
 }

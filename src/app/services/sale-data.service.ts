@@ -127,6 +127,13 @@ export class SaleDataService {
         let url = environment.PATH + 'purchase/getpurchases';
         return this.http.post<Array<Purchase>>(url, purchase);
     }
+    // remove due by purchase
+    removeDueByPurchase(purchase):Observable<any> {
+        purchase[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        purchase[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'purchase/removeduebypurchase';
+        return this.http.post<any>(url, purchase);
+    }
 
 
 

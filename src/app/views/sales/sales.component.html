@@ -211,7 +211,7 @@
                     <div class="row">
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Sale Per Page</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="saleLimit" (ngModelChange)="getSaleTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="saleLimit" (ngModelChange)="getSaleTable(null)">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -222,7 +222,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Sort By</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="saleOrderBy" (ngModelChange)="getSaleTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="saleOrderBy" (ngModelChange)="getSaleTable(null)">
                                 <option value="createdAt">Date</option>
                                 <option value="totalItem">Total Item</option>
                                 <option value="totalAmount">Total Price</option>
@@ -230,7 +230,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Order</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="saleOrder" (ngModelChange)="getSaleTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="saleOrder" (ngModelChange)="getSaleTable(null)">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
@@ -242,7 +242,7 @@
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
                                 <input type="text" id="input2-group1" name="input2-group1" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="saleSearchText" (ngModelChange)="getSaleTable(1)">
+                                    placeholder="Search" [(ngModel)]="saleSearchText" (ngModelChange)="getSaleTable(null)">
                             </div>
                         </div>
                     </div>

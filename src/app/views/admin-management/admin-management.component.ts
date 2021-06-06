@@ -60,6 +60,7 @@ export class AdminManagementComponent implements OnInit {
                         console.log(res);
                         for (let i = 0; i < res.length; i++) {
                             res[i].createdAt = new Date(res[i].createdAt.toString());
+                            res[i].lastsalary = new Date(res[i].lastsalary.toString());
                         }
                         this.usersList = res;
                     }
@@ -132,6 +133,8 @@ export class AdminManagementComponent implements OnInit {
     userDataPhoneno: string = '';
     userDataOtherPhoneno: string = '';
     userDataPincode: string = '';
+    userDataSalary: string = '';
+    userDataLastSalary: string = '';
     userDataAddress: string = '';
     userDataIsAdmin: string = '';
     userDataPassword: string = '';
@@ -143,6 +146,8 @@ export class AdminManagementComponent implements OnInit {
         this.userDataPhoneno = '';
         this.userDataOtherPhoneno = '';
         this.userDataPincode = '';
+        this.userDataSalary = '';
+        this.userDataLastSalary = '';
         this.userDataAddress = '';
         this.userDataIsAdmin = '';
         this.userDataPassword = '';
@@ -155,12 +160,14 @@ export class AdminManagementComponent implements OnInit {
         } else if (mode == 'updateUser') {
             this.userFormLabel = 'Update User';
             this.userDataI = i;
-
+            console.log(this.usersList[i]);
             this.userDataName = this.usersList[i].name.toString();
             this.userDataEmail = this.usersList[i].email.toString();
             this.userDataPhoneno = this.usersList[i].phoneno.toString();
             this.userDataOtherPhoneno = this.usersList[i].otherphoneno.toString();
             this.userDataPincode = this.usersList[i].pincode.toString();
+            this.userDataSalary = this.usersList[i].salary.toString();
+            this.userDataLastSalary = this.usersList[i].lastsalary.toString();
             this.userDataAddress = this.usersList[i].address.toString();
             this.userDataIsAdmin = this.usersList[i].isadmin.toString();
             this.userDataPassword = '';
@@ -186,6 +193,8 @@ export class AdminManagementComponent implements OnInit {
             phoneno: this.userDataPhoneno,
             otherphoneno: this.userDataOtherPhoneno,
             pincode: this.userDataPincode,
+            salary: this.userDataSalary,
+            lastsalary: this.userDataLastSalary,
             address: this.userDataAddress,
             isadmin: this.userDataIsAdmin,
             password: this.userDataPassword
@@ -217,6 +226,16 @@ export class AdminManagementComponent implements OnInit {
                 }
             });
         }
+    }
+
+    userSetSalary() {
+        this.authDataService.setSalary({ }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success('salary given', 'User Info');
+            } else {
+                this.toastr.error('some error', 'User Info');
+            }
+        })
     }
 
     //***********

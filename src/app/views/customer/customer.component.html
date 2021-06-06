@@ -52,7 +52,7 @@
                     <div class="row">
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Item Per Page</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="limit" (ngModelChange)="getItemTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="limit" (ngModelChange)="getItemTable(null)">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Sort By</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="orderBy" (ngModelChange)="getItemTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="orderBy" (ngModelChange)="getItemTable(null)">
                                 <option value="id">Customer ID</option>
                                 <option value="name">Customer Name</option>
                                 <option value="qty">QTY Bought</option>
@@ -76,7 +76,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Order</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="order" (ngModelChange)="getItemTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="order" (ngModelChange)="getItemTable(null)">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
@@ -88,7 +88,7 @@
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
                                 <input type="email" id="input2-group1" name="input2-group1" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="getItemTable(1)">
+                                    placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="getItemTable(null)">
                             </div>
                         </div>
                     </div>

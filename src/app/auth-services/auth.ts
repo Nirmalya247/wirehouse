@@ -9,6 +9,8 @@ export class Auth {
         public deleted: Number,
         public name: String,
         public pincode: String,
+        public salary: String,
+        public lastsalary: String,
         public address: String,
         public createdAt: Date,
         public updatedAt: Date

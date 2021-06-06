@@ -21,4 +21,11 @@ export class AccountingDataService {
         let url = environment.PATH + 'accounting/addaccountdata';
         return this.http.post(url, data);
     }
+    // get report data
+    getReportData(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'accounting/getreportdata';
+        return this.http.post(url, data);
+    }
 }

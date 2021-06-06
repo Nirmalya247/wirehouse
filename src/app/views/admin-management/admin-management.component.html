@@ -7,6 +7,8 @@
 
                     <div class="card-header-actions" style="height: 21px;">
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                            (click)="userSetSalary()">Give Salary</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                             (click)="userFormShow('newUser', null)">Create New User</button>
                     </div>
                 </div>
@@ -14,7 +16,7 @@
                     <div class="row">
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Accounts Per Page</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="userLimit" (ngModelChange)="getUserTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="userLimit" (ngModelChange)="getUserTable(null)">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -25,7 +27,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Sort By</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="userOrderBy" (ngModelChange)="getUserTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="userOrderBy" (ngModelChange)="getUserTable(null)">
                                 <option value="id">User ID</option>
                                 <option value="name">Nmae</option>
                                 <option value="isadmin">Role</option>
@@ -33,7 +35,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Order</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="userOrder" (ngModelChange)="getUserTable(1)">
+                            <select class="form-control form-control-sm" [(ngModel)]="userOrder" (ngModelChange)="getUserTable(null)">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
@@ -45,7 +47,7 @@
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
                                 <input type="text" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="userSearchText" (ngModelChange)="getUserTable(1)">
+                                    placeholder="Search" [(ngModel)]="userSearchText" (ngModelChange)="getUserTable(null)">
                             </div>
                         </div>
                     </div>
@@ -59,6 +61,8 @@
                                 <th>Phone No</th>
                                 <th>Address</th>
                                 <th>Role</th>
+                                <th>Salary</th>
+                                <th>Last Salary</th>
                                 <th>Created At</th>
                                 <th>Edit</th>
                                 <th>Active</th>
@@ -73,7 +77,9 @@
                                 <td>{{ user.phoneno.toString() + ', ' + user.otherphoneno.toString() }}</td>
                                 <td>{{ user.address.toString() + " " + user.pincode.toString() }}</td>
                                 <td>{{ getAdminRole(user.isadmin) }}</td>
-                                <td>{{ user.createdAt.toLocaleString() }}</td>
+                                <td>{{ user.salary }}</td>
+                                <td>{{ user.lastsalary.toLocaleString().split(',')[0] }}</td>
+                                <td>{{ user.createdAt.toLocaleString().split(',')[0] }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="userFormShow('updateUser', i)">
                                         <i class="fa fa-pencil"></i>
@@ -263,6 +269,27 @@
                                 <option value="3">Admin</option>
                                 <option value="10">Super Admin</option>
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Salary</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-money"></i></span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm"
+                                placeholder="Salary" [(ngModel)]="userDataSalary">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label" for="prependedInput">Last Salary</label>
+                        <div class="input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-calendar-o"></i></span>
+                            </div>
+                            <input class="form-control form-control-sm" type="date" placeholder="yyyy-mm-dd" [(ngModel)]="userDataLastSalary">
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,7 @@ import { AuthDataService } from '../../auth-services/auth-data.service';
 import { environment } from '../../../environments/environment';
 import { Auth } from '../../auth-services/auth';
 import { Item } from '../../data/item';
+import { SaleDataService } from '../../services/sale-data.service';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class DashboardComponent implements OnInit {
         public authGuardService: AuthGuardService,
         public authDataService: AuthDataService,
         public dashboardDataService: DashboardDataService,
+        public saleDataService: SaleDataService,
         public router: Router,
         private toastr: ToastrService
     ) { }
@@ -42,6 +44,8 @@ export class DashboardComponent implements OnInit {
         this.getStockCount();
         this.getDemandCount();
         this.getCreditCount();
+        this.getPurchaseDueCount();
+        this.getReturnDueCount();
         // generate random values for mainChart
     }
 
@@ -411,7 +415,7 @@ export class DashboardComponent implements OnInit {
     dataLimit = 5;
     // expiry
     expiryOrder = 'asc';
-    expiryData = [];
+    expiryData = [ ];
     expiryPages = [1];
     expiryPage = 1;
     getExpiryCount() {
@@ -464,7 +468,7 @@ export class DashboardComponent implements OnInit {
     }
     // demand
     demandOrder = 'desc';
-    demandData = [];
+    demandData = [ ];
     demandPages = [1];
     demandPage = 1;
     getDemandCount() {
@@ -490,7 +494,7 @@ export class DashboardComponent implements OnInit {
     }
     // earning
     earningOrder = 'desc';
-    earningData = [];
+    earningData = [ ];
     earningPages = [1];
     earningPage = 1;
     getEarning(pageNo) {
@@ -507,7 +511,7 @@ export class DashboardComponent implements OnInit {
     }
     // credit
     creditOrder = 'asc';
-    creditData = [];
+    creditData = [ ];
     creditPages = [1];
     creditPage = 1;
     getCreditCount() {
@@ -537,5 +541,81 @@ export class DashboardComponent implements OnInit {
                 this.toastr.error(res.msg, 'Email');
             }
         });
+    }
+    // purchase due
+    purchaseDueOrder = 'asc';
+    purchaseDueData = [ ];
+    purchaseDuePages = [1];
+    purchaseDuePage = 1;
+    getPurchaseDueCount() {
+        this.dashboardDataService.getPurchaseDueCount({ }).subscribe(res => {
+            this.purchaseDuePages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
+            this.getPurchaseDue(null);
+            console.log(res);
+        })
+    }
+    getPurchaseDue(pageNo) {
+        if (pageNo != null) {
+            if (pageNo == -1) pageNo = this.purchaseDuePage - 1;
+            if (pageNo == -2) pageNo = this.purchaseDuePage + 1;
+            if (pageNo < 1 || pageNo > this.purchaseDuePages.length) return;
+            this.purchaseDuePage = pageNo;
+        } else this.purchaseDuePage = 1;
+        this.dashboardDataService.getPurchaseDue({ page: this.purchaseDuePage, limit: this.dataLimit, order: this.purchaseDueOrder, orderby: 'qty' }).subscribe(res => {
+            console.log(res);
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].dueDate) res[i].dueDate = new Date(res[i].dueDate.toString());
+                res[i].createdAt = new Date(res[i].createdAt.toString());
+            }
+            this.purchaseDueData = res;
+        });
+    }
+    removeDueByPurchase(i) {
+        this.saleDataService.removeDueByPurchase({ id: this.purchaseDueData[i].id }).subscribe(res => {
+            console.log(res);
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Due');
+            } else {
+                this.toastr.error(res.msg, 'Due');
+            }
+        })
+    }
+    // return due
+    returnDueOrder = 'asc';
+    returnDueData = [ ];
+    returnDuePages = [1];
+    returnDuePage = 1;
+    getReturnDueCount() {
+        this.dashboardDataService.getReturnDueCount({ }).subscribe(res => {
+            this.returnDuePages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
+            this.getReturnDue(null);
+            console.log(res);
+        })
+    }
+    getReturnDue(pageNo) {
+        if (pageNo != null) {
+            if (pageNo == -1) pageNo = this.returnDuePage - 1;
+            if (pageNo == -2) pageNo = this.returnDuePage + 1;
+            if (pageNo < 1 || pageNo > this.returnDuePages.length) return;
+            this.returnDuePage = pageNo;
+        } else this.returnDuePage = 1;
+        this.dashboardDataService.getReturnDue({ page: this.returnDuePage, limit: this.dataLimit, order: this.returnDueOrder, orderby: 'qty' }).subscribe(res => {
+            console.log(res);
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].dueDate) res[i].dueDate = new Date(res[i].dueDate.toString());
+                res[i].createdAt = new Date(res[i].createdAt.toString());
+            }
+            this.returnDueData = res;
+        });
+    }
+    removeDueByReturn(i) {
+        this.dashboardDataService.removeDueByReturn({ id: this.returnDueData[i].id }).subscribe(res => {
+            console.log(res);
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Due');
+            } else {
+                this.toastr.error(res.msg, 'Due');
+            }
+        })
     }
 }
