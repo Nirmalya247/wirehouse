@@ -9,17 +9,21 @@ import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ItemDataService } from '../../services/item-data.service';
 import { SaleDataService } from '../../services/sale-data.service';
+import { MessageDataService } from '../../services/message-data.service';
 import { AuthService } from '../../auth-services/auth.service';
 import { environment } from '../../../environments/environment';
 import { Customer } from '../../data/customer';
 
 @Component({
-    templateUrl: 'customer.component.html'
+    templateUrl: 'customer.component.html',
+    styleUrls: ['customer.css']
 })
 export class CustomerComponent implements OnInit {
     @ViewChild('updateForm') public updateForm: ModalDirective;
     @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
-    @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
+    @ViewChild('mailForm') public mailForm: ModalDirective;
+    // @ViewChild('FindItem') findItemComponent: NgSelectComponent;
+    @ViewChild('FindMessage') findMessage: NgSelectComponent;
     customers: Array<Customer>;
     pages: Array<number>;
     page = 1;
@@ -33,6 +37,7 @@ export class CustomerComponent implements OnInit {
         public router: Router,
         private itemDataService: ItemDataService,
         private saleDataService: SaleDataService,
+        private messageDataService: MessageDataService,
         private toastr: ToastrService
     ) { }
 
@@ -184,7 +189,7 @@ export class CustomerComponent implements OnInit {
                         this.getItemTable(this.page);
                         this.toastr.success('customer added', 'Done!');
                         f.resetForm();
-                        this.ngSelectComponent.clearModel();
+                        // this.findItemComponent.clearModel();
                     } else {
                         this.toastr.error('could not add customer', 'Attention');
                     }
@@ -195,6 +200,76 @@ export class CustomerComponent implements OnInit {
         }
     }
     cancelAdd() {
-        this.ngSelectComponent.clearModel();
+        // this.findItemComponent.clearModel();
+    }
+
+    // mail
+    messages = [];
+    message = null;
+    mailCustomerI = -1;
+    messageFor = '';
+    messageType = '';
+    messageLabel = '';
+    messageText = '';
+    mailFormShow(i) {
+        this.mailCustomerI = i;
+        this.mailForm.show();
+        this.messageSearch({ term: '' });
+    }
+    mailFormHide() {
+        this.mailForm.hide();
+        this.findMessage.clearModel();
+        this.mailCustomerI = -1;
+        this.messageFor = '';
+        this.messageType = '';
+        this.messageLabel = '';
+        this.messageText = '';
+    }
+    mailFormSend() {
+        console.log(this.customers, this.mailCustomerI);
+        let data = {
+            for: this.messageFor,
+            type: this.messageType,
+            label: this.messageLabel,
+            customerId: this.customers[this.mailCustomerI].id,
+            shopId: 1,
+            message: this.messageText
+        };
+        this.messageDataService.sendMessage(data).subscribe(res => {
+            console.log(res);
+        })
+    }
+    messageSearch(event) {
+        // this.message = event.term;
+        let query = {
+            limit: 20,
+            orderBy: 'id',
+            order: 'asc',
+            searchText: event.term,
+            page: 1
+        };
+        this.messageDataService.getMessage(query).subscribe(
+            res => {
+                console.log(res);
+                for (let i = 0; i < res.length; i++) {
+                    res[i].createdAt = new Date(res[i].createdAt.toString());
+                }
+                this.messages = res;
+            }
+        );
+    }
+    messageChange(event) {
+        // this.message = event.label;
+        if (event) {
+            this.messageFor = event.for;
+            this.messageType = event.type;
+            this.messageLabel = event.label;
+            this.messageText = event.message;
+        } else {
+            this.messageFor = '';
+            this.messageType = '';
+            this.messageLabel = '';
+            this.messageText = '';
+        }
     }
 }

@@ -114,7 +114,7 @@ export class AccountingComponent implements OnInit {
         }
         else if (n == 3) {
             this.selectedType = event.type;
-            this.selectedAccountType = event.type;
+            this.selectedAccountType = event.accounttype;
             this.duration = event.duration;
         }
     }

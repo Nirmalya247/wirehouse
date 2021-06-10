@@ -334,7 +334,7 @@ export class SalesComponent implements OnInit {
     customerGet() {
         let query = { }
         let ch = false;
-        if (this.customerID != null && this.customerID != '' && this.customerID.length == 8 && this.customerID != this.customerData.id) {
+        if (this.customerID != null && this.customerID != '' && this.customerID.length >= 3 && this.customerID != this.customerData.id) {
             console.log(this.customerID != this.customerData.id, this.customerID, this.customerData.id);
             query['id'] = this.customerID; ch = true;
         } else if (this.customerPhone != null && this.customerPhone != '' && !isNaN(Number(this.customerPhone)) && this.customerPhone.length >= 10 && this.customerPhone.length <= 12 && this.customerPhone != this.customerData.phone) {

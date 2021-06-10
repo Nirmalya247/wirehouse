@@ -106,6 +106,7 @@
                                 <th>QTY</th>
                                 <th>Spending</th>
                                 <th>Last Visit</th>
+                                <th>Contact</th>
                                 <th>Update</th>
                                 <th>Delete</th>
                             </tr>
@@ -122,6 +123,11 @@
                                 <td>{{ customer.qty }}</td>
                                 <td>{{ customer.amount }}</td>
                                 <td>{{ customer.updatedAt.toLocaleString() }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="mailFormShow(i)">
+                                        contact
+                                    </button>
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="updateFormShow(i)">
                                         update
@@ -227,6 +233,79 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="deleteConfirmFormHide()">No</button>
                 <button type="button" class="btn btn-primary" (click)="deleteConfirmFormSave()">Yes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+<div bsModal #mailForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mailFormLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contact Customer</h4>
+                <button type="button" class="close" (click)="mailFormHide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Reason</label>
+                        <ng-select #FindMessage [class]="custom" [items]="messages" bindLabel="label" autofocus
+                            bindValue="id" [(ngModel)]="message" (search)="messageSearch($event)"
+                            (change)="messageChange($event)" placeholder="search item">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">For</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="messageFor" (ngModelChange)="getItemTable(null)">
+                            <option value="customer.email">Customer Email</option>
+                            <option value="customer.phone">Customer Mobile</option>
+                            <option value="vendor.email">Vendor Email</option>
+                            <option value="vendor.phone">Vendor Phone</option>
+                            <option value="user.email">User Email</option>
+                            <option value="user.phoneno">User Phone</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Message Type</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="messageType" (ngModelChange)="getItemTable(null)">
+                            <option value="email">Email</option>
+                            <option value="mobile">Mobile Text</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Label</label>
+                        <input type="text" class="form-control form-control-sm"
+                            placeholder="Label" [(ngModel)]="messageLabel">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Message Text</label>
+                        <textarea class="form-control form-control-sm" placeholder="Message" [(ngModel)]="messageText" rows="10"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="mailFormHide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="mailFormSend()">Send</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

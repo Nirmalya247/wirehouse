@@ -8,6 +8,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ShopDataService } from '../../services/shop-data.service';
+import { MessageDataService } from '../../services/message-data.service';
 import { environment } from '../../../environments/environment';
 import { Auth } from '../../auth-services/auth';
 @Component({
@@ -16,21 +17,24 @@ import { Auth } from '../../auth-services/auth';
 export class AdminManagementComponent implements OnInit {
     @ViewChild('userForm') public userForm: ModalDirective;
     @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
+    @ViewChild('messageForm') public messageForm: ModalDirective;
     constructor(
         public authGuardService: AuthGuardService,
         public authDataService: AuthDataService,
         public shopDataService: ShopDataService,
+        public messageDataService: MessageDataService,
         public router: Router,
         private toastr: ToastrService
     ) { }
     ngOnInit(): void {
         this.getUserTable(null);
         this.getShop();
+        this.getMessageTable(null);
         // generate random values for mainChart
     }
 
     usersList: Array<Auth>;
-    pages: Array<number>;
+    userPages: Array<number>;
     userPage = 1;
     userLimit = 10;
     userOrderBy = 'id';
@@ -40,7 +44,7 @@ export class AdminManagementComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.userPage - 1;
             if (pageNo == -2) pageNo = this.userPage + 1;
-            if (pageNo < 1 || pageNo > this.pages.length) return;
+            if (pageNo < 1 || pageNo > this.userPages.length) return;
             this.userPage = pageNo;
         }
         else this.userPage = 1;
@@ -54,7 +58,7 @@ export class AdminManagementComponent implements OnInit {
         this.authDataService.getUsersCount(query).subscribe(
             resCount => {
                 console.log(resCount);
-                this.pages = Array.from({ length: Math.ceil(parseInt(resCount.toString()) / this.userLimit) }, (_, i) => i + 1);
+                this.userPages = Array.from({ length: Math.ceil(parseInt(resCount.toString()) / this.userLimit) }, (_, i) => i + 1);
                 this.authDataService.getUsers(query).subscribe(
                     res => {
                         console.log(res);
@@ -236,6 +240,119 @@ export class AdminManagementComponent implements OnInit {
                 this.toastr.error('some error', 'User Info');
             }
         })
+    }
+
+    //***********
+
+    messagesList: Array<any>;
+    messagePages: Array<number>;
+    messagePage = 1;
+    messageLimit = 10;
+    messageOrderBy = 'id';
+    messageOrder = 'asc';
+    messageSearchText = '';
+    getMessageTable(pageNo) {
+        if (pageNo != null) {
+            if (pageNo == -1) pageNo = this.messagePage - 1;
+            if (pageNo == -2) pageNo = this.messagePage + 1;
+            if (pageNo < 1 || pageNo > this.messagePages.length) return;
+            this.messagePage = pageNo;
+        }
+        else this.messagePage = 1;
+        let query = {
+            limit: this.messageLimit,
+            orderBy: this.messageOrderBy,
+            order: this.messageOrder,
+            searchText: this.messageSearchText,
+            page: this.messagePage
+        }
+        this.messageDataService.getMessageCount(query).subscribe(
+            resCount => {
+                console.log(resCount);
+                this.messagePages = Array.from({ length: Math.ceil(parseInt(resCount.toString()) / this.messageLimit) }, (_, i) => i + 1);
+                this.messageDataService.getMessage(query).subscribe(
+                    res => {
+                        console.log(res);
+                        for (let i = 0; i < res.length; i++) {
+                            res[i].createdAt = new Date(res[i].createdAt.toString());
+                        }
+                        this.messagesList = res;
+                    }
+                );
+            }
+        );
+        console.log(this.messageLimit, this.messageOrderBy, this.messageOrder, this.messageSearchText);
+    }
+
+    //*********** messageData
+    messageFormLabel: string = '';
+    messageFormMode: string = '';
+
+    messageDataI: number = -1;
+    messageDataID: string = '';
+    messageDataFor: string = '';
+    messageDataType: string = '';
+    messageDataLabel: string = '';
+    messageDataMessage: string = '';
+
+    clearMessageInfo() {
+        this.messageDataID = '';
+        this.messageDataFor = '';
+        this.messageDataType = '';
+        this.messageDataLabel = '';
+        this.messageDataMessage = '';
+    }
+    messageFormShow(mode, i) {
+        if (mode == 'newMessage') {
+            this.messageFormLabel = 'New Message';
+            this.messageDataI = -1;
+        } else if (mode == 'updateMessage') {
+            this.messageFormLabel = 'Update Message';
+            this.messageDataI = i;
+            this.messageDataID = this.messagesList[i].id.toString();
+            this.messageDataFor = this.messagesList[i].for.toString();
+            this.messageDataType = this.messagesList[i].type.toString();
+            this.messageDataLabel = this.messagesList[i].label.toString();
+            this.messageDataMessage = this.messagesList[i].message.toString();
+        }
+        this.messageFormMode = mode;
+        this.messageForm.show();
+    }
+
+    messageFormHide() {
+        this.messageForm.hide();
+        this.clearMessageInfo();
+    }
+
+    messageFormSave() {
+        let data = {
+            for: this.messageDataFor,
+            type: this.messageDataType,
+            label: this.messageDataLabel,
+            message: this.messageDataMessage
+        }
+        if (this.messageFormMode == 'newMessage') {
+            this.messageDataService.add(data).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success('new message created', 'Message');
+                    this.messageFormHide();
+                    this.getMessageTable(this.messagePage);
+                } else {
+                    this.toastr.error('could not create new message', 'Message');
+                }
+            });
+        } else if (this.messageFormMode == 'updateMessage') {
+            data['id'] = this.messagesList[this.messageDataI].id;
+            this.messageDataService.update(data).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success('message update', 'Message');
+                    this.messageFormHide();
+                    this.getMessageTable(this.messagePage);
+                } else {
+                    this.toastr.error('could not update message', 'Message');
+                }
+            });
+        }
     }
 
     //***********

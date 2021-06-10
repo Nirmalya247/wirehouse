@@ -272,7 +272,7 @@ export class PurchaseComponent implements OnInit {
     vendorGet() {
         let query = { }
         let ch = false;
-        if (this.vendorID != null && this.vendorID != '' && this.vendorID.length == 8 && this.vendorID != this.vendorData.id) {
+        if (this.vendorID != null && this.vendorID != '' && this.vendorID.length >= 3 && this.vendorID != this.vendorData.id) {
             query['id'] = this.vendorID; ch = true;
         } else if (this.vendorPhone != null && this.vendorPhone != '' && !isNaN(Number(this.vendorPhone)) && this.vendorPhone.length >= 10 && this.vendorPhone.length <= 12 && this.vendorPhone != this.vendorData.phone) {
             query['phone'] = Number(this.vendorPhone); ch = true;
