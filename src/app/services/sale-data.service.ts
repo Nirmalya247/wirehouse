@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { Sale, Purchase } from '../data/transaction';
 import { Customer } from '../data/customer';
+import { Vendor } from '../data/vendor';
 import { environment } from '../../environments/environment';
 @Injectable({
     providedIn: 'root'
@@ -156,6 +157,20 @@ export class SaleDataService {
         query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
         query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'vendor/update';
+        return this.http.post(url, query);
+    }
+    // get vendor
+    getVendor(query):Observable<Array<Vendor>> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'vendor/getvendor';
+        return this.http.post<Array<Vendor>>(url, query);
+    }
+    // get vendor count
+    getVendorCount(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'vendor/getvendorcount';
         return this.http.post(url, query);
     }
 }

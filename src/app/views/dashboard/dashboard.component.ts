@@ -15,6 +15,7 @@ import { environment } from '../../../environments/environment';
 import { Auth } from '../../auth-services/auth';
 import { Item } from '../../data/item';
 import { SaleDataService } from '../../services/sale-data.service';
+import { MessageDataService } from '../../services/message-data.service';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit {
         public authDataService: AuthDataService,
         public dashboardDataService: DashboardDataService,
         public saleDataService: SaleDataService,
+        public messageDataService: MessageDataService,
         public router: Router,
         private toastr: ToastrService
     ) { }
@@ -535,6 +537,15 @@ export class DashboardComponent implements OnInit {
     }
     sendEmail(i) {
         this.dashboardDataService.sendCreditEmail({ customerid: this.creditData[i].id }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Email');
+            } else {
+                this.toastr.error(res.msg, 'Email');
+            }
+        });
+    }
+    sendEmailToAll() {
+        this.messageDataService.sendMessageMultiple({ message: 1 }).subscribe(res => {
             if (!res.err) {
                 this.toastr.success(res.msg, 'Email');
             } else {

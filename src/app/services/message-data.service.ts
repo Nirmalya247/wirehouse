@@ -49,4 +49,11 @@ export class MessageDataService {
         let url = environment.PATH + 'message/sendmessage';
         return this.http.post(url, data);
     }
+    // send message multiple
+    sendMessageMultiple(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'message/sendmessagemultiple';
+        return this.http.post(url, data);
+    }
 }

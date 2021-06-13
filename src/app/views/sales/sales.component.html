@@ -5,12 +5,10 @@
                 <div class="card-header">
                     <i class="fa fa-edit"></i>New Sale
                     <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize"
-                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                        <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
                     </div>
                 </div>
-                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
-                    class="card-body">
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
                     <!--
                             <div class="col-md-3">
                                 <ng-select [items]="people" bindLabel="name" autofocus bindValue="id" [(ngModel)]="selectedPersonId">
@@ -24,13 +22,11 @@
                         </div>
                         <div class="col-md-4">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Item</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Item" value="{{ item.itemname }}"
-                                readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="Item" value="{{ item.itemname }}" readonly>
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Rack</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Rack" value="{{ item.rack }}"
-                                readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="Rack" value="{{ item.rack }}" readonly>
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Exp</label>
@@ -79,9 +75,7 @@
                                 item</button>
                         </div>
                         <div class="col-md-3">
-                            <ng-select #FindItem [searchFn]="searchFn" [items]="itemsList" bindLabel="itemname" autofocus
-                                bindValue="itemcode" [(ngModel)]="selectedItemCode" (search)="itemSearch($event)"
-                                (change)="itemChange($event)" placeholder="search item">
+                            <ng-select #FindItem [searchFn]="searchFn" [items]="itemsList" bindLabel="itemname" autofocus bindValue="itemcode" [(ngModel)]="selectedItemCode" (search)="itemSearch($event)" (change)="itemChange($event)" placeholder="search item">
                             </ng-select>
                         </div>
                     </div>
@@ -116,13 +110,11 @@
                     <div class="form-group row">
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Cumulative Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="cumulativeAmount"
-                                readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="cumulativeAmount" readonly>
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Amount Tendered</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalTendered"
-                                (ngModelChange)="changeTendered();">
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalTendered" (ngModelChange)="changeTendered();">
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Change Due</label>
@@ -130,15 +122,14 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Credit Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="creditAmount"
-                                readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="creditAmount" readonly>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-md-2">
-                            <label class="col-form-label" for="prependedInput">Customer ID</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="ID" [(ngModel)]="customerID"
-                                (ngModelChange)="customerGet();">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Customer</label>
+                            <ng-select #FindCustomer [searchFn]="customerSearchFn" [items]="customerList" bindLabel="label" autofocus bindValue="id" [(ngModel)]="customerID" (search)="customerSearch($event)" (change)="customerChange($event)" placeholder="search customer">
+                            </ng-select>
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Customer Name</label>
@@ -146,20 +137,17 @@
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Customer Phone</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Phone Number"
-                                [(ngModel)]="customerPhone" (ngModelChange)="customerGet();">
+                            <input type="text" class="form-control form-control-sm" placeholder="Phone Number" [(ngModel)]="customerPhone" (ngModelChange)="customerGet();">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Customer Email</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="E-mail Address"
-                                [(ngModel)]="customerEmail" (ngModelChange)="customerGet();">
+                            <input type="text" class="form-control form-control-sm" placeholder="E-mail Address" [(ngModel)]="customerEmail" (ngModelChange)="customerGet();">
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <label class="col-form-label" for="prependedInput">Credit</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="customerCredit"
-                                readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="customerCredit" readonly>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <label class="col-form-label" for="prependedInput">CreditLimit</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="customerCreditLimit" [ngClass]="{'error' : customerCreditError }">
                         </div>
@@ -167,21 +155,16 @@
 
                     <div class="form-group row">
                         <div class="col-md-2">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="customerAdd()"
-                                [disabled]="!customerNew">Add Customer</button>
+                            <button class="btn btn-primary btn-sm" type="button" (click)="customerAdd()" [disabled]="!customerNew">Add Customer</button>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="customerUpdate()"
-                                [disabled]="customerNew">Update Customer</button>
+                            <button class="btn btn-primary btn-sm" type="button" (click)="customerUpdate()" [disabled]="customerNew">Update Customer</button>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary btn-sm" type="button" (click)="customerClear()"
-                                [disabled]="customerNew">Clear Customer</button>
+                            <button class="btn btn-primary btn-sm" type="button" (click)="customerClear()" [disabled]="customerNew">Clear Customer</button>
                         </div>
                         <div class="col-md-2">
-                            <input class="form-check-input" type="checkbox" value="option1" id="creditAdd"
-                                [disabled]="customerNew" [(ngModel)]="addCredit"
-                                (ngModelChange)="calculateTotalAmmount();">
+                            <input class="form-check-input" type="checkbox" value="option1" id="creditAdd" [disabled]="customerNew" [(ngModel)]="addCredit" (ngModelChange)="calculateTotalAmmount();">
                             <label class="form-check-label" for="creditAdd">
                                 Add Credit to Amount
                             </label>
@@ -199,8 +182,8 @@
     <!--/.row-->
 
 
-    
-    
+
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -241,8 +224,7 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
-                                <input type="text" id="input2-group1" name="input2-group1" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="saleSearchText" (ngModelChange)="getSaleTable(null)">
+                                <input type="text" id="input2-group1" name="input2-group1" class="form-control form-control-sm" placeholder="Search" [(ngModel)]="saleSearchText" (ngModelChange)="getSaleTable(null)">
                             </div>
                         </div>
                     </div>
@@ -288,5 +270,5 @@
             </div>
         </div>
     </div>
-    
+
 </div>

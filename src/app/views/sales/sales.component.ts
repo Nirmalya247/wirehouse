@@ -19,6 +19,7 @@ import { Sale } from '../../data/transaction';
 
 export class SalesComponent implements OnInit {
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
+    @ViewChild('FindCustomer') ngSelectCustomer: NgSelectComponent;
 
     serverPath = environment.PATH;
 
@@ -32,16 +33,6 @@ export class SalesComponent implements OnInit {
     changeDue: string;
     creditAmount: string;
     addCredit: boolean = false;
-
-    customerID: string = '';
-    customerName: string = '';
-    customerPhone: string = '';
-    customerEmail: string = '';
-    customerCredit: string;
-    customerCreditLimit: string;
-    customerCreditError = false;
-    customerData: any = { };
-    customerNew: boolean = true;
 
 
     constructor(
@@ -328,9 +319,67 @@ export class SalesComponent implements OnInit {
         this.selectedItemCode = null;
         this.itemsList = [ ];
         this.ngSelectComponent.clearModel();
+        this.ngSelectCustomer.clearModel();
         this.itemSearch({ term: null });
     }
 
+
+
+
+    customerList = [];
+
+    customerID: string = '';
+    customerName: string = '';
+    customerPhone: string = '';
+    customerEmail: string = '';
+    customerCredit: string;
+    customerCreditLimit: string;
+    customerCreditError = false;
+    customerData: any = { };
+    customerNew: boolean = true;
+    customerSearch(event) {
+        let query = {
+            limit: 20,
+            orderby: 'name',
+            order: 'asc',
+            searchText: event.term,
+            page: 1
+        }
+        this.saleDataService.getCustomer(query).subscribe(
+            res => {
+                console.log(res);
+                for (let i = 0; i < res.length; i++) {
+                    res[i].label = `${res[i].name} <${res[i].id}>`;
+                }
+                this.customerList = res;
+            }
+        );
+    }
+    customerChange(event) {
+        if (event) {
+            this.customerID = event.id;
+            this.customerName = event.name;
+            this.customerPhone = event.phone;
+            this.customerEmail = event.email;
+            this.customerCredit = event.credit;
+            this.customerCreditLimit = event.creditlimit;
+            this.customerNew = false;
+            this.customerData = event;
+            this.calculateTotalAmmount();
+        } else {
+            this.customerID = '';
+            this.customerName = '';
+            this.customerPhone = '';
+            this.customerEmail = '';
+            this.customerCredit = '';
+            this.customerCreditLimit = '';
+            this.customerData = { };
+            this.customerNew = true;
+        }
+    }
+    customerSearchFn() {
+        return true;
+    }
     customerGet() {
         let query = { }
         let ch = false;

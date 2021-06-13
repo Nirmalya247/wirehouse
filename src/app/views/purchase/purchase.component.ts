@@ -13,11 +13,13 @@ import { Item, ItemSale, ItemUpdate } from '../../data/item';
 import { Sale, Purchase } from '../../data/transaction';
 
 @Component({
-    templateUrl: 'purchase.component.html'
+    templateUrl: 'purchase.component.html',
+    styleUrls: ['purchase.css']
 })
 
 export class PurchaseComponent implements OnInit {
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
+    @ViewChild('FindVendor') ngSelectVendor: NgSelectComponent;
 
     serverPath = environment.PATH;
 
@@ -35,17 +37,6 @@ export class PurchaseComponent implements OnInit {
     changeDue: string;
     dueAmount: string;
     addDue: boolean = false;
-
-    vendorID: string = '';
-    vendorFName: string = '';
-    vendorLName: string = '';
-    vendorCompany: string = '';
-    vendorPhone: string = '';
-    vendorEmail: string = '';
-    vendorVatno: string = '';
-    vendorDue: string;
-    vendorData: any = { };
-    vendorNew: boolean = true;
 
 
     constructor(
@@ -266,9 +257,72 @@ export class PurchaseComponent implements OnInit {
         this.selectedItemCode = null;
         this.itemsList = [ ];
         this.ngSelectComponent.clearModel();
+        this.ngSelectVendor.clearModel();
         this.itemSearch({ term: null });
     }
 
+
+
+
+    vendorList = [];
+
+    vendorID: string = '';
+    vendorFName: string = '';
+    vendorLName: string = '';
+    vendorCompany: string = '';
+    vendorPhone: string = '';
+    vendorEmail: string = '';
+    vendorVatno: string = '';
+    vendorDue: string;
+    vendorData: any = { };
+    vendorNew: boolean = true;
+    vendorSearch(event) {
+        let query = {
+            limit: 20,
+            orderby: 'id',
+            order: 'asc',
+            searchText: event.term,
+            page: 1
+        }
+        this.saleDataService.getVendor(query).subscribe(
+            res => {
+                console.log(res);
+                for (let i = 0; i < res.length; i++) {
+                    res[i].label = `${res[i].fname} ${res[i].lname} <${res[i].id}>`;
+                }
+                this.vendorList = res;
+            }
+        );
+    }
+    vendorChange(event) {
+        if (event) {
+            this.vendorID = event.id;
+            this.vendorFName = event.fname;
+            this.vendorLName = event.lname;
+            this.vendorCompany = event.company;
+            this.vendorPhone = event.phone;
+            this.vendorEmail = event.email;
+            this.vendorVatno = event.vatno;
+            this.vendorDue = event.due;
+            this.vendorNew = false;
+            this.vendorData = event;
+            this.calculateTotalAmmount();
+        } else {
+            this.vendorID = '';
+            this.vendorFName = '';
+            this.vendorLName = '';
+            this.vendorCompany = '';
+            this.vendorPhone = '';
+            this.vendorEmail = '';
+            this.vendorVatno = '';
+            this.vendorDue = '';
+            this.vendorData = { };
+            this.vendorNew = true;
+        }
+    }
+    vendorSearchFn() {
+        return true;
+    }
     vendorGet() {
         let query = { }
         let ch = false;
@@ -294,6 +348,7 @@ export class PurchaseComponent implements OnInit {
                         this.vendorDue = res.due;
                         this.vendorNew = false;
                         this.vendorData = res;
+                        this.calculateTotalAmmount();
                     }
                     //this.itemsList = res;
                 }

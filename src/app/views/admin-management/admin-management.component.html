@@ -6,10 +6,8 @@
                     <i class="fa fa-align-justify"></i> ACCOUNTS
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                            (click)="userSetSalary()">Give Salary</button>
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                            (click)="userFormShow('newUser', null)">Create New User</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="userSetSalary()">Give Salary</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="userFormShow('newUser', null)">Create New User</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -46,8 +44,7 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
-                                <input type="text" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="userSearchText" (ngModelChange)="getUserTable(null)">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search" [(ngModel)]="userSearchText" (ngModelChange)="getUserTable(null)">
                             </div>
                         </div>
                     </div>
@@ -101,8 +98,7 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getUserTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of userPages;"
-                            [ngClass]="{'active': page == userPage}" (click)="getUserTable(page)">
+                        <li class="page-item active" *ngFor="let page of userPages;" [ngClass]="{'active': page == userPage}" (click)="getUserTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
                         <li class="page-item" (click)="getUserTable(-2)"><button class="page-link">Next</button></li>
@@ -121,52 +117,43 @@
                     <div class="row">
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Shop Name</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="shop name" [(ngModel)]="shopname">
+                            <input type="text" class="form-control form-control-sm" placeholder="shop name" [(ngModel)]="shopname">
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Shop Details</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="shop details" [(ngModel)]="shopdetails">
+                            <input type="text" class="form-control form-control-sm" placeholder="shop details" [(ngModel)]="shopdetails">
                         </div>
                         <div class="col-md-6">
                             <label class="col-form-label" for="prependedInput">Shop Address</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="shop address" [(ngModel)]="shopaddress">
+                            <input type="text" class="form-control form-control-sm" placeholder="shop address" [(ngModel)]="shopaddress">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Phone No</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="phone no" [(ngModel)]="shopphoneno">
+                            <input type="text" class="form-control form-control-sm" placeholder="phone no" [(ngModel)]="shopphoneno">
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Other Phone No</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="other phone no" [(ngModel)]="shopotherphoneno">
+                            <input type="text" class="form-control form-control-sm" placeholder="other phone no" [(ngModel)]="shopotherphoneno">
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Email</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="Email" [(ngModel)]="shopemail">
+                            <input type="text" class="form-control form-control-sm" placeholder="Email" [(ngModel)]="shopemail">
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Email Password</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="Email Password" [(ngModel)]="shopemailpassword">
+                            <input type="text" class="form-control form-control-sm" placeholder="Email Password" [(ngModel)]="shopemailpassword">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <label class="col-form-label" for="prependedInput">VAT No.</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="VAT No." [(ngModel)]="vatno">
+                            <input type="text" class="form-control form-control-sm" placeholder="VAT No." [(ngModel)]="vatno">
                         </div>
                         <div class="col-md-6">
                             <label class="col-form-label" for="prependedInput">License No</label>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="License No" [(ngModel)]="licenseno">
+                            <input type="text" class="form-control form-control-sm" placeholder="License No" [(ngModel)]="licenseno">
                         </div>
                     </div>
                     <br>
@@ -186,8 +173,7 @@
                     <i class="fa fa-align-justify"></i> MESSAGES
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                            (click)="messageFormShow('newMessage', null)">Create New Message</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="messageFormShow('newMessage', null)">Create New Message</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -223,8 +209,7 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
-                                <input type="text" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="messageSearchText" (ngModelChange)="getMessageTable(null)">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search" [(ngModel)]="messageSearchText" (ngModelChange)="getMessageTable(null)">
                             </div>
                         </div>
                     </div>
@@ -263,8 +248,7 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getMessageTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of messagePages;"
-                            [ngClass]="{'active': page == messagePage}" (click)="getMessageTable(page)">
+                        <li class="page-item active" *ngFor="let page of messagePages;" [ngClass]="{'active': page == messagePage}" (click)="getMessageTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
                         <li class="page-item" (click)="getMessageTable(-2)"><button class="page-link">Next</button></li>
@@ -286,8 +270,7 @@
 
 
 
-<div bsModal #userForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userFormLabel"
-    aria-hidden="true">
+<div bsModal #userForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userFormLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -304,8 +287,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="Name" [(ngModel)]="userDataName">
+                            <input type="text" class="form-control form-control-sm" placeholder="Name" [(ngModel)]="userDataName">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -314,8 +296,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="e-mail" [(ngModel)]="userDataEmail">
+                            <input type="text" class="form-control form-control-sm" placeholder="e-mail" [(ngModel)]="userDataEmail">
                         </div>
                     </div>
                 </div>
@@ -326,8 +307,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-phone"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="Phone No." [(ngModel)]="userDataPhoneno">
+                            <input type="text" class="form-control form-control-sm" placeholder="Phone No." [(ngModel)]="userDataPhoneno">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -336,8 +316,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-phone"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="Other Phone No." [(ngModel)]="userDataOtherPhoneno">
+                            <input type="text" class="form-control form-control-sm" placeholder="Other Phone No." [(ngModel)]="userDataOtherPhoneno">
                         </div>
                     </div>
                 </div>
@@ -348,8 +327,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="Pincode" [(ngModel)]="userDataPincode">
+                            <input type="text" class="form-control form-control-sm" placeholder="Pincode" [(ngModel)]="userDataPincode">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -374,8 +352,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-money"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="Salary" [(ngModel)]="userDataSalary">
+                            <input type="text" class="form-control form-control-sm" placeholder="Salary" [(ngModel)]="userDataSalary">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -395,8 +372,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-sm"
-                                placeholder="Address" [(ngModel)]="userDataAddress">
+                            <input type="text" class="form-control form-control-sm" placeholder="Address" [(ngModel)]="userDataAddress">
                         </div>
                     </div>
                 </div>
@@ -407,8 +383,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
                             </div>
-                            <input type="password" class="form-control form-control-sm"
-                                placeholder="Password" [(ngModel)]="userDataPassword">
+                            <input type="password" class="form-control form-control-sm" placeholder="Password" [(ngModel)]="userDataPassword">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -417,8 +392,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fa fa-user-secret"></i></span>
                             </div>
-                            <input type="password" class="form-control form-control-sm"
-                                placeholder="Password" [(ngModel)]="userDataPasswordRe">
+                            <input type="password" class="form-control form-control-sm" placeholder="Password" [(ngModel)]="userDataPasswordRe">
                         </div>
                     </div>
                 </div>
@@ -427,9 +401,12 @@
                 <button type="button" class="btn btn-secondary" (click)="userFormHide()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="userFormSave()">Save</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 
 
@@ -442,8 +419,7 @@
 
 
 
-<div bsModal #deleteConfirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel"
-    aria-hidden="true">
+<div bsModal #deleteConfirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -459,9 +435,12 @@
                 <button type="button" class="btn btn-secondary" (click)="deleteConfirmFormHide()">No</button>
                 <button type="button" class="btn btn-primary" (click)="deleteConfirmFormSave()">Yes</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 
 
@@ -474,8 +453,7 @@
 
 
 
-<div bsModal #messageForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageFormLabel"
-    aria-hidden="true">
+<div bsModal #messageForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageFormLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -488,12 +466,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">ID</label>
-                        <input type="text" class="form-control form-control-sm"
-                            placeholder="ID" [(ngModel)]="messageDataID" readonly>
+                        <input type="text" class="form-control form-control-sm" placeholder="ID" [(ngModel)]="messageDataID" readonly>
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">For</label>
-                        <select class="form-control form-control-sm" [(ngModel)]="messageDataFor" (ngModelChange)="getItemTable(null)">
+                        <select class="form-control form-control-sm" [(ngModel)]="messageDataFor">
                             <option value="customer.email">Customer Email</option>
                             <option value="customer.phone">Customer Mobile</option>
                             <option value="vendor.email">Vendor Email</option>
@@ -506,15 +483,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Type</label>
-                        <select class="form-control form-control-sm" [(ngModel)]="messageDataType" (ngModelChange)="getItemTable(null)">
+                        <select class="form-control form-control-sm" [(ngModel)]="messageDataType">
                             <option value="email">Email</option>
                             <option value="mobile">Mobile Text</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Label</label>
-                        <input type="text" class="form-control form-control-sm"
-                            placeholder="Label" [(ngModel)]="messageDataLabel">
+                        <input type="text" class="form-control form-control-sm" placeholder="Label" [(ngModel)]="messageDataLabel">
                     </div>
                 </div>
                 <div class="row">
@@ -528,6 +504,9 @@
                 <button type="button" class="btn btn-secondary" (click)="messageFormHide()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="messageFormSave()">Save</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

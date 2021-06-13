@@ -8,14 +8,7 @@
                     <div>{{ timString }} item sold</div>
                 </div>
                 <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <canvas
-                        baseChart class="chart"
-                        [datasets]="itemSoldChartData"
-                        [labels]="itemSoldChartLabels"
-                        [options]="itemSoldChartOptions"
-                        [colors]="itemSoldChartColours"
-                        [legend]="itemSoldChartLegend"
-                        [chartType]="itemSoldChartType">
+                    <canvas baseChart class="chart" [datasets]="itemSoldChartData" [labels]="itemSoldChartLabels" [options]="itemSoldChartOptions" [colors]="itemSoldChartColours" [legend]="itemSoldChartLegend" [chartType]="itemSoldChartType">
                     </canvas>
                 </div>
             </div>
@@ -28,14 +21,7 @@
                     <div>{{ timString }} earning</div>
                 </div>
                 <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <canvas
-                        baseChart class="chart"
-                        [datasets]="earningChartData"
-                        [labels]="earningChartLabels"
-                        [options]="earningChartOptions"
-                        [colors]="earningChartColours"
-                        [legend]="earningChartLegend"
-                        [chartType]="earningChartType">
+                    <canvas baseChart class="chart" [datasets]="earningChartData" [labels]="earningChartLabels" [options]="earningChartOptions" [colors]="earningChartColours" [legend]="earningChartLegend" [chartType]="earningChartType">
                     </canvas>
                 </div>
             </div>
@@ -48,14 +34,7 @@
                     <div>{{ timString }} item bought</div>
                 </div>
                 <div class="chart-wrapper mt-3" style="height:70px;">
-                    <canvas
-                        baseChart class="chart"
-                        [datasets]="itemBoughtChartData"
-                        [labels]="itemBoughtChartLabels"
-                        [options]="itemBoughtChartOptions"
-                        [colors]="itemBoughtChartColours"
-                        [legend]="itemBoughtChartLegend"
-                        [chartType]="itemBoughtChartType">
+                    <canvas baseChart class="chart" [datasets]="itemBoughtChartData" [labels]="itemBoughtChartLabels" [options]="itemBoughtChartOptions" [colors]="itemBoughtChartColours" [legend]="itemBoughtChartLegend" [chartType]="itemBoughtChartType">
                     </canvas>
                 </div>
             </div>
@@ -68,14 +47,7 @@
                     <div>{{ timString }} spending</div>
                 </div>
                 <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <canvas
-                        baseChart class="chart"
-                        [datasets]="spendingChartData"
-                        [labels]="spendingChartLabels"
-                        [options]="spendingChartOptions"
-                        [colors]="spendingChartColours"
-                        [legend]="spendingChartLegend"
-                        [chartType]="spendingChartType">
+                    <canvas baseChart class="chart" [datasets]="spendingChartData" [labels]="spendingChartLabels" [options]="spendingChartOptions" [colors]="spendingChartColours" [legend]="spendingChartLegend" [chartType]="spendingChartType">
                     </canvas>
                 </div>
             </div>
@@ -93,26 +65,16 @@
                 <!--/.col-->
                 <div class="col-sm-7 d-none d-md-block">
                     <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
-                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="day"
-                            id="option1" (ngModelChange)="getGraphData()">Day</label>
-                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="month"
-                            id="option2" (ngModelChange)="getGraphData()">Month</label>
-                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="year"
-                            id="option3" (ngModelChange)="getGraphData()">Year</label>
+                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="day" id="option1" (ngModelChange)="getGraphData()">Day</label>
+                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="month" id="option2" (ngModelChange)="getGraphData()">Month</label>
+                        <label class="btn btn-outline-secondary" [(ngModel)]="graphBy" btnRadio="year" id="option3" (ngModelChange)="getGraphData()">Year</label>
                     </div>
                 </div>
                 <!--/.col-->
             </div>
             <!--/.row-->
             <div class="chart-wrapper" style="height:300px;margin-top:40px;">
-                <canvas
-                    baseChart class="chart"
-                    [datasets]="mainChartData"
-                    [labels]="mainChartLabels"
-                    [options]="mainChartOptions"
-                    [colors]="mainChartColours"
-                    [legend]="mainChartLegend"
-                    [chartType]="mainChartType">
+                <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels" [options]="mainChartOptions" [colors]="mainChartColours" [legend]="mainChartLegend" [chartType]="mainChartType">
                 </canvas>
             </div>
         </div>
@@ -134,8 +96,7 @@
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> EXPIRY
                                     <div class="card-header-actions">
-                                        <select class="form-select form-select-sm" [(ngModel)]="expiryOrder"
-                                            (ngModelChange)="getExpiry(null)">
+                                        <select class="form-select form-select-sm" [(ngModel)]="expiryOrder" (ngModelChange)="getExpiry(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
@@ -167,14 +128,11 @@
                                         </tbody>
                                     </table>
                                     <ul class="pagination">
-                                        <li class="page-item" (click)="getExpiry(-1)"><button
-                                                class="page-link">Prev</button></li>
-                                        <li class="page-item active" *ngFor="let page of expiryPages;"
-                                            [ngClass]="{'active': page == expiryPage}" (click)="getExpiry(page)">
+                                        <li class="page-item" (click)="getExpiry(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item active" *ngFor="let page of expiryPages;" [ngClass]="{'active': page == expiryPage}" (click)="getExpiry(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
-                                        <li class="page-item" (click)="getExpiry(-2)"><button
-                                                class="page-link">Next</button></li>
+                                        <li class="page-item" (click)="getExpiry(-2)"><button class="page-link">Next</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -186,8 +144,7 @@
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> LOW STOCK
                                     <div class="card-header-actions">
-                                        <select class="form-select form-select-sm" [(ngModel)]="stockOrder"
-                                            (ngModelChange)="getStock(null)">
+                                        <select class="form-select form-select-sm" [(ngModel)]="stockOrder" (ngModelChange)="getStock(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
@@ -219,14 +176,11 @@
                                         </tbody>
                                     </table>
                                     <ul class="pagination">
-                                        <li class="page-item" (click)="getStock(-1)"><button
-                                                class="page-link">Prev</button></li>
-                                        <li class="page-item active" *ngFor="let page of stockPages;"
-                                            [ngClass]="{'active': page == stockPage}" (click)="getStock(page)">
+                                        <li class="page-item" (click)="getStock(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item active" *ngFor="let page of stockPages;" [ngClass]="{'active': page == stockPage}" (click)="getStock(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
-                                        <li class="page-item" (click)="getStock(-2)"><button
-                                                class="page-link">Next</button></li>
+                                        <li class="page-item" (click)="getStock(-2)"><button class="page-link">Next</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -238,8 +192,7 @@
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> ITEM IN DEMAND
                                     <div class="card-header-actions">
-                                        <select class="form-select form-select-sm" [(ngModel)]="demandOrder"
-                                            (ngModelChange)="getDemand(null)">
+                                        <select class="form-select form-select-sm" [(ngModel)]="demandOrder" (ngModelChange)="getDemand(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
@@ -265,14 +218,11 @@
                                         </tbody>
                                     </table>
                                     <ul class="pagination">
-                                        <li class="page-item" (click)="getDemand(-1)"><button
-                                                class="page-link">Prev</button></li>
-                                        <li class="page-item active" *ngFor="let page of demandPages;"
-                                            [ngClass]="{'active': page == demandPage}" (click)="getDemand(page)">
+                                        <li class="page-item" (click)="getDemand(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item active" *ngFor="let page of demandPages;" [ngClass]="{'active': page == demandPage}" (click)="getDemand(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
-                                        <li class="page-item" (click)="getDemand(-2)"><button
-                                                class="page-link">Next</button></li>
+                                        <li class="page-item" (click)="getDemand(-2)"><button class="page-link">Next</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -284,8 +234,7 @@
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> ITEM BY EARNING
                                     <div class="card-header-actions">
-                                        <select class="form-select form-select-sm" [(ngModel)]="earningOrder"
-                                            (ngModelChange)="getEarning(null)">
+                                        <select class="form-select form-select-sm" [(ngModel)]="earningOrder" (ngModelChange)="getEarning(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
@@ -311,14 +260,11 @@
                                         </tbody>
                                     </table>
                                     <ul class="pagination">
-                                        <li class="page-item" (click)="getEarning(-1)"><button
-                                                class="page-link">Prev</button></li>
-                                        <li class="page-item active" *ngFor="let page of earningPages;"
-                                            [ngClass]="{'active': page == earningPage}" (click)="getEarning(page)">
+                                        <li class="page-item" (click)="getEarning(-1)"><button class="page-link">Prev</button></li>
+                                        <li class="page-item active" *ngFor="let page of earningPages;" [ngClass]="{'active': page == earningPage}" (click)="getEarning(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
-                                        <li class="page-item" (click)="getEarning(-2)"><button
-                                                class="page-link">Next</button></li>
+                                        <li class="page-item" (click)="getEarning(-2)"><button class="page-link">Next</button></li>
                                     </ul>
                                 </div>
                             </div>
@@ -335,6 +281,10 @@
             <div class="card">
                 <div class="card-header">
                     CUSTOMER CREDIT LIMIT
+
+                    <div class="card-header-actions" style="height: 21px;">
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAll()">Send Message to All</button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-sm">
@@ -369,8 +319,7 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getCredit(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of creditPages;"
-                            [ngClass]="{'active': page == creditPage}" (click)="getCredit(page)">
+                        <li class="page-item active" *ngFor="let page of creditPages;" [ngClass]="{'active': page == creditPage}" (click)="getCredit(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
                         <li class="page-item" (click)="getCredit(-2)"><button class="page-link">Next</button></li>
@@ -420,8 +369,7 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getPurchaseDue(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of purchaseDuePages;"
-                            [ngClass]="{'active': page == purchaseDuePage}" (click)="getPurchaseDue(page)">
+                        <li class="page-item active" *ngFor="let page of purchaseDuePages;" [ngClass]="{'active': page == purchaseDuePage}" (click)="getPurchaseDue(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
                         <li class="page-item" (click)="getPurchaseDue(-2)"><button class="page-link">Next</button></li>
@@ -471,8 +419,7 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getReturnDue(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of returnDuePages;"
-                            [ngClass]="{'active': page == returnDuePage}" (click)="getReturnDue(page)">
+                        <li class="page-item active" *ngFor="let page of returnDuePages;" [ngClass]="{'active': page == returnDuePage}" (click)="getReturnDue(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
                         <li class="page-item" (click)="getReturnDue(-2)"><button class="page-link">Next</button></li>

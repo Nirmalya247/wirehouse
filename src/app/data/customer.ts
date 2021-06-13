@@ -1,4 +1,5 @@
 export class Customer {
+    public label: string;
     constructor(
         public id: String,
         public name: String,
