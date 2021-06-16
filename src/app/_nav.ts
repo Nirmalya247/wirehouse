@@ -1,51 +1,74 @@
 import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
-  {
-    name: 'Dashboard',
-    url: '/dashboard',
-    icon: 'icon-speedometer'
-  },
-  {
-    name: 'Sales',
-    url: '/sales',
-    icon: 'icon-wallet'
-  },
-  {
-    name: 'Purchase',
-    url: '/purchase',
-    icon: 'icon-handbag'
-  },
-  {
-    name: 'Return Item',
-    url: '/return-item',
-    icon: 'cil-chevron-left'
-  },
-  {
-    name: 'Inventory',
-    url: '/inventory',
-    icon: 'icon-social-dropbox'
-  },
-  {
-    name: 'Accounting',
-    url: '/accounting',
-    icon: 'icon-calculator'
-  },
-  {
-    name: 'Reports',
-    url: '/reports',
-    icon: 'icon-chart'
-  },
-  {
-    name: 'Customer',
-    url: '/customer',
-    icon: 'icon-people'
-  },
-  {
-    name: 'Admin Management',
-    url: '/admin-management',
-    icon: 'icon-user'
-  }/*,
+    {
+        name: 'Dashboard',
+        url: '/dashboard',
+        icon: 'icon-speedometer'
+    },
+    {
+        name: 'Transaction',
+        icon: 'cil-dollar',
+        children: [
+            {
+                name: 'Sales',
+                url: '/sales',
+                icon: 'null' // icon-wallet
+            },
+            {
+                name: 'Purchase',
+                url: '/purchase',
+                icon: 'null' // icon-handbag
+            },
+            {
+                name: 'Return Item',
+                url: '/return-item',
+                icon: 'null' // cil-chevron-left
+            }
+        ]
+    },
+    {
+        name: 'Inventory',
+        url: '/inventory',
+        icon: 'icon-social-dropbox'
+    },
+    {
+        name: 'Accounts',
+        icon: 'cil-bank',
+        children: [
+            {
+                name: 'Accounting',
+                url: '/accounting',
+                icon: 'null' // icon-calculator
+            },
+            {
+                name: 'Reports',
+                url: '/reports',
+                icon: 'null' // icon-chart
+            }
+        ]
+    },
+    {
+        name: 'Customer/Vendor',
+        icon: 'cil-address-book',
+        children: [
+            {
+                name: 'Customer',
+                url: '/customer',
+                icon: 'null'
+            },
+            {
+                name: 'Vendor',
+                url: '/vendor',
+                icon: 'null'
+            }
+        ]
+    },
+    {
+        name: 'Admin Management',
+        url: '/admin-management',
+        icon: 'icon-user'
+    }/*,
   {
     title: true,
     name: 'Theme'

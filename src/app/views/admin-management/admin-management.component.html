@@ -247,8 +247,8 @@
                                     </button>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-ghost-danger" (click)="deleteMessage(i);">
-                                        <i class="fa fa-user-times"></i>
+                                    <button *ngIf="isMessageDeletable(message.id)" type="button" class="btn btn-sm btn-ghost-danger" (click)="deleteMessage(i);">
+                                        <i class="fa fa-close"></i>
                                     </button>
                                 </td>
                             </tr>

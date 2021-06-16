@@ -159,6 +159,13 @@ export class SaleDataService {
         let url = environment.PATH + 'vendor/update';
         return this.http.post(url, query);
     }
+    // delete vendor
+    vendorDelete(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'vendor/delete';
+        return this.http.post(url, query);
+    }
     // get vendor
     getVendor(query):Observable<Array<Vendor>> {
         query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);

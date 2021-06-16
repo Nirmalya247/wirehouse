@@ -284,6 +284,10 @@ export class AdminManagementComponent implements OnInit {
         console.log(this.messageLimit, this.messageOrderBy, this.messageOrder, this.messageSearchText);
     }
 
+    isMessageDeletable(id) {
+        return parseInt(id.toString().substr(2)) > 10;
+    }
+
     //*********** messageData
     messageFormLabel: string = '';
     messageFormMode: string = '';
