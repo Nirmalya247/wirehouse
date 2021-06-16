@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
