@@ -535,24 +535,6 @@ export class DashboardComponent implements OnInit {
             console.log(res);
         });
     }
-    sendEmail(i) {
-        this.dashboardDataService.sendCreditEmail({ customerid: this.creditData[i].id }).subscribe(res => {
-            if (!res.err) {
-                this.toastr.success(res.msg, 'Email');
-            } else {
-                this.toastr.error(res.msg, 'Email');
-            }
-        });
-    }
-    sendEmailToAll() {
-        this.messageDataService.sendMessageMultiple({ message: 1 }).subscribe(res => {
-            if (!res.err) {
-                this.toastr.success(res.msg, 'Email');
-            } else {
-                this.toastr.error(res.msg, 'Email');
-            }
-        });
-    }
     // purchase due
     purchaseDueOrder = 'asc';
     purchaseDueData = [ ];
@@ -628,5 +610,62 @@ export class DashboardComponent implements OnInit {
                 this.toastr.error(res.msg, 'Due');
             }
         })
+    }
+    sendEmail(i) {
+        this.dashboardDataService.sendCreditEmail({ customerid: this.creditData[i].id }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Email');
+            } else {
+                this.toastr.error(res.msg, 'Email');
+            }
+        });
+    }
+    sendEmailToAllCustomer() {
+        this.messageDataService.sendMessageMultiple({ message: 1 }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Email');
+            } else {
+                this.toastr.error(res.msg, 'Email');
+            }
+        });
+        this.messageDataService.sendMessageMultiple({ message: 2 }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Text');
+            } else {
+                this.toastr.error(res.msg, 'Text');
+            }
+        });
+    }
+    sendEmailToAllVendorPurchase() {
+        this.messageDataService.sendMessageMultiple({ message: 3 }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Email');
+            } else {
+                this.toastr.error(res.msg, 'Email');
+            }
+        });
+        this.messageDataService.sendMessageMultiple({ message: 4 }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Text');
+            } else {
+                this.toastr.error(res.msg, 'Text');
+            }
+        });
+    }
+    sendEmailToAllVendorReturn() {
+        this.messageDataService.sendMessageMultiple({ message: 5 }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Email');
+            } else {
+                this.toastr.error(res.msg, 'Email');
+            }
+        });
+        this.messageDataService.sendMessageMultiple({ message: 6 }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Text');
+            } else {
+                this.toastr.error(res.msg, 'Text');
+            }
+        });
     }
 }

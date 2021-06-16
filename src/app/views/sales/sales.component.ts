@@ -8,6 +8,7 @@ import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ItemDataService } from '../../services/item-data.service';
 import { SaleDataService } from '../../services/sale-data.service';
+import { MessageDataService } from '../../services/message-data.service';
 import { environment } from '../../../environments/environment';
 import { Item, ItemSale } from '../../data/item';
 import { Sale } from '../../data/transaction';
@@ -41,6 +42,7 @@ export class SalesComponent implements OnInit {
         public router: Router,
         private itemDataService: ItemDataService,
         private saleDataService: SaleDataService,
+        private messageDataService: MessageDataService,
         private toastr: ToastrService
     ) { }
     ngOnInit(): void {
@@ -287,6 +289,21 @@ export class SalesComponent implements OnInit {
                 this.cancelSale();
                 this.getSaleTable(this.salePage);
                 window.open(environment.PATH + 'sale-bill?saleId=' + res.id.toString() + '&paper=A4V2');
+                let data = {
+                    messageId: 7,
+                    customerId: this.customerID,
+                    salesId: res.id,
+                    shopId: 1
+                };
+                this.messageDataService.sendMessage(data).subscribe(resMessage => {
+                    if (resMessage.err) this.toastr.error('email could not be sent', 'Error!');
+                    else this.toastr.success('email sent', 'Done!');
+                });
+                data.messageId = 8;
+                this.messageDataService.sendMessage(data).subscribe(resMessage => {
+                    if (resMessage.err) this.toastr.error('text could not be sent', 'Error!');
+                    else this.toastr.success('text sent', 'Done!');
+                });
             } else {
                 this.toastr.error('Sale unsuccessful', 'Attention');
             }

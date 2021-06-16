@@ -8,6 +8,7 @@ import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ItemDataService } from '../../services/item-data.service';
 import { SaleDataService } from '../../services/sale-data.service';
+import { MessageDataService } from '../../services/message-data.service';
 import { environment } from '../../../environments/environment';
 import { Item, ItemSale, ItemUpdate } from '../../data/item';
 import { Sale, Purchase } from '../../data/transaction';
@@ -45,6 +46,7 @@ export class PurchaseComponent implements OnInit {
         public router: Router,
         private itemDataService: ItemDataService,
         private saleDataService: SaleDataService,
+        private messageDataService: MessageDataService,
         private toastr: ToastrService
     ) { }
     ngOnInit(): void {
@@ -219,9 +221,9 @@ export class PurchaseComponent implements OnInit {
             console.log(res);
             if (!res.err) {
                 this.toastr.success('Purchase successful', 'Done!');
-                this.cancelPurchase();
                 this.getPurchaseTable(this.purchasePage);
-                // window.open(environment.PATH + 'purchase-bill?purchaseId=' + res.id.toString() + '&paper=A4');
+                // window.open(environment.PATH + 'purchase-bill?purchaseId=' + res.id.toString() + '&paper=A4V2');
+                this.cancelPurchase();
             } else {
                 this.toastr.error('Purchase unsuccessful', 'Attention');
             }

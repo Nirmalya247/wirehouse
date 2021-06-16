@@ -147,11 +147,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">SMS KEY</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="SMS KEY" [(ngModel)]="smskey">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Website</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Website" [(ngModel)]="website">
+                        </div>
+                        <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">VAT No.</label>
                             <input type="text" class="form-control form-control-sm" placeholder="VAT No." [(ngModel)]="vatno">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">License No</label>
                             <input type="text" class="form-control form-control-sm" placeholder="License No" [(ngModel)]="licenseno">
                         </div>

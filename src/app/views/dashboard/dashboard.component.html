@@ -283,7 +283,7 @@
                     CUSTOMER CREDIT LIMIT
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAll()">Send Message to All</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllCustomer()">Send Message to All</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -335,6 +335,10 @@
             <div class="card">
                 <div class="card-header">
                     PURCHASE DUE
+
+                    <div class="card-header-actions" style="height: 21px;">
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllVendorPurchase()">Send Message to All</button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-sm">
@@ -385,6 +389,10 @@
             <div class="card">
                 <div class="card-header">
                     RETURN DUE
+
+                    <div class="card-header-actions" style="height: 21px;">
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllVendorReturn()">Send Message to All</button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <table class="table table-sm">

@@ -362,6 +362,8 @@ export class AdminManagementComponent implements OnInit {
     shopaddress: string = '';
     shopphoneno: string = '';
     shopotherphoneno: string = '';
+    smskey: string = '';
+    website: string = '';
     shopemail: string = '';
     shopemailpassword: string = '';
     vatno: string = '';
@@ -376,6 +378,8 @@ export class AdminManagementComponent implements OnInit {
             this.shopaddress = res.shopaddress;
             this.shopphoneno = res.shopphoneno;
             this.shopotherphoneno = res.shopotherphoneno;
+            this.smskey = res.smskey;
+            this.website = res.shopwebsite;
             this.shopemail = res.shopemail;
             this.shopemailpassword = res.shopemailpassword;
             this.vatno = res.vatno;
@@ -392,6 +396,8 @@ export class AdminManagementComponent implements OnInit {
             shopaddress: this.shopaddress,
             shopphoneno: this.shopphoneno,
             shopotherphoneno: this.shopotherphoneno,
+            smskey: this.smskey,
+            shopwebsite: this.website,
             shopemail: this.shopemail,
             shopemailpassword: this.shopemailpassword,
             vatno: this.vatno,
@@ -411,6 +417,8 @@ export class AdminManagementComponent implements OnInit {
         this.shopaddress = this.shopData.shopaddress;
         this.shopphoneno = this.shopData.shopphoneno;
         this.shopotherphoneno = this.shopData.shopotherphoneno;
+        this.smskey = this.shopData.smskey;
+        this.website = this.shopData.shopwebsite;
         this.vatno = this.shopData.vatno;
         this.licenseno = this.shopData.licenseno;
     }
