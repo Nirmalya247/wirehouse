@@ -178,11 +178,13 @@ export class VendorComponent implements OnInit {
     add(f: NgForm) {
         if (f.valid) {
             let query = {
-                name: f.value.name,
+                fname: f.value.fname,
+                lname: f.value.lname,
+                company: f.value.company,
                 phone: f.value.phone,
                 email: f.value.email,
-                credit: '0.00',
-                creditlimit: f.value.creditlimit,
+                due: '0.00',
+                vatno: f.value.vatno,
                 qty: 0,
                 amount: 0,
                 count: 0
