@@ -18,6 +18,8 @@ export class AdminManagementComponent implements OnInit {
     @ViewChild('userForm') public userForm: ModalDirective;
     @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
     @ViewChild('messageForm') public messageForm: ModalDirective;
+    @ViewChild('mailForm') public mailForm: ModalDirective;
+    @ViewChild('FindMessage') findMessage: NgSelectComponent;
     constructor(
         public authGuardService: AuthGuardService,
         public authDataService: AuthDataService,
@@ -442,5 +444,75 @@ export class AdminManagementComponent implements OnInit {
     toggleCollapse(): void {
         this.isCollapsed = !this.isCollapsed;
         this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
+    }
+
+    // mail
+    messages = [];
+    message = null;
+    mailUserI = -1;
+    messageFor = '';
+    messageType = '';
+    messageLabel = '';
+    messageText = '';
+    mailFormShow(i) {
+        this.mailUserI = i;
+        this.mailForm.show();
+        this.messageSearch({ term: '' });
+    }
+    mailFormHide() {
+        this.mailForm.hide();
+        this.findMessage.clearModel();
+        this.mailUserI = -1;
+        this.messageFor = '';
+        this.messageType = '';
+        this.messageLabel = '';
+        this.messageText = '';
+    }
+    mailFormSend() {
+        console.log(this.usersList, this.mailUserI);
+        let data = {
+            for: this.messageFor,
+            type: this.messageType,
+            label: this.messageLabel,
+            userId: this.usersList[this.mailUserI].id,
+            shopId: 1,
+            message: this.messageText
+        };
+        this.messageDataService.sendMessage(data).subscribe(res => {
+            console.log(res);
+        })
+    }
+    messageSearch(event) {
+        // this.message = event.term;
+        let query = {
+            limit: 20,
+            orderBy: 'id',
+            order: 'asc',
+            searchText: event.term,
+            page: 1
+        };
+        this.messageDataService.getMessage(query).subscribe(
+            res => {
+                console.log(res);
+                for (let i = 0; i < res.length; i++) {
+                    res[i].createdAt = new Date(res[i].createdAt.toString());
+                }
+                this.messages = res;
+            }
+        );
+    }
+    messageChange(event) {
+        // this.message = event.label;
+        if (event) {
+            this.messageFor = event.for;
+            this.messageType = event.type;
+            this.messageLabel = event.label;
+            this.messageText = event.message;
+        } else {
+            this.messageFor = '';
+            this.messageType = '';
+            this.messageLabel = '';
+            this.messageText = '';
+        }
     }
 }

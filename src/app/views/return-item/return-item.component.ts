@@ -8,6 +8,7 @@ import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
 import { ReturnDataService } from '../../services/return-data.service';
 import { SaleDataService } from '../../services/sale-data.service';
+import { MessageDataService } from '../../services/message-data.service';
 import { environment } from '../../../environments/environment';
 import { ReturnCreate, ReturnItemCreate } from '../../data/return';
 
@@ -57,6 +58,7 @@ export class ReturnItemComponent implements OnInit {
         public router: Router,
         private returnDataService: ReturnDataService,
         private saleDataService: SaleDataService,
+        private messageDataService: MessageDataService,
         private toastr: ToastrService
     ) { }
     ngOnInit(): void {
@@ -213,6 +215,22 @@ export class ReturnItemComponent implements OnInit {
                 this.cancelReturn();
                 this.getReturnTable(this.page);
                 // window.open(environment.PATH + 'purchase-bill?purchaseId=' + res.id.toString() + '&paper=A4');
+                window.open(environment.PATH + 'return-bill?returnId=' + res.id.toString() + '&paper=A4V2');
+                let data = {
+                    messageId: 9,
+                    vandorId: this.vendorID,
+                    returnId: res.id,
+                    shopId: 1
+                };
+                this.messageDataService.sendMessage(data).subscribe(resMessage => {
+                    if (resMessage.err) this.toastr.error('email could not be sent', 'Error!');
+                    else this.toastr.success('email sent', 'Done!');
+                });
+                data.messageId = 10;
+                this.messageDataService.sendMessage(data).subscribe(resMessage => {
+                    if (resMessage.err) this.toastr.error('text could not be sent', 'Error!');
+                    else this.toastr.success('text sent', 'Done!');
+                });
             } else {
                 this.toastr.error('Retun unsuccessful', 'Attention');
             }

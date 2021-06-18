@@ -5,12 +5,10 @@
                 <div class="card-header">
                     <i class="fa fa-edit"></i>New Return
                     <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize"
-                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                        <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
                     </div>
                 </div>
-                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
-                    class="card-body">
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
                     <!--
                             <div class="col-md-3">
                                 <ng-select [items]="people" bindLabel="name" autofocus bindValue="id" [(ngModel)]="selectedPersonId">
@@ -36,9 +34,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Reason</label>
-                            <ng-select #FindItem [class]="custom" [items]="reasons" bindLabel="label" autofocus
-                                bindValue="label" [(ngModel)]="item.reason" (search)="reasonSearch($event, i)"
-                                (change)="reasonChange($event)" placeholder="search item">
+                            <ng-select #FindItem [class]="custom" [items]="reasons" bindLabel="label" autofocus bindValue="label" [(ngModel)]="item.reason" (search)="reasonSearch($event, i)" (change)="reasonChange($event)" placeholder="search item">
                             </ng-select>
                         </div>
                         <div class="col-md-1">
@@ -80,9 +76,7 @@
                                 item</button>
                         </div>
                         <div class="col-md-5">
-                            <ng-select #FindItem [searchFn]="searchFn" [items]="itemsList" bindLabel="itemlabel" autofocus
-                                bindValue="id" [(ngModel)]="selectedItemCode" (search)="itemSearch($event)"
-                                (change)="itemChange($event)" placeholder="search item">
+                            <ng-select #FindItem [searchFn]="searchFn" [items]="itemsList" bindLabel="itemlabel" autofocus bindValue="id" [(ngModel)]="selectedItemCode" (search)="itemSearch($event)" (change)="itemChange($event)" placeholder="search item">
                             </ng-select>
                         </div>
                     </div>
@@ -131,13 +125,11 @@
                     <div class="form-group row">
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Cumulative Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="cumulativeAmount"
-                                readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="cumulativeAmount" readonly>
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Amount Tendered</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalTendered"
-                                (ngModelChange)="changeTendered();">
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalTendered" (ngModelChange)="changeTendered();">
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Change Due</label>
@@ -145,8 +137,7 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Due Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="dueAmount"
-                                readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="dueAmount" readonly>
                         </div>
                     </div>
                     <div class="form-actions">
@@ -161,8 +152,8 @@
     <!--/.row-->
 
 
-    
-    
+
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -203,8 +194,7 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
-                                <input type="text" id="input2-group1" name="input2-group1" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="getReturnTable(null)">
+                                <input type="text" id="input2-group1" name="input2-group1" class="form-control form-control-sm" placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="getReturnTable(null)">
                             </div>
                         </div>
                     </div>
@@ -227,7 +217,7 @@
                         <tbody>
                             <tr *ngFor="let returni of returns; index as i;">
                                 <td>{{ i + 1 + (page - 1) * limit }}</td>
-                                <td>{{ returni.id }}</td>
+                                <td><a href="{{ serverPath + 'return-bill?returnId=' + returni.id.toString() + '&paper=A4V2' }}" target="_blank">{{ returni.id }}</a></td>
                                 <td>{{ returni.totalQTY }}</td>
                                 <td>{{ returni.totalAmount }}</td>
                                 <td>{{ returni.totalTendered }}</td>
@@ -250,5 +240,5 @@
             </div>
         </div>
     </div>
-    
+
 </div>

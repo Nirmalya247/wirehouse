@@ -61,6 +61,7 @@
                                 <th>Salary</th>
                                 <th>Last Salary</th>
                                 <th>Created At</th>
+                                <th>Mail</th>
                                 <th>Edit</th>
                                 <th>Active</th>
                                 <th>Delete</th>
@@ -77,6 +78,11 @@
                                 <td>{{ user.salary }}</td>
                                 <td>{{ user.lastsalary.toLocaleString().split(',')[0] }}</td>
                                 <td>{{ user.createdAt.toLocaleString().split(',')[0] }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="mailFormShow(i)">
+                                        <i class="fa fa-envelope-o"></i>
+                                    </button>
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="userFormShow('updateUser', i)">
                                         <i class="fa fa-pencil"></i>
@@ -511,6 +517,66 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="messageFormHide()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="messageFormSave()">Save</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+<!-- /.modal -->
+<div bsModal #mailForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mailFormLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Contact User</h4>
+                <button type="button" class="close" (click)="mailFormHide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Reason</label>
+                        <ng-select #FindMessage class="custom" [items]="messages" bindLabel="label" autofocus bindValue="id" [(ngModel)]="message" (search)="messageSearch($event)" (change)="messageChange($event)" placeholder="search item">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">For</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="messageFor">
+                            <option value="user.email">User Email</option>
+                            <option value="user.phoneno">User Phone</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Message Type</label>
+                        <select class="form-control form-control-sm" [(ngModel)]="messageType">
+                            <option value="email">Email</option>
+                            <option value="mobile">Mobile Text</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Label</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Label" [(ngModel)]="messageLabel">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Message Text</label>
+                        <textarea class="form-control form-control-sm" placeholder="Message" [(ngModel)]="messageText" rows="10"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="mailFormHide()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="mailFormSend()">Send</button>
             </div>
         </div>
         <!-- /.modal-content -->
