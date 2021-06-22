@@ -286,7 +286,6 @@ export class SalesComponent implements OnInit {
             console.log(res);
             if (!res.err) {
                 this.toastr.success('Sale successful', 'Done!');
-                this.cancelSale();
                 this.getSaleTable(this.salePage);
                 window.open(environment.PATH + 'sale-bill?saleId=' + res.id.toString() + '&paper=A4V2');
                 let data = {
@@ -304,6 +303,7 @@ export class SalesComponent implements OnInit {
                     if (resMessage.err) this.toastr.error('text could not be sent', 'Error!');
                     else this.toastr.success('text sent', 'Done!');
                 });
+                this.cancelSale();
             } else {
                 this.toastr.error('Sale unsuccessful', 'Attention');
             }
@@ -530,6 +530,65 @@ export class SalesComponent implements OnInit {
     }
     itemChange(event) {
         this.selectedItem = event;
+    }
+
+    scanValue: string = '';
+    itemScan() {
+        let query = {
+            code: this.scanValue
+        }
+        this.itemDataService.getItemsScan(query).subscribe (
+            res => {
+                if (res.err) {
+                    // this.toastr.error(res.msg, 'Attention');
+                } else {
+                    this.toastr.success(res.msg, 'Attention');
+                    this.selectedItem = res.item;
+                    this.saleDataService.getSaleItem({ itemcode: this.selectedItem.itemcode }).subscribe(res => {
+                        for (let i = 0; i < res.length; i++) {
+                            let newBatch = true;
+                            for (let j = 0; j < this.items.length; j++) {
+                                if (this.items[j].stockid.toString() == res[i].id.toString() && Number(this.items[j].qtystock) > Number(this.items[j].qty)) {
+                                    this.items[j].qty = Number(this.items[j].qty) + 1;
+                                    return;
+                                } else if (this.items[j].stockid.toString() == res[i].id.toString()) {
+                                    newBatch = false;
+                                    break;
+                                }
+                            }
+                            if (newBatch) {
+                                let newItem = <ItemSale>{
+                                    id: null,
+                                    stockid: res[i].id,
+                                    itemcode: this.selectedItem.itemcode,
+                                    itemname: this.selectedItem.itemname,
+                                    rack: res[i].rack,
+                                    hsn: this.selectedItem.hsn,
+                                    qtystock: res[i].qtystock,
+                                    qty: 1,
+                                    price: res[i].price,
+                                    discount: this.selectedItem.discount,
+                                    discountamount: 0,
+                                    vat: this.selectedItem.vat,
+                                    totalprice: res[i].price,
+                                    mfg: res[i].mfg,
+                                    expiry: res[i].expiry,
+                                    vendorid: res[i].vendorid,
+                                    vendorfname: res[i].vendorfname,
+                                    vendorlname: res[i].vendorlname,
+                                    vendorcompany: res[i].vendorcompany,
+                                    vendorphone: res[i].vendorphone,
+                                    vendoremail: res[i].vendoremail
+                                };
+                                this.items.push(newItem);
+                                this.changeQTY(this.items.length - 1);
+                                break;
+                            }
+                        }
+                    })
+                }
+            }
+        );
     }
 
     //***********

@@ -104,6 +104,13 @@ export class SaleDataService {
         let url = environment.PATH + 'customer/getcustomercount';
         return this.http.post(url, query);
     }
+    // fetch customer from hub spot
+    fetchCustomerFromHubSpot(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'customer/fetchcustomerfromhubspot';
+        return this.http.post(url, query);
+    }
 
 
 

@@ -612,12 +612,26 @@ export class DashboardComponent implements OnInit {
         })
     }
     sendEmail(i) {
-        this.dashboardDataService.sendCreditEmail({ customerid: this.creditData[i].id }).subscribe(res => {
-            if (!res.err) {
-                this.toastr.success(res.msg, 'Email');
-            } else {
-                this.toastr.error(res.msg, 'Email');
-            }
+        // this.dashboardDataService.sendCreditEmail({ customerid: this.creditData[i].id }).subscribe(res => {
+        //     if (!res.err) {
+        //         this.toastr.success(res.msg, 'Email');
+        //     } else {
+        //         this.toastr.error(res.msg, 'Email');
+        //     }
+        // });
+        let data = {
+            messageId: 1,
+            customerId: this.creditData[i].id,
+            shopId: 1
+        };
+        this.messageDataService.sendMessage(data).subscribe(resMessage => {
+            if (resMessage.err) this.toastr.error('email could not be sent', 'Error!');
+            else this.toastr.success('email sent', 'Done!');
+        });
+        data.messageId = 2;
+        this.messageDataService.sendMessage(data).subscribe(resMessage => {
+            if (resMessage.err) this.toastr.error('text could not be sent', 'Error!');
+            else this.toastr.success('text sent', 'Done!');
         });
     }
     sendEmailToAllCustomer() {

@@ -29,6 +29,13 @@ export class ItemDataService {
         let url = environment.PATH + 'item/getitemscount';
         return this.http.post<Number>(url, query);
     }
+    // get items scan
+    getItemsScan(query):Observable<any> {
+        query[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        query[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'item/getitemsscan';
+        return this.http.post<any>(url, query);
+    }
     // edit item
     edit(data):Observable<any> {
         data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);

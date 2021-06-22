@@ -25,7 +25,7 @@ export class CustomerComponent implements OnInit {
     // @ViewChild('FindItem') findItemComponent: NgSelectComponent;
     @ViewChild('FindMessage') findMessage: NgSelectComponent;
     customers: Array<Customer>;
-    pages: Array<number>;
+    pages: Array<number> = [ ];
     page = 1;
     limit = 10;
     orderBy = 'updatedAt';
@@ -46,10 +46,22 @@ export class CustomerComponent implements OnInit {
         this.getItemTable(null);
     }
 
+    getTablePages(pageNo, pages) {
+        var start = pageNo - 4;
+        var end = pageNo + 4 + (start < 1 ? 1 - start : 0);
+        start = (end > pages.length ? start - (end - pages.length) : start);
+        start = start < 1 ? 1 : start;
+        end = end > pages.length ? pages.length : end;
+        var p = [ ];
+        for (var i = start; i <= end; i++) p.push(i);
+        return p;
+    }
     getItemTable(pageNo) {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.page - 1;
             if (pageNo == -2) pageNo = this.page + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.pages.length;
             if (pageNo < 1 || pageNo > this.pages.length) return;
             this.page = pageNo;
         } else this.page = 1;
@@ -271,5 +283,12 @@ export class CustomerComponent implements OnInit {
             this.messageLabel = '';
             this.messageText = '';
         }
+    }
+
+    // merge hub spot
+    mergeHubspotCustomer() {
+        this.saleDataService.fetchCustomerFromHubSpot({ }).subscribe(res => {
+            this.toastr.success(`updated ${ res.update } and added ${ res.new } customers`, 'Done!');
+        });
     }
 }

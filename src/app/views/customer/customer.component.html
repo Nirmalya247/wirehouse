@@ -45,6 +45,10 @@
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> CUSTOMER TABLE
+
+                    <div class="card-header-actions" style="height: 21px;">
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="mergeHubspotCustomer()">Get from Hubspot</button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -140,9 +144,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getItemTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of pages;" [ngClass]="{'active': page == itemPage}" (click)="getItemTable(page)">
-                            <button class="page-link">{{ page }}</button>
+                        <li class="page-item" (click)="getItemTable(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item" *ngFor="let pagei of getTablePages(page, pages);" [ngClass]="{'active': pagei == page}" (click)="getItemTable(pagei)">
+                            <button class="page-link">{{ pagei }}</button>
                         </li>
+                        <li class="page-item" (click)="getItemTable(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getItemTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
