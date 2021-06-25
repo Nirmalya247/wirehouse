@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Sale, Purchase } from '../data/transaction';
 import { Customer } from '../data/customer';
@@ -51,6 +51,13 @@ export class SaleDataService {
         sale[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'sale/getlastsaleitem';
         return this.http.post(url, sale);
+    }
+    // remove credit by sale
+    removeCreditBySale(sale):Observable<any> {
+        sale[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        sale[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'sale/removecreditbysale';
+        return this.http.post<any>(url, sale);
     }
 
 

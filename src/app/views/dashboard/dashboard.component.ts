@@ -21,7 +21,8 @@ import { MessageDataService } from '../../services/message-data.service';
 @Component({
     templateUrl: 'dashboard.component.html'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit {;
+    @ViewChild('dueConfirmForm') public dueConfirmForm: ModalDirective;
     totalItemSold: string = '0';
     totalItemBought: string = '0';
     totalEarning: string = '0.00';
@@ -414,6 +415,16 @@ export class DashboardComponent implements OnInit {
         // console.log(e);
     }
 
+    getTablePages(pageNo, pages) {
+        var start = pageNo - 4;
+        var end = pageNo + 4 + (start < 1 ? 1 - start : 0);
+        start = (end > pages.length ? start - (end - pages.length) : start);
+        start = start < 1 ? 1 : start;
+        end = end > pages.length ? pages.length : end;
+        var p = [ ];
+        for (var i = start; i <= end; i++) p.push(i);
+        return p;
+    }
     dataLimit = 5;
     // expiry
     expiryOrder = 'asc';
@@ -431,6 +442,8 @@ export class DashboardComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.expiryPage - 1;
             if (pageNo == -2) pageNo = this.expiryPage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.expiryPages.length;
             if (pageNo < 1 || pageNo > this.expiryPages.length) return;
             this.expiryPage = pageNo;
         } else this.expiryPage = 1;
@@ -460,6 +473,8 @@ export class DashboardComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.stockPage - 1;
             if (pageNo == -2) pageNo = this.stockPage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.stockPages.length;
             if (pageNo < 1 || pageNo > this.stockPages.length) return;
             this.stockPage = pageNo;
         } else this.stockPage = 1;
@@ -486,6 +501,8 @@ export class DashboardComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.demandPage - 1;
             if (pageNo == -2) pageNo = this.demandPage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.demandPages.length;
             if (pageNo < 1 || pageNo > this.demandPages.length) return;
             this.demandPage = pageNo;
         } else this.demandPage = 1;
@@ -503,6 +520,8 @@ export class DashboardComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.earningPage - 1;
             if (pageNo == -2) pageNo = this.earningPage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.earningPages.length;
             if (pageNo < 1 || pageNo > this.earningPages.length) return;
             this.earningPage = pageNo;
         } else this.earningPage = 1;
@@ -516,8 +535,9 @@ export class DashboardComponent implements OnInit {
     creditData = [ ];
     creditPages = [1];
     creditPage = 1;
+    creditSearchText = '';
     getCreditCount() {
-        this.dashboardDataService.getCreditCount({}).subscribe(res => {
+        this.dashboardDataService.getCreditCount({ searchText: this.creditSearchText }).subscribe(res => {
             this.creditPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
             this.getCredit(null);
             console.log(res);
@@ -527,21 +547,35 @@ export class DashboardComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.creditPage - 1;
             if (pageNo == -2) pageNo = this.creditPage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.creditPages.length;
             if (pageNo < 1 || pageNo > this.creditPages.length) return;
             this.creditPage = pageNo;
         } else this.creditPage = 1;
-        this.dashboardDataService.getCredit({ page: this.creditPage, limit: this.dataLimit, order: this.creditOrder, orderby: 'qty' }).subscribe(res => {
+        this.dashboardDataService.getCredit({ page: this.creditPage, limit: this.dataLimit, order: this.creditOrder, orderby: 'qty', searchText: this.creditSearchText }).subscribe(res => {
+            for (var i = 0; i < res.length; i++) res[i].createdAt = new Date(res[i].createdAt.toString());
             this.creditData = res;
             console.log(res);
         });
+    }
+    removeCreditBySale(i) {
+        this.saleDataService.removeCreditBySale({ id: this.creditData[i].id }).subscribe(res => {
+            console.log(res);
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Credit');
+            } else {
+                this.toastr.error(res.msg, 'Credit');
+            }
+        })
     }
     // purchase due
     purchaseDueOrder = 'asc';
     purchaseDueData = [ ];
     purchaseDuePages = [1];
     purchaseDuePage = 1;
+    purchaseDueSearchText = '';
     getPurchaseDueCount() {
-        this.dashboardDataService.getPurchaseDueCount({ }).subscribe(res => {
+        this.dashboardDataService.getPurchaseDueCount({ searchText: this.purchaseDueSearchText }).subscribe(res => {
             this.purchaseDuePages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
             this.getPurchaseDue(null);
             console.log(res);
@@ -551,10 +585,12 @@ export class DashboardComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.purchaseDuePage - 1;
             if (pageNo == -2) pageNo = this.purchaseDuePage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.purchaseDuePages.length;
             if (pageNo < 1 || pageNo > this.purchaseDuePages.length) return;
             this.purchaseDuePage = pageNo;
         } else this.purchaseDuePage = 1;
-        this.dashboardDataService.getPurchaseDue({ page: this.purchaseDuePage, limit: this.dataLimit, order: this.purchaseDueOrder, orderby: 'qty' }).subscribe(res => {
+        this.dashboardDataService.getPurchaseDue({ page: this.purchaseDuePage, limit: this.dataLimit, order: this.purchaseDueOrder, orderby: 'qty', searchText: this.purchaseDueSearchText }).subscribe(res => {
             console.log(res);
             for (let i = 0; i < res.length; i++) {
                 if (res[i].dueDate) res[i].dueDate = new Date(res[i].dueDate.toString());
@@ -578,8 +614,9 @@ export class DashboardComponent implements OnInit {
     returnDueData = [ ];
     returnDuePages = [1];
     returnDuePage = 1;
+    returnDueSearchText = '';
     getReturnDueCount() {
-        this.dashboardDataService.getReturnDueCount({ }).subscribe(res => {
+        this.dashboardDataService.getReturnDueCount({ searchText: this.returnDueSearchText }).subscribe(res => {
             this.returnDuePages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
             this.getReturnDue(null);
             console.log(res);
@@ -589,10 +626,12 @@ export class DashboardComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.returnDuePage - 1;
             if (pageNo == -2) pageNo = this.returnDuePage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.returnDuePages.length;
             if (pageNo < 1 || pageNo > this.returnDuePages.length) return;
             this.returnDuePage = pageNo;
         } else this.returnDuePage = 1;
-        this.dashboardDataService.getReturnDue({ page: this.returnDuePage, limit: this.dataLimit, order: this.returnDueOrder, orderby: 'qty' }).subscribe(res => {
+        this.dashboardDataService.getReturnDue({ page: this.returnDuePage, limit: this.dataLimit, order: this.returnDueOrder, orderby: 'qty',searchText: this.returnDueSearchText }).subscribe(res => {
             console.log(res);
             for (let i = 0; i < res.length; i++) {
                 if (res[i].dueDate) res[i].dueDate = new Date(res[i].dueDate.toString());
@@ -621,7 +660,7 @@ export class DashboardComponent implements OnInit {
         // });
         let data = {
             messageId: 1,
-            customerId: this.creditData[i].id,
+            customerId: this.creditData[i].customerId,
             shopId: 1
         };
         this.messageDataService.sendMessage(data).subscribe(resMessage => {
@@ -681,5 +720,38 @@ export class DashboardComponent implements OnInit {
                 this.toastr.error(res.msg, 'Text');
             }
         });
+    }
+    // form
+    formType = ''; // customer credit / purchase due / return due
+    formIndex = -1;
+    amountDue = 0;
+    dueConfirmFormOpen(type, i) {
+        this.dueConfirmForm.show();
+        this.formType = type;
+        this.formIndex = i;
+        if (this.formType == 'customer credit') {
+            this.amountDue = this.creditData[i].creditAmount;
+        } else if (this.formType == 'purchase due') {
+            this.amountDue = this.purchaseDueData[i].dueAmount;
+        } else if (this.formType == 'return due') {
+            this.amountDue = this.returnDueData[i].dueAmount;
+        }
+    }
+    dueConfirmFormSave() {
+        this.dueConfirmForm.hide();
+        if (this.formType == 'customer credit') {
+            this.removeCreditBySale(this.formIndex);
+        } else if (this.formType == 'purchase due') {
+            this.removeDueByPurchase(this.formIndex);
+        } else if (this.formType == 'return due') {
+            this.removeDueByReturn(this.formIndex);
+        }
+        this.formType = '';
+        this.formIndex = -1;
+    }
+    dueConfirmFormHide() {
+        this.dueConfirmForm.hide();
+        this.formType = '';
+        this.formIndex = -1;
     }
 }

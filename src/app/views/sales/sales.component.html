@@ -9,12 +9,6 @@
                     </div>
                 </div>
                 <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
-                    <!--
-                            <div class="col-md-3">
-                                <ng-select [items]="people" bindLabel="name" autofocus bindValue="id" [(ngModel)]="selectedPersonId">
-                                </ng-select>
-                            </div>
-                            -->
                     <div class="form-group row" *ngFor="let item of items; index as i;">
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Stock ID</label>
@@ -43,20 +37,8 @@
                                     class="fa fa-close"></i></button>
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Unit Price" value="{{ item.price }}" readonly>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">VAT (%)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="VAT" [(ngModel)]="item.vat" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (%)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Discount" [(ngModel)]="item.discount" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (amount)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Discount amount" [(ngModel)]="item.discountamount" (ngModelChange)="changeQTY(i);">
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Price/Unit</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Price/Unit" value="{{ item.price }}" readonly>
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
@@ -86,22 +68,45 @@
 
 
                     <div class="form-group row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Total Amount</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalAmount" readonly>
                         </div>
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Total Discount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalDiscount" readonly>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Discount (%)</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="discountPercent" (ngModelChange)="calculateTotalAmmount();">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Discount Amount</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="discountAmount" (ngModelChange)="calculateTotalAmmount();">
+                        </div>
+                        <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Taxable</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="taxable" readonly>
                         </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Puchase Cost</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="purchaseCost" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Vat (%)</label>
+                            <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="vatPercent" (ngModelChange)="calculateTotalAmmount();">
+                                <option value="0">None   0.0</option>
+                                <option value="0">Exempt 0.0</option>
+                                <option value="0">VAT 0% 0.0</option>
+                                <option value="13">VAT 13% 13.0</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="col-form-label" for="prependedInput">Cumulative Amount</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="cumulativeAmount" readonly>
+                        </div>
 
 
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="col-form-label" for="select1">Payment Mode</label>
                             <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="paymentMode">
                                 <option value="cash">Cash</option>
@@ -109,21 +114,15 @@
                                 <option value="Cash and POS">Cash and POS</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Cumulative Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="cumulativeAmount" readonly>
-                        </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Amount Tendered</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalTendered" (ngModelChange)="changeTendered();">
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Change Due</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="changeDue" readonly>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Credit Amount</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="creditAmount" readonly>
                         </div>
@@ -264,9 +263,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getSaleTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of pages;" [ngClass]="{'active': page == salePage}" (click)="getSaleTable(page)">
+                        <li class="page-item" (click)="getSaleTable(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(salePage, pages);" [ngClass]="{'active': page == salePage}" (click)="getSaleTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
+                        <li class="page-item" (click)="getSaleTable(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getSaleTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>

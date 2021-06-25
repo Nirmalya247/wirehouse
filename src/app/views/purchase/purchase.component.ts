@@ -72,9 +72,9 @@ export class PurchaseComponent implements OnInit {
                     qty: 1,
                     qtystock: this.selectedItem.qty,
                     price: (res.err ? '' : res.price),
-                    discount: (res.err ? '' : res.discount),
+                    discount: 0,
                     discountamount: 0,
-                    vat: (res.err ? '' : res.vat),
+                    vat: 0,
                     cost: (res.err ? '' : res.cost),
                     totalcost: (res.err ? '' : res.cost),
                     mfg: '',
@@ -222,7 +222,7 @@ export class PurchaseComponent implements OnInit {
             if (!res.err) {
                 this.toastr.success('Purchase successful', 'Done!');
                 this.getPurchaseTable(this.purchasePage);
-                // window.open(environment.PATH + 'purchase-bill?purchaseId=' + res.id.toString() + '&paper=A4V2');
+                window.open(environment.PATH + 'purchase-barcode?purchaseId=' + res.id.toString());
                 this.cancelPurchase();
             } else {
                 this.toastr.error('Purchase unsuccessful', 'Attention');
@@ -471,10 +471,23 @@ export class PurchaseComponent implements OnInit {
     purchaseOrderBy = 'createdAt';
     purchaseOrder = 'desc';
     purchaseSearchText = '';
+
+    getTablePages(pageNo, pages) {
+        var start = pageNo - 4;
+        var end = pageNo + 4 + (start < 1 ? 1 - start : 0);
+        start = (end > pages.length ? start - (end - pages.length) : start);
+        start = start < 1 ? 1 : start;
+        end = end > pages.length ? pages.length : end;
+        var p = [ ];
+        for (var i = start; i <= end; i++) p.push(i);
+        return p;
+    }
     getPurchaseTable(pageNo) {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.purchasePage - 1;
             if (pageNo == -2) pageNo = this.purchasePage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.pages.length;
             if (pageNo < 1 || pageNo > this.pages.length) return;
             this.purchasePage = pageNo;
         }

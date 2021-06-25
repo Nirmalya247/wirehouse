@@ -5,12 +5,10 @@
                 <div class="card-header">
                     <i class="fa fa-edit"></i>Add New Transaction
                     <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize"
-                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                        <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
                     </div>
                 </div>
-                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
-                    class="card-body">
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
                     <div class="form-group row">
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Type</label>
@@ -24,18 +22,12 @@
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Account Type</label>
-                            <ng-select #AccountTypeSel [items]="accountTypesList" bindLabel="accounttype"
-                                autofocus bindValue="accounttype" [(ngModel)]="selectedAccountType"
-                                (search)="dataSearch($event, 'accounttype', 2)" (change)="dataChange($event, 'accounttype', 2)"
-                                placeholder="search account type">
+                            <ng-select #AccountTypeSel [items]="accountTypesList" bindLabel="accounttype" autofocus bindValue="accounttype" [(ngModel)]="selectedAccountType" (search)="dataSearch($event, 'accounttype', 2)" (change)="dataChange($event, 'accounttype', 2)" placeholder="search account type">
                             </ng-select>
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Account Name</label>
-                            <ng-select #AccountSel [items]="accountList" bindLabel="account"
-                                autofocus bindValue="account" [(ngModel)]="selectedAccount"
-                                (search)="dataSearch($event, 'account', 3)" (change)="dataChange($event, 'account', 3)"
-                                placeholder="search account type">
+                            <ng-select #AccountSel [items]="accountList" bindLabel="account" autofocus bindValue="account" [(ngModel)]="selectedAccount" (search)="dataSearch($event, 'account', 3)" (change)="dataChange($event, 'account', 3)" placeholder="search account type">
                             </ng-select>
                         </div>
                         <div class="col-md-3">
@@ -81,34 +73,29 @@
                     <i class="fa fa-align-justify"></i> ACCOUNTING
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <a href="{{ serverPath + 'accounting/csv?type=' + dataType + '&orderBy=' + dataOrderBy + '&order=' + dataOrder + '&from=' + dataFrom + '&to=' + dataTo }}"
-                            target="_blank">Download CSV</a>
+                        <a href="{{ serverPath + 'accounting/csv?type=' + dataType + '&orderBy=' + dataOrderBy + '&order=' + dataOrder + '&from=' + dataFrom + '&to=' + dataTo }}" target="_blank">Download CSV</a>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Data</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="dataType"
-                                (ngModelChange)="getDataTable(null)">
+                            <select class="form-control form-control-sm" [(ngModel)]="dataType" (ngModelChange)="getDataTable(null)">
                                 <option value="sales">sales</option>
                                 <option value="purchase">purchase</option>
                             </select>
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">From</label>
-                            <input class="form-control form-control-sm" type="date" placeholder="from"
-                                [(ngModel)]="dataFrom" (ngModelChange)="getDataTable(null)">
+                            <input class="form-control form-control-sm" type="date" placeholder="from" [(ngModel)]="dataFrom" (ngModelChange)="getDataTable(null)">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">To</label>
-                            <input class="form-control form-control-sm" type="date" placeholder="to"
-                                [(ngModel)]="dataTo" (ngModelChange)="getDataTable(null);">
+                            <input class="form-control form-control-sm" type="date" placeholder="to" [(ngModel)]="dataTo" (ngModelChange)="getDataTable(null);">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Data Per Page</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="dataLimit"
-                                (ngModelChange)="getDataTable(null)">
+                            <select class="form-control form-control-sm" [(ngModel)]="dataLimit" (ngModelChange)="getDataTable(null)">
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -119,8 +106,7 @@
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Sort By</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="dataOrderBy"
-                                (ngModelChange)="getDataTable(null)">
+                            <select class="form-control form-control-sm" [(ngModel)]="dataOrderBy" (ngModelChange)="getDataTable(null)">
                                 <option value="createdAt">Date</option>
                                 <option value="totalItem">Total Item</option>
                                 <option value="totalAmount">Total Price</option>
@@ -128,8 +114,7 @@
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Order</label>
-                            <select class="form-control form-control-sm" [(ngModel)]="dataOrder"
-                                (ngModelChange)="getDataTable(null)">
+                            <select class="form-control form-control-sm" [(ngModel)]="dataOrder" (ngModelChange)="getDataTable(null)">
                                 <option value="asc">Ascending</option>
                                 <option value="desc">Descending</option>
                             </select>
@@ -154,8 +139,7 @@
                         <tbody>
                             <tr *ngFor="let data of datas; index as i;">
                                 <td>{{ i + 1 + (dataPage - 1) * dataLimit }}</td>
-                                <td><a href="{{ serverPath + 'sale-bill?saleId=' + data.id.toString() + '&paper=A4' }}"
-                                        target="_blank" *ngIf=" dataType == 'sales' ">{{ data.id }}</a>
+                                <td><a href="{{ serverPath + 'sale-bill?saleId=' + data.id.toString() + '&paper=A4' }}" target="_blank" *ngIf=" dataType == 'sales' ">{{ data.id }}</a>
                                     <div *ngIf=" dataType != 'sales' ">{{ dataType == 'sales' ? data.id : data.billID }}
                                     </div>
                                 </td>
@@ -172,10 +156,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getDataTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of pages;"
-                            [ngClass]="{'active': page == dataPage}" (click)="getDataTable(page)">
+                        <li class="page-item" (click)="getDataTable(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(dataPage, pages);" [ngClass]="{'active': page == dataPage}" (click)="getDataTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
+                        <li class="page-item" (click)="getDataTable(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getDataTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>

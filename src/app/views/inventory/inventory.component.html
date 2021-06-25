@@ -5,64 +5,44 @@
                 <div class="card-header">
                     <i class="fa fa-edit"></i>Add New Item
                     <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize"
-                            (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+                        <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
                     </div>
                 </div>
-                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed"
-                    class="card-body">
+                <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
                     <form class="form-horizontal" #f="ngForm" (ngSubmit)="addItem(f)" novalidate>
                         <div class="form-group row">
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Item Code</label>
-                                <input type="text" class="form-control" placeholder="code" required name="itemcode"
-                                    ngModel>
+                                <input type="text" class="form-control" placeholder="code" name="itemcode" ngModel>
                             </div>
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Item Name</label>
-                                <input type="text" class="form-control" placeholder="name" required name="itemname"
-                                    ngModel>
+                                <input type="text" class="form-control" placeholder="name" required name="itemname" ngModel>
                             </div>
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Manufacturer</label>
-                                <input type="text" class="form-control" placeholder="manufacturer" required
-                                    name="manufacturer" ngModel>
+                                <input type="text" class="form-control" placeholder="manufacturer" required name="manufacturer" ngModel>
                             </div>
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Price/Unit</label>
-                                <input type="text" class="form-control" placeholder="0.00" required name="price"
-                                    ngModel>
+                                <input type="text" class="form-control" placeholder="0.00" required name="price" ngModel>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">Item Type</label>
-                                <ng-select #FindItem [searchFn]="searchFn" [items]="itemTypesList" bindLabel="itemtypename" autofocus
-                                    bindValue="id" [(ngModel)]="selectedItemTypeID" (search)="itemTypeSearch($event)"
-                                    (change)="itemTypeChange($event)" placeholder="search item" [ngModelOptions]="{standalone: true}">
+                                <ng-select #FindItem [searchFn]="searchFn" [items]="itemTypesList" bindLabel="itemtypename" autofocus bindValue="id" [(ngModel)]="selectedItemTypeID" (search)="itemTypeSearch($event)" (change)="itemTypeChange($event)" placeholder="search item" [ngModelOptions]="{standalone: true}">
                                 </ng-select>
                             </div>
                             <div class="col-md-3">
                                 <label class="col-form-label" for="prependedInput">HSN</label>
-                                <input type="text" class="form-control" placeholder="HSN" name="hsn"
-                                    ngModel>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">VAT (%)</label>
-                                <input type="text" class="form-control" placeholder="VAT (%)" name="vat"
-                                    ngModel>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Discount (%)</label>
-                                <input type="text" class="form-control" placeholder="Discount (%)" name="discount"
-                                    ngModel>
+                                <input type="text" class="form-control" placeholder="HSN" name="hsn" ngModel>
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <label class="col-form-label" for="prependedInput">Description (max 1024 character)</label>
-                                <input type="text" class="form-control" placeholder="description.." name="description"
-                                    ngModel>
+                                <input type="text" class="form-control" placeholder="description.." name="description" ngModel>
                             </div>
                         </div>
                         <div class="form-actions">
@@ -118,8 +98,7 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                                 </div>
-                                <input type="email" id="input2-group1" name="input2-group1" class="form-control form-control-sm"
-                                    placeholder="Search" [(ngModel)]="itemSearch" (ngModelChange)="getItemTable(null)">
+                                <input type="email" id="input2-group1" name="input2-group1" class="form-control form-control-sm" placeholder="Search" [(ngModel)]="itemSearch" (ngModelChange)="getItemTable(null)">
                             </div>
                         </div>
                     </div>
@@ -136,7 +115,7 @@
                                 <th>Unit Price</th>
                                 <th>Total Sold</th>
                                 <th>Total Earned</th>
-                                <th>Update</th>
+                                <!-- <th>Update</th> -->
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
@@ -152,11 +131,11 @@
                                 <td>{{ item.price }}</td>
                                 <td>{{ item.totalsold }}</td>
                                 <td>{{ item.totalearned }}</td>
-                                <td>
+                                <!-- <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="itemUpdateFormShow(i)">
                                         update QTY
                                     </button>
-                                </td>
+                                </td> -->
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="itemFormShow(i)">
                                         <i class="fa fa-pencil"></i>
@@ -172,10 +151,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getItemTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of pages;"
-                            [ngClass]="{'active': page == itemPage}" (click)="getItemTable(page)">
+                        <li class="page-item" (click)="getItemTable(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(itemPage, pages);" [ngClass]="{'active': page == itemPage}" (click)="getItemTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
+                        <li class="page-item" (click)="getItemTable(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getItemTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
@@ -195,8 +175,7 @@
 
 
 
-<div bsModal #itemForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="itemFormLabel"
-    aria-hidden="true">
+<div bsModal #itemForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="itemFormLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -209,25 +188,21 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Product Code</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Code" [(ngModel)]="itemCode">
+                        <input type="text" class="form-control form-control-sm" placeholder="Code" [(ngModel)]="itemCode">
                     </div>
                     <div class="col-md-5">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Product Name</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Product Name" [(ngModel)]="itemName">
+                        <input type="text" class="form-control form-control-sm" placeholder="Product Name" [(ngModel)]="itemName">
                     </div>
                     <div class="col-md-3">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Unit Price" [(ngModel)]="itemUnitPrice">
+                        <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="itemUnitPrice">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Description</label>
-                        <input type="text" class="form-control form-control-sm"
-                            placeholder="Description" [(ngModel)]="itemDescription">
+                        <input type="text" class="form-control form-control-sm" placeholder="Description" [(ngModel)]="itemDescription">
                     </div>
                 </div>
             </div>
@@ -235,9 +210,12 @@
                 <button type="button" class="btn btn-secondary" (click)="itemFormHide()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="itemFormSave()">Save</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 
 
@@ -250,8 +228,7 @@
 
 
 
-<div bsModal #itemUpdateForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="itemUpdateFormLabel"
-    aria-hidden="true">
+<div bsModal #itemUpdateForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="itemUpdateFormLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -264,18 +241,15 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Product Code</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Code" [(ngModel)]="itemCode" readonly>
+                        <input type="text" class="form-control form-control-sm" placeholder="Code" [(ngModel)]="itemCode" readonly>
                     </div>
                     <div class="col-md-5">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Product Name</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Product Name" [(ngModel)]="itemName" readonly>
+                        <input type="text" class="form-control form-control-sm" placeholder="Product Name" [(ngModel)]="itemName" readonly>
                     </div>
                     <div class="col-md-3">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Unit Price" [(ngModel)]="itemUnitPrice">
+                        <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="itemUnitPrice">
                     </div>
                 </div>
                 <div class="row">
@@ -288,26 +262,24 @@
                     </div>
                     <div class="col-md-5">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Quantity" [(ngModel)]="itemQTY">
+                        <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="itemQTY">
                     </div>
                     <div class="col-md-3">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Cost</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Unit Cost" [(ngModel)]="itemUpdateUnitCost">
+                        <input type="text" class="form-control form-control-sm" placeholder="Unit Cost" [(ngModel)]="itemUpdateUnitCost">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Expiry Year</label>
-                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryYear" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Year" >
+                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryYear" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Year">
                             <option value="2100">No Expiry</option>
                             <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Expiry Month</label>
-                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryMonth" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Month" >
+                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryMonth" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Month">
                             <option value="13">No Expiry</option>
                             <option *ngFor="let month of months" value="{{ month[0] }}">{{ month[1] }}</option>
                         </select>
@@ -316,35 +288,29 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Vendor Name</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Vendor First Name" [(ngModel)]="itemVendorFName" [disabled]="itemUpdateType == 'sub'">
+                        <input type="text" class="form-control form-control-sm" placeholder="Vendor First Name" [(ngModel)]="itemVendorFName" [disabled]="itemUpdateType == 'sub'">
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Vendor Name</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Vendor Last Name" [(ngModel)]="itemVendorLName" [disabled]="itemUpdateType == 'sub'">
+                        <input type="text" class="form-control form-control-sm" placeholder="Vendor Last Name" [(ngModel)]="itemVendorLName" [disabled]="itemUpdateType == 'sub'">
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Vendor Name</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Vendor company" [(ngModel)]="itemVendorCompany" [disabled]="itemUpdateType == 'sub'">
+                        <input type="text" class="form-control form-control-sm" placeholder="Vendor company" [(ngModel)]="itemVendorCompany" [disabled]="itemUpdateType == 'sub'">
                     </div>
                     <div class="col-md-6">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Vendor phone</label>
-                        <input type="text" class="form-control form-control-sm"
-                        placeholder="Vendor Phone" [(ngModel)]="itemVendorPhone" [disabled]="itemUpdateType == 'sub'">
+                        <input type="text" class="form-control form-control-sm" placeholder="Vendor Phone" [(ngModel)]="itemVendorPhone" [disabled]="itemUpdateType == 'sub'">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Rack No</label>
-                        <input type="text" class="form-control form-control-sm"
-                            placeholder="rack no" [(ngModel)]="itemRack">
+                        <input type="text" class="form-control form-control-sm" placeholder="rack no" [(ngModel)]="itemRack">
                     </div>
                     <div class="col-md-8">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Description</label>
-                        <input type="text" class="form-control form-control-sm"
-                            placeholder="Description" [(ngModel)]="itemDescription">
+                        <input type="text" class="form-control form-control-sm" placeholder="Description" [(ngModel)]="itemDescription">
                     </div>
                 </div>
             </div>
@@ -352,9 +318,12 @@
                 <button type="button" class="btn btn-secondary" (click)="itemUpdateFormHide()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="itemUpdateFormSave()">Save</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 
 
@@ -367,8 +336,7 @@
 
 
 
-<div bsModal #deleteConfirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel"
-    aria-hidden="true">
+<div bsModal #deleteConfirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -384,6 +352,9 @@
                 <button type="button" class="btn btn-secondary" (click)="deleteConfirmFormHide()">No</button>
                 <button type="button" class="btn btn-primary" (click)="deleteConfirmFormSave()">Yes</button>
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

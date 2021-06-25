@@ -40,7 +40,7 @@
                             <input type="text" class="form-control form-control-sm" placeholder="Available" value="{{ item.qtystock }}" readonly>
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Selling Price/Unit</label>
                             <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="item.price" (ngModelChange)="changeQTY(i)">
                         </div>
                         <div class="col-md-1">
@@ -50,19 +50,7 @@
                                     class="fa fa-close"></i></button>
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">VAT (%)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="VAT" [(ngModel)]="item.vat" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (%)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Discount" [(ngModel)]="item.discount" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Disc (amount)</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Discount amount" [(ngModel)]="item.discountamount" (ngModelChange)="changeQTY(i);">
-                        </div>
-                        <div class="col-md-2">
-                            <label class="col-form-label col-form-label-sm" for="prependedInput">Cost</label>
+                            <label class="col-form-label col-form-label-sm" for="prependedInput">Purchase Cost/Unit</label>
                             <input type="text" class="form-control form-control-sm" placeholder="Cost" [(ngModel)]="item.cost" (ngModelChange)="changeQTY(i);">
                         </div>
                         <div class="col-md-2">
@@ -274,7 +262,7 @@
                         <tbody>
                             <tr *ngFor="let purchase of purchases; index as i;">
                                 <td>{{ i + 1 + (purchasePage - 1) * purchaseLimit }}</td>
-                                <td>{{ purchase.billID }}</td>
+                                <td><a href="{{ serverPath + 'purchase-barcode?purchaseId=' + purchase.id.toString() }}" target="_blank">{{ purchase.billID }}</a></td>
                                 <td>{{ purchase.totalQTY }}</td>
                                 <td>{{ purchase.totalAmount }}</td>
                                 <td>{{ purchase.totalTendered }}</td>
@@ -287,13 +275,13 @@
                         </tbody>
                     </table>
                     <ul class="pagination">
-                        <li class="page-item" (click)="getPurchaseTable(-1)"><button class="page-link">Prev</button>
-                        </li>
-                        <li class="page-item active" *ngFor="let page of pages;" [ngClass]="{'active': page == purchasePage}" (click)="getPurchaseTable(page)">
+                        <li class="page-item" (click)="getPurchaseTable(-1)"><button class="page-link">Prev</button></li>
+                        <li class="page-item" (click)="getPurchaseTable(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(purchasePage, pages);" [ngClass]="{'active': page == purchasePage}" (click)="getPurchaseTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
-                        <li class="page-item" (click)="getPurchaseTable(-2)"><button class="page-link">Next</button>
-                        </li>
+                        <li class="page-item" (click)="getPurchaseTable(-4)"><button class="page-link">Last</button></li>
+                        <li class="page-item" (click)="getPurchaseTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
             </div>

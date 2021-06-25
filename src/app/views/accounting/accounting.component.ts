@@ -204,10 +204,23 @@ export class AccountingComponent implements OnInit {
     dataOrder = 'asc';
     dataSearchText = '';
 
+    getTablePages(pageNo, pages) {
+        var start = pageNo - 4;
+        var end = pageNo + 4 + (start < 1 ? 1 - start : 0);
+        start = (end > pages.length ? start - (end - pages.length) : start);
+        start = start < 1 ? 1 : start;
+        end = end > pages.length ? pages.length : end;
+        var p = [ ];
+        for (var i = start; i <= end; i++) p.push(i);
+        return p;
+    }
+
     getDataTable(pageNo) {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.dataPage - 1;
             if (pageNo == -2) pageNo = this.dataPage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.pages.length;
             if (pageNo < 1 || pageNo > this.pages.length) return;
             this.dataPage = pageNo;
         } else this.dataPage = 1;

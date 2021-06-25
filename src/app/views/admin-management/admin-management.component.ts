@@ -16,7 +16,7 @@ import { Auth } from '../../auth-services/auth';
 })
 export class AdminManagementComponent implements OnInit {
     @ViewChild('userForm') public userForm: ModalDirective;
-    @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
+    @ViewChild('confirmForm') public confirmForm: ModalDirective;
     @ViewChild('messageForm') public messageForm: ModalDirective;
     @ViewChild('mailForm') public mailForm: ModalDirective;
     @ViewChild('FindMessage') findMessage: NgSelectComponent;
@@ -46,6 +46,8 @@ export class AdminManagementComponent implements OnInit {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.userPage - 1;
             if (pageNo == -2) pageNo = this.userPage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.userPages.length;
             if (pageNo < 1 || pageNo > this.userPages.length) return;
             this.userPage = pageNo;
         }
@@ -97,29 +99,6 @@ export class AdminManagementComponent implements OnInit {
                 }
             });
         }
-    }
-
-    deleteI = -1;
-    deleteUser(i) {
-        this.deleteI = i;
-        this.deleteConfirmForm.show();
-    }
-
-    deleteConfirmFormHide() {
-        this.deleteI = -1;
-        this.deleteConfirmForm.hide();
-    }
-
-    deleteConfirmFormSave() {
-        this.authDataService.deleteUser({ id: this.usersList[this.deleteI].id }).subscribe(res => {
-            if (!res.err) {
-                this.toastr.success('user deleted', 'Deleted!');
-                this.getUserTable(this.userPage);
-            } else {
-                this.toastr.error('user could not be deleted', 'Delete');
-            }
-            this.deleteConfirmFormHide();
-        });
     }
 
     getAdminRole(value) {
@@ -234,14 +213,16 @@ export class AdminManagementComponent implements OnInit {
         }
     }
 
-    userSetSalary() {
-        this.authDataService.setSalary({ }).subscribe(res => {
-            if (!res.err) {
-                this.toastr.success('salary given', 'User Info');
-            } else {
-                this.toastr.error('some error', 'User Info');
-            }
-        })
+    userSetSalary(i) {
+        this.salaryToI = i;
+        this.confirmFor = 'salary';
+        this.confirmForm.show();
+    }
+
+    deleteUser(i) {
+        this.deleteI = i;
+        this.confirmFor = 'user';
+        this.confirmForm.show();
     }
 
     //***********
@@ -253,10 +234,24 @@ export class AdminManagementComponent implements OnInit {
     messageOrderBy = 'id';
     messageOrder = 'asc';
     messageSearchText = '';
+
+    getTablePages(pageNo, pages) {
+        var start = pageNo - 4;
+        var end = pageNo + 4 + (start < 1 ? 1 - start : 0);
+        start = (end > pages.length ? start - (end - pages.length) : start);
+        start = start < 1 ? 1 : start;
+        end = end > pages.length ? pages.length : end;
+        var p = [ ];
+        for (var i = start; i <= end; i++) p.push(i);
+        return p;
+    }
+
     getMessageTable(pageNo) {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.messagePage - 1;
             if (pageNo == -2) pageNo = this.messagePage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.messagePages.length;
             if (pageNo < 1 || pageNo > this.messagePages.length) return;
             this.messagePage = pageNo;
         }
@@ -361,6 +356,60 @@ export class AdminManagementComponent implements OnInit {
         }
     }
 
+    deleteMessage(i) {
+        this.deleteMessageI = i
+        this.confirmFor = 'message';
+        this.confirmForm.show();
+    }
+
+
+    
+
+    deleteI = -1;
+    deleteMessageI = -1
+    salaryToI = -1;
+    confirmFor = '';
+
+    confirmFormHide() {
+        this.deleteI = -1;
+        this.deleteMessageI = -1
+        this.salaryToI = -1;
+        this.confirmForm.hide();
+    }
+
+    confirmFormSave() {
+        if (this.confirmFor == 'user') {
+            this.authDataService.deleteUser({ id: this.usersList[this.deleteI].id }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success('user deleted', 'Deleted!');
+                    this.getUserTable(this.userPage);
+                } else {
+                    this.toastr.error('user could not be deleted', 'Delete');
+                }
+                this.confirmFormHide();
+            });
+        } else if (this.confirmFor == 'message') {
+            this.messageDataService.deleteMessage({ id: this.messagesList[this.deleteMessageI].id }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success('message deleted', 'Deleted!');
+                    this.getMessageTable(this.messagePage);
+                } else {
+                    this.toastr.error('message could not be deleted', 'Delete');
+                }
+                this.confirmFormHide();
+            });
+        } else if (this.confirmFor == 'salary') {
+            this.authDataService.setSalary({ }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success('salary given', 'User Info');
+                } else {
+                    this.toastr.error('some error', 'User Info');
+                }
+                this.confirmFormHide();
+            });
+        }
+    }
+
     //***********
 
     shopname: string = '';
@@ -446,7 +495,7 @@ export class AdminManagementComponent implements OnInit {
         this.iconCollapse = this.isCollapsed ? 'icon-arrow-down' : 'icon-arrow-up';
     }
 
-    // mail
+    // mail for user
     messages = [];
     message = null;
     mailUserI = -1;

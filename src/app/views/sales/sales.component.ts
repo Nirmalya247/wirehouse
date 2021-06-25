@@ -26,8 +26,12 @@ export class SalesComponent implements OnInit {
 
     items: Array<ItemSale> = [];
     totalAmount: string;
+    discountPercent: string;
+    discountAmount: string;
     totalDiscount: string;
-    taxable: string;
+    taxable: string
+    purchaseCost: string = '0.00';
+    vatPercent: string = '13';
     paymentMode: string = 'cash';
     cumulativeAmount: string;
     totalTendered: string;
@@ -62,6 +66,7 @@ export class SalesComponent implements OnInit {
                 this.items[i].rack = res.itemUpdate.rack;
                 this.items[i].hsn = res.item.hsn;
                 this.items[i].qtystock = res.itemUpdate.qtystock;
+                this.items[i].cost = res.itemUpdate.cost;
                 this.items[i].qty = 1;
                 this.items[i].price = res.itemUpdate.price;
                 this.items[i].discount = res.item.discount;
@@ -105,6 +110,7 @@ export class SalesComponent implements OnInit {
                             rack: res[i].rack,
                             hsn: this.selectedItem.hsn,
                             qtystock: res[i].qtystock,
+                            cost: res[i].cost,
                             qty: 1,
                             price: res[i].price,
                             discount: this.selectedItem.discount,
@@ -172,15 +178,20 @@ export class SalesComponent implements OnInit {
         this.calculateTotalAmmount();
     }
     calculateTotalAmmount() {
+        let purchaseCost = 0;
         let totalAmount = 0;
         let totalDiscount = 0;
         let taxable = 0;
         let cumulativeAmount = 0;
+        let discountPercent = isNaN(Number(this.discountPercent)) ? 0 : Number(this.discountPercent);
+        let discountAmount = isNaN(Number(this.discountAmount)) ? 0 : Number(this.discountAmount);
+        let vatPercent = isNaN(Number(this.vatPercent)) ? 0 : Number(this.vatPercent);
 
         let oldCredit = Number(this.customerCredit);
         if (isNaN(oldCredit) || !this.addCredit) oldCredit = 0;
 
         for (let i = 0; i < this.items.length; i++) {
+            purchaseCost += Number(this.items[i].qty) * Number(this.items[i].cost);
             let amount = Number(this.items[i].qty) * Number(this.items[i].price);
             let discount = amount * Number(this.items[i].discount) / 100 + Number(this.items[i].discountamount);
             totalAmount += amount;
@@ -188,9 +199,12 @@ export class SalesComponent implements OnInit {
             taxable += (amount - discount);
             cumulativeAmount += Number(this.items[i].totalprice);
         }
-        console.log((Number(this.totalTendered) - cumulativeAmount) + Number(this.customerCredit), Number(this.customerCreditLimit))
+        taxable = cumulativeAmount - cumulativeAmount * discountPercent / 100 - discountAmount;
+        cumulativeAmount = taxable + taxable * vatPercent / 100;
+        // console.log((Number(this.totalTendered) - cumulativeAmount) + Number(this.customerCredit), Number(this.customerCreditLimit))
         cumulativeAmount += oldCredit;
 
+        this.purchaseCost = purchaseCost.toFixed(2);
         this.totalAmount = totalAmount.toFixed(2);
         this.totalDiscount = totalDiscount.toFixed(2);
         this.taxable = taxable.toFixed(2);
@@ -265,7 +279,10 @@ export class SalesComponent implements OnInit {
             totalQTY: totalQTY,
             paymentMode: this.paymentMode,
             totalAmount: isNaN(Number(this.totalAmount)) ? 0 : Number(this.totalAmount),
+            discount: isNaN(Number(this.discountPercent)) ? 0 : Number(this.discountPercent),
+            discountamount: isNaN(Number(this.discountAmount)) ? 0 : Number(this.discountAmount),
             totalTaxable: isNaN(Number(this.taxable)) ? 0 : Number(this.taxable),
+            vat: isNaN(Number(this.vatPercent)) ? 0 : Number(this.vatPercent),
             totalCost: isNaN(Number(this.cumulativeAmount)) ? 0 : Number(this.cumulativeAmount),
             cumulativeAmount: isNaN(Number(this.cumulativeAmount)) ? 0 : Number(this.cumulativeAmount),
             totalTendered: isNaN(Number(this.totalTendered)) ? 0 : Number(this.totalTendered),
@@ -565,6 +582,7 @@ export class SalesComponent implements OnInit {
                                     rack: res[i].rack,
                                     hsn: this.selectedItem.hsn,
                                     qtystock: res[i].qtystock,
+                                    cost: res[i].cost,
                                     qty: 1,
                                     price: res[i].price,
                                     discount: this.selectedItem.discount,
@@ -599,10 +617,23 @@ export class SalesComponent implements OnInit {
     saleOrderBy = 'createdAt';
     saleOrder = 'desc';
     saleSearchText = '';
+
+    getTablePages(pageNo, pages) {
+        var start = pageNo - 4;
+        var end = pageNo + 4 + (start < 1 ? 1 - start : 0);
+        start = (end > pages.length ? start - (end - pages.length) : start);
+        start = start < 1 ? 1 : start;
+        end = end > pages.length ? pages.length : end;
+        var p = [ ];
+        for (var i = start; i <= end; i++) p.push(i);
+        return p;
+    }
     getSaleTable(pageNo) {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.salePage - 1;
             if (pageNo == -2) pageNo = this.salePage + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.pages.length;
             if (pageNo < 1 || pageNo > this.pages.length) return;
             this.salePage = pageNo;
         }

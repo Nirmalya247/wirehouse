@@ -18,7 +18,7 @@ import { ReturnCreate, ReturnItemCreate } from '../../data/return';
 })
 
 export class ReturnItemComponent implements OnInit {
-    @ViewChild('c') ngSelectComponent: NgSelectComponent;
+    @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
 
     serverPath = environment.PATH;
 
@@ -192,7 +192,7 @@ export class ReturnItemComponent implements OnInit {
         let data = {
             totalItem:  this.items.length,
             totalQTY: totalQTY,
-            totalAmount: isNaN(Number(this.totalAmount)) ? 0 : Number(this.totalAmount),
+            totalAmount: isNaN(Number(this.cumulativeAmount)) ? 0 : Number(this.cumulativeAmount),
             totalTendered: isNaN(Number(this.totalTendered)) ? 0 : Number(this.totalTendered),
             changeDue: isNaN(Number(this.changeDue)) ? 0 : Number(this.changeDue),
             dueAmount: isNaN(Number(this.dueAmount)) ? 0 : Number(this.dueAmount),
@@ -338,10 +338,23 @@ export class ReturnItemComponent implements OnInit {
     order = 'desc';
     searchText = '';
 
+    getTablePages(pageNo, pages) {
+        var start = pageNo - 4;
+        var end = pageNo + 4 + (start < 1 ? 1 - start : 0);
+        start = (end > pages.length ? start - (end - pages.length) : start);
+        start = start < 1 ? 1 : start;
+        end = end > pages.length ? pages.length : end;
+        var p = [ ];
+        for (var i = start; i <= end; i++) p.push(i);
+        return p;
+    }
+
     getReturnTable(pageNo) {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.page - 1;
             if (pageNo == -2) pageNo = this.page + 1;
+            if (pageNo == -3) pageNo = 1;
+            if (pageNo == -4) pageNo = this.pages.length;
             if (pageNo < 1 || pageNo > this.pages.length) return;
             this.page = pageNo;
         }

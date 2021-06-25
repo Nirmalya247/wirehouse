@@ -6,7 +6,7 @@
                     <i class="fa fa-align-justify"></i> ACCOUNTS
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="userSetSalary()">Give Salary</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="userSetSalary(null)">Give Salary</button>
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="userFormShow('newUser', null)">Create New User</button>
                     </div>
                 </div>
@@ -104,9 +104,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getUserTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of userPages;" [ngClass]="{'active': page == userPage}" (click)="getUserTable(page)">
+                        <li class="page-item" (click)="getUserTable(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(userPage, userPages);" [ngClass]="{'active': page == userPage}" (click)="getUserTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
+                        <li class="page-item" (click)="getUserTable(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getUserTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
@@ -262,9 +264,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getMessageTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of messagePages;" [ngClass]="{'active': page == messagePage}" (click)="getMessageTable(page)">
+                        <li class="page-item" (click)="getMessageTable(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(messagePage, messagePages);" [ngClass]="{'active': page == messagePage}" (click)="getMessageTable(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
+                        <li class="page-item" (click)="getMessageTable(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getMessageTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
@@ -433,12 +437,12 @@
 
 
 
-<div bsModal #deleteConfirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+<div bsModal #confirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Delete Item</h4>
-                <button type="button" class="close" (click)="deleteConfirmFormHide()" aria-label="Close">
+                <h4 class="modal-title">{{ (confirmFor == 'salary' ? 'Give Salary' : 'Delete Item') }}</h4>
+                <button type="button" class="close" (click)="confirmFormHide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -446,8 +450,8 @@
                 Are you sure?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="deleteConfirmFormHide()">No</button>
-                <button type="button" class="btn btn-primary" (click)="deleteConfirmFormSave()">Yes</button>
+                <button type="button" class="btn btn-secondary" (click)="confirmFormHide()">No</button>
+                <button type="button" class="btn btn-primary" (click)="confirmFormSave()">Yes</button>
             </div>
         </div>
         <!-- /.modal-content -->

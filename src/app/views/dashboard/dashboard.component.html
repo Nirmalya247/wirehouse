@@ -129,9 +129,11 @@
                                     </table>
                                     <ul class="pagination">
                                         <li class="page-item" (click)="getExpiry(-1)"><button class="page-link">Prev</button></li>
-                                        <li class="page-item active" *ngFor="let page of expiryPages;" [ngClass]="{'active': page == expiryPage}" (click)="getExpiry(page)">
+                                        <li class="page-item" (click)="getExpiry(-3)"><button class="page-link">First</button></li>
+                                        <li class="page-item active" *ngFor="let page of getTablePages(expiryPage, expiryPages);" [ngClass]="{'active': page == expiryPage}" (click)="getExpiry(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
+                                        <li class="page-item" (click)="getExpiry(-4)"><button class="page-link">Last</button></li>
                                         <li class="page-item" (click)="getExpiry(-2)"><button class="page-link">Next</button></li>
                                     </ul>
                                 </div>
@@ -177,9 +179,11 @@
                                     </table>
                                     <ul class="pagination">
                                         <li class="page-item" (click)="getStock(-1)"><button class="page-link">Prev</button></li>
-                                        <li class="page-item active" *ngFor="let page of stockPages;" [ngClass]="{'active': page == stockPage}" (click)="getStock(page)">
+                                        <li class="page-item" (click)="getStock(-3)"><button class="page-link">First</button></li>
+                                        <li class="page-item active" *ngFor="let page of getTablePages(stockPage, stockPages);" [ngClass]="{'active': page == stockPage}" (click)="getStock(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
+                                        <li class="page-item" (click)="getStock(-4)"><button class="page-link">Last</button></li>
                                         <li class="page-item" (click)="getStock(-2)"><button class="page-link">Next</button></li>
                                     </ul>
                                 </div>
@@ -219,9 +223,11 @@
                                     </table>
                                     <ul class="pagination">
                                         <li class="page-item" (click)="getDemand(-1)"><button class="page-link">Prev</button></li>
-                                        <li class="page-item active" *ngFor="let page of demandPages;" [ngClass]="{'active': page == demandPage}" (click)="getDemand(page)">
+                                        <li class="page-item" (click)="getDemand(-3)"><button class="page-link">First</button></li>
+                                        <li class="page-item active" *ngFor="let page of getTablePages(demandPage, demandPages);" [ngClass]="{'active': page == demandPage}" (click)="getDemand(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
+                                        <li class="page-item" (click)="getDemand(-4)"><button class="page-link">Last</button></li>
                                         <li class="page-item" (click)="getDemand(-2)"><button class="page-link">Next</button></li>
                                     </ul>
                                 </div>
@@ -261,9 +267,11 @@
                                     </table>
                                     <ul class="pagination">
                                         <li class="page-item" (click)="getEarning(-1)"><button class="page-link">Prev</button></li>
-                                        <li class="page-item active" *ngFor="let page of earningPages;" [ngClass]="{'active': page == earningPage}" (click)="getEarning(page)">
+                                        <li class="page-item" (click)="getEarning(-3)"><button class="page-link">First</button></li>
+                                        <li class="page-item active" *ngFor="let page of getTablePages(earningPage, earningPages);" [ngClass]="{'active': page == earningPage}" (click)="getEarning(page)">
                                             <button class="page-link">{{ page }}</button>
                                         </li>
+                                        <li class="page-item" (click)="getEarning(-4)"><button class="page-link">Last</button></li>
                                         <li class="page-item" (click)="getEarning(-2)"><button class="page-link">Next</button></li>
                                     </ul>
                                 </div>
@@ -283,6 +291,7 @@
                     CUSTOMER CREDIT LIMIT
 
                     <div class="card-header-actions" style="height: 21px;">
+                        <input class="form-control form-control-sm" style="width: 50%; display: inline-block;" placeholder="Search" [(ngModel)]="creditSearchText" (ngModelChange)="getCredit(null)">
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllCustomer()">Send Message to All</button>
                     </div>
                 </div>
@@ -290,28 +299,32 @@
                     <table class="table table-sm">
                         <thead>
                             <tr>
-                                <th>Customer ID</th>
+                                <th>Bill ID</th>
                                 <th>Customer Name</th>
                                 <th>Phone</th>
                                 <th>Email</th>
                                 <th>Credit</th>
-                                <th>Credit Limit</th>
-                                <th>Total Spending</th>
+                                <th>Bill Date</th>
                                 <th>Send Mail</th>
+                                <th>Received</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let credit of creditData; index as i;">
                                 <td>{{ credit.id }}</td>
-                                <td>{{ credit.name }}</td>
-                                <td>{{ credit.phone }}</td>
-                                <td>{{ credit.email }}</td>
-                                <td>{{ credit.credit }}</td>
-                                <td>{{ credit.creditlimit }}</td>
-                                <td>{{ credit.amount }}</td>
+                                <td>{{ credit.customerName }}</td>
+                                <td>{{ credit.customerPhone }}</td>
+                                <td>{{ credit.customerEmail }}</td>
+                                <td>{{ credit.creditAmount }}</td>
+                                <td>{{ credit.createdAt.toLocaleString().split(',')[0] }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="sendEmail(i)">
                                         send request
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="dueConfirmFormOpen('customer credit', i)">
+                                        received
                                     </button>
                                 </td>
                             </tr>
@@ -319,9 +332,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getCredit(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of creditPages;" [ngClass]="{'active': page == creditPage}" (click)="getCredit(page)">
+                        <li class="page-item" (click)="getCredit(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(creditPage, creditPages);" [ngClass]="{'active': page == creditPage}" (click)="getCredit(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
+                        <li class="page-item" (click)="getCredit(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getCredit(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
@@ -337,6 +352,7 @@
                     PURCHASE DUE
 
                     <div class="card-header-actions" style="height: 21px;">
+                        <input class="form-control form-control-sm" style="width: 50%; display: inline-block;" placeholder="Search" [(ngModel)]="purchaseDueSearchText" (ngModelChange)="getPurchaseDue(null)">
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllVendorPurchase()">Send Message to All</button>
                     </div>
                 </div>
@@ -364,7 +380,7 @@
                                 <td>{{ purchaseDue.dueDate ? purchaseDue.dueDate.toLocaleString().split(',')[0] : 'nill' }}</td>
                                 <td>{{ purchaseDue.createdAt.toLocaleString().split(',')[0] }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="removeDueByPurchase(i)">
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="dueConfirmFormOpen('purchase due', i)">
                                         Paid
                                     </button>
                                 </td>
@@ -373,9 +389,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getPurchaseDue(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of purchaseDuePages;" [ngClass]="{'active': page == purchaseDuePage}" (click)="getPurchaseDue(page)">
+                        <li class="page-item" (click)="getPurchaseDue(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(purchaseDuePage, purchaseDuePages);" [ngClass]="{'active': page == purchaseDuePage}" (click)="getPurchaseDue(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
+                        <li class="page-item" (click)="getPurchaseDue(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getPurchaseDue(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
@@ -391,6 +409,7 @@
                     RETURN DUE
 
                     <div class="card-header-actions" style="height: 21px;">
+                        <input class="form-control form-control-sm" style="width: 50%; display: inline-block;" placeholder="Search" [(ngModel)]="returnDueSearchText" (ngModelChange)="getReturnDue(null)">
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllVendorReturn()">Send Message to All</button>
                     </div>
                 </div>
@@ -418,7 +437,7 @@
                                 <td>{{ returnDue.dueDate ? returnDue.dueDate.toLocaleString().split(',')[0] : 'nill' }}</td>
                                 <td>{{ returnDue.createdAt.toLocaleString().split(',')[0] }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="removeDueByReturn(i)">
+                                    <button type="button" class="btn btn-sm btn-ghost-primary" (click)="dueConfirmFormOpen('return due', i)">
                                         Received
                                     </button>
                                 </td>
@@ -427,9 +446,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getReturnDue(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let page of returnDuePages;" [ngClass]="{'active': page == returnDuePage}" (click)="getReturnDue(page)">
+                        <li class="page-item" (click)="getReturnDue(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let page of getTablePages(returnDuePage, returnDuePages);" [ngClass]="{'active': page == returnDuePage}" (click)="getReturnDue(page)">
                             <button class="page-link">{{ page }}</button>
                         </li>
+                        <li class="page-item" (click)="getReturnDue(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getReturnDue(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>
@@ -439,3 +460,42 @@
         <!--/.row-->
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div bsModal #dueConfirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dueConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Are you sure?</h4>
+                <button type="button" class="close" (click)="dueConfirmFormHide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Amount</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Amount" [(ngModel)]="amountDue">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="dueConfirmFormHide()">No</button>
+                <button type="button" class="btn btn-primary" (click)="dueConfirmFormSave()">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

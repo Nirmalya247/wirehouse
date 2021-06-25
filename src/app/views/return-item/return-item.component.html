@@ -231,9 +231,11 @@
                     </table>
                     <ul class="pagination">
                         <li class="page-item" (click)="getReturnTable(-1)"><button class="page-link">Prev</button></li>
-                        <li class="page-item active" *ngFor="let pagei of pages;" [ngClass]="{'active': pagei == page}" (click)="getReturnTable(pagei)">
+                        <li class="page-item" (click)="getReturnTable(-3)"><button class="page-link">First</button></li>
+                        <li class="page-item active" *ngFor="let pagei of getTablePages(page, pages);" [ngClass]="{'active': pagei == page}" (click)="getReturnTable(pagei)">
                             <button class="page-link">{{ pagei }}</button>
                         </li>
+                        <li class="page-item" (click)="getReturnTable(-4)"><button class="page-link">Last</button></li>
                         <li class="page-item" (click)="getReturnTable(-2)"><button class="page-link">Next</button></li>
                     </ul>
                 </div>

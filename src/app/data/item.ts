@@ -28,6 +28,7 @@ export class ItemSale {
         public rack: String,
         public hsn: String,
         public qtystock: Number,
+        public cost: Number,
         public qty: Number,
         public price: Number,
         public discount: Number,
