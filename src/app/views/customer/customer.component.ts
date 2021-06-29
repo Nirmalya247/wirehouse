@@ -249,6 +249,11 @@ export class CustomerComponent implements OnInit {
         };
         this.messageDataService.sendMessage(data).subscribe(res => {
             console.log(res);
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Message!');
+            } else {
+                this.toastr.error(res.msg, 'Message!');
+            }
         })
     }
     messageSearch(event) {

@@ -32,10 +32,10 @@ export class ReturnItemComponent implements OnInit {
     totalDiscount: string;
     taxable: string;
     paymentMode: string = 'cash';
-    cumulativeAmount: string;
+    cumulativeAmount: string = '0.00';
     totalTendered: string;
-    changeDue: string;
-    dueAmount: string;
+    changeDue: string = '0.00';
+    dueAmount: string = '0.00';
     addDue: boolean = false;
 
     vendorID: string = '';
@@ -330,8 +330,8 @@ export class ReturnItemComponent implements OnInit {
     }
 
     //***********
-    returns: Array<ReturnCreate>;
-    pages: Array<number>;
+    returns: Array<ReturnCreate> = [ ];
+    pages: Array<number> = [ ];
     page = 1;
     limit = 10;
     orderBy = 'createdAt';

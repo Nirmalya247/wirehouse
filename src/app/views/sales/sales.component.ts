@@ -31,12 +31,13 @@ export class SalesComponent implements OnInit {
     totalDiscount: string;
     taxable: string
     purchaseCost: string = '0.00';
-    vatPercent: string = '13';
+    vatValue: string = '0e';
+    vatPercent: string = '0';
     paymentMode: string = 'cash';
-    cumulativeAmount: string;
+    cumulativeAmount: string = '0.00';
     totalTendered: string;
-    changeDue: string;
-    creditAmount: string;
+    changeDue: string = '0.00';
+    creditAmount: string = '0.00';
     addCredit: boolean = false;
 
 
@@ -178,6 +179,8 @@ export class SalesComponent implements OnInit {
         this.calculateTotalAmmount();
     }
     calculateTotalAmmount() {
+        if (this.vatValue == '0n' || this.vatValue == '0e' || this.vatValue == '0p') this.vatPercent = '0';
+        else this.vatPercent = '13';
         let purchaseCost = 0;
         let totalAmount = 0;
         let totalDiscount = 0;
@@ -610,8 +613,8 @@ export class SalesComponent implements OnInit {
     }
 
     //***********
-    sales: Array<Sale>;
-    pages: Array<number>;
+    sales: Array<Sale> = [ ];
+    pages: Array<number> = [ ];
     salePage = 1;
     saleLimit = 10;
     saleOrderBy = 'createdAt';
@@ -661,5 +664,12 @@ export class SalesComponent implements OnInit {
             }
         );
         console.log(this.saleLimit, this.saleOrderBy, this.saleOrder, this.saleSearchText);
+    }
+
+    // merge hub spot
+    mergeHubspotCustomer() {
+        this.saleDataService.fetchCustomerFromHubSpot({ recent: 'yes' }).subscribe(res => {
+            this.toastr.success(`updated ${ res.update } and added ${ res.new } customers`, 'Done!');
+        });
     }
 }

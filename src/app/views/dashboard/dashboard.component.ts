@@ -254,9 +254,9 @@ export class DashboardComponent implements OnInit {;
     // mainChart
 
     public mainChartElements = 27;
-    public mainChartData1: Array<number> = [];
-    public mainChartData2: Array<number> = [];
-    public mainChartData3: Array<number> = [];
+    public mainChartData1: Array<number> = [ ];
+    public mainChartData2: Array<number> = [ ];
+    public mainChartData3: Array<number> = [ ];
 
     public mainChartData: Array<any> = [
         {

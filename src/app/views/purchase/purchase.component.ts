@@ -33,10 +33,10 @@ export class PurchaseComponent implements OnInit {
     totalDiscount: string;
     taxable: string;
     paymentMode: string = 'cash';
-    cumulativeAmount: string;
+    cumulativeAmount: string = '0.00';
     totalTendered: string;
-    changeDue: string;
-    dueAmount: string;
+    changeDue: string = '0.00';
+    dueAmount: string = '0.00';
     addDue: boolean = false;
 
 
@@ -106,7 +106,7 @@ export class PurchaseComponent implements OnInit {
         if (isNaN(Number(this.items[i].qty))) this.items[i].qty = 1;
         // if (this.items[i].qty > this.items[i].qtystock) this.items[i].qty = this.items[i].qtystock;
         // if (this.items[i].qty < 0) this.items[i].qty = 0;
-        let total = Number(this.items[i].qty) * Number(this.items[i].price);
+        let total = Number(this.items[i].qty) * Number(this.items[i].cost);
         discount = total * discount / 100;
         if (total - discount - discountamount <= 0) {
             discountamount = total - discount;
@@ -128,7 +128,7 @@ export class PurchaseComponent implements OnInit {
         if (isNaN(oldDue) || !this.addDue) oldDue = 0;
 
         for (let i = 0; i < this.items.length; i++) {
-            let amount = Number(this.items[i].qty) * Number(this.items[i].price);
+            let amount = Number(this.items[i].qty) * Number(this.items[i].cost);
             let discount = amount * Number(this.items[i].discount) / 100 + Number(this.items[i].discountamount);
             totalAmount += amount;
             totalDiscount += discount;
@@ -464,8 +464,8 @@ export class PurchaseComponent implements OnInit {
     }
 
     //***********
-    purchases: Array<Purchase>;
-    pages: Array<number>;
+    purchases: Array<Purchase> = [ ];
+    pages: Array<number> = [ ];
     purchasePage = 1;
     purchaseLimit = 10;
     purchaseOrderBy = 'createdAt';

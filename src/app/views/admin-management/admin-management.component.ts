@@ -35,8 +35,8 @@ export class AdminManagementComponent implements OnInit {
         // generate random values for mainChart
     }
 
-    usersList: Array<Auth>;
-    userPages: Array<number>;
+    usersList: Array<Auth> = [ ];
+    userPages: Array<number> = [ ];
     userPage = 1;
     userLimit = 10;
     userOrderBy = 'id';
@@ -227,8 +227,8 @@ export class AdminManagementComponent implements OnInit {
 
     //***********
 
-    messagesList: Array<any>;
-    messagePages: Array<number>;
+    messagesList: Array<any> = [];
+    messagePages: Array<number> = [];
     messagePage = 1;
     messageLimit = 10;
     messageOrderBy = 'id';
@@ -418,6 +418,7 @@ export class AdminManagementComponent implements OnInit {
     shopphoneno: string = '';
     shopotherphoneno: string = '';
     smskey: string = '';
+    hubspotkey: string = '';
     website: string = '';
     shopemail: string = '';
     shopemailpassword: string = '';
@@ -434,6 +435,7 @@ export class AdminManagementComponent implements OnInit {
             this.shopphoneno = res.shopphoneno;
             this.shopotherphoneno = res.shopotherphoneno;
             this.smskey = res.smskey;
+            this.hubspotkey = res.hubspotkey;
             this.website = res.shopwebsite;
             this.shopemail = res.shopemail;
             this.shopemailpassword = res.shopemailpassword;
@@ -452,6 +454,7 @@ export class AdminManagementComponent implements OnInit {
             shopphoneno: this.shopphoneno,
             shopotherphoneno: this.shopotherphoneno,
             smskey: this.smskey,
+            hubspotkey: this.hubspotkey,
             shopwebsite: this.website,
             shopemail: this.shopemail,
             shopemailpassword: this.shopemailpassword,
@@ -473,6 +476,7 @@ export class AdminManagementComponent implements OnInit {
         this.shopphoneno = this.shopData.shopphoneno;
         this.shopotherphoneno = this.shopData.shopotherphoneno;
         this.smskey = this.shopData.smskey;
+        this.hubspotkey = this.shopData.hubspotkey;
         this.website = this.shopData.shopwebsite;
         this.vatno = this.shopData.vatno;
         this.licenseno = this.shopData.licenseno;
@@ -529,6 +533,11 @@ export class AdminManagementComponent implements OnInit {
         };
         this.messageDataService.sendMessage(data).subscribe(res => {
             console.log(res);
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Message!');
+            } else {
+                this.toastr.error(res.msg, 'Message!');
+            }
         })
     }
     messageSearch(event) {

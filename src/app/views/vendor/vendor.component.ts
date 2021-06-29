@@ -24,8 +24,8 @@ export class VendorComponent implements OnInit {
     @ViewChild('mailForm') public mailForm: ModalDirective;
     // @ViewChild('FindItem') findItemComponent: NgSelectComponent;
     @ViewChild('FindMessage') findMessage: NgSelectComponent;
-    vendors: Array<Vendor>;
-    pages: Array<number>;
+    vendors: Array<Vendor> = [ ];
+    pages: Array<number> = [ ];
     page = 1;
     limit = 10;
     orderBy = 'updatedAt';
@@ -260,6 +260,11 @@ export class VendorComponent implements OnInit {
         };
         this.messageDataService.sendMessage(data).subscribe(res => {
             console.log(res);
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Message!');
+            } else {
+                this.toastr.error(res.msg, 'Message!');
+            }
         })
     }
     messageSearch(event) {

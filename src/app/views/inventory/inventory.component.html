@@ -38,6 +38,10 @@
                                 <label class="col-form-label" for="prependedInput">HSN</label>
                                 <input type="text" class="form-control" placeholder="HSN" name="hsn" ngModel>
                             </div>
+                            <div class="col-md-3">
+                                <label class="col-form-label" for="prependedInput">Low Limit</label>
+                                <input type="text" class="form-control" placeholder="Low Limit" name="lowlimit" ngModel>
+                            </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12">
@@ -200,9 +204,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-9">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Description</label>
                         <input type="text" class="form-control form-control-sm" placeholder="Description" [(ngModel)]="itemDescription">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Low Limit</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Low Limit" [(ngModel)]="itemLowLimit">
                     </div>
                 </div>
             </div>

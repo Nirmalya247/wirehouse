@@ -90,18 +90,18 @@
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Vat (%)</label>
-                            <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="vatPercent" (ngModelChange)="calculateTotalAmmount();">
-                                <option value="0">None   0.0</option>
-                                <option value="0">Exempt 0.0</option>
-                                <option value="0">VAT 0% 0.0</option>
+                            <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="vatValue" (ngModelChange)="calculateTotalAmmount();">
+                                <option value="0n">None   0.0</option>
+                                <option value="0e">Exempt 0.0</option>
+                                <option value="0p">VAT 0% 0.0</option>
                                 <option value="13">VAT 13% 13.0</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-2">
-                            <label class="col-form-label" for="prependedInput">Cumulative Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="cumulativeAmount" readonly>
+                            <label class="col-form-label" for="prependedInput">Payable</label>
+                            <label type="text" class="form-control form-control-sm text-white bg-success">{{ cumulativeAmount }}</label>
                         </div>
 
 
@@ -119,12 +119,12 @@
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalTendered" (ngModelChange)="changeTendered();">
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label" for="prependedInput">Change Due</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="changeDue" readonly>
+                            <label class="col-form-label" for="prependedInput">Change</label>
+                            <label type="text" class="form-control form-control-sm text-white bg-warning">{{ changeDue }}</label>
                         </div>
                         <div class="col-md-2">
-                            <label class="col-form-label" for="prependedInput">Credit Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="creditAmount" readonly>
+                            <label class="col-form-label" for="prependedInput">Due Amount</label>
+                            <label type="text" class="form-control form-control-sm text-white bg-danger">{{ creditAmount }}</label>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -165,11 +165,12 @@
                         <div class="col-md-2">
                             <button class="btn btn-primary btn-sm" type="button" (click)="customerClear()" [disabled]="customerNew">Clear Customer</button>
                         </div>
-                        <div class="col-md-2">
-                            <input class="form-check-input" type="checkbox" value="option1" id="creditAdd" [disabled]="customerNew" [(ngModel)]="addCredit" (ngModelChange)="calculateTotalAmmount();">
+                        <div class="col-md-4">
+                            <button class="btn btn-primary btn-sm" type="button" (click)="mergeHubspotCustomer()">Get from Hubspot (last month)</button>
+                            <!-- <input class="form-check-input" type="checkbox" value="option1" id="creditAdd" [disabled]="customerNew" [(ngModel)]="addCredit" (ngModelChange)="calculateTotalAmmount();">
                             <label class="form-check-label" for="creditAdd">
                                 Add Credit to Amount
-                            </label>
+                            </label> -->
                         </div>
                     </div>
                     <div class="form-actions">

@@ -18,8 +18,8 @@ export class InventoryComponent implements OnInit {
     @ViewChild('itemUpdateForm') public itemUpdateForm: ModalDirective;
     @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
-    items: Array<Item>;
-    pages: Array<number>;
+    items: Array<Item> = [ ];
+    pages: Array<number> = [ ];
     itemPage = 1;
     itemLimit = 10;
     itemOrderBy = 'itemcode';
@@ -92,6 +92,7 @@ export class InventoryComponent implements OnInit {
     itemUnitPrice: string = '';
     itemRack: string = '';
     itemDescription: string = '';
+    itemLowLimit: string = '0';
 
     itemUpdateType: string = 'add';
     itemUpdateUnitCost: string = '';
@@ -111,6 +112,7 @@ export class InventoryComponent implements OnInit {
         this.itemCode = this.items[i].itemcode.toString();
         this.itemUnitPrice = this.items[i].price.toString();
         this.itemDescription = this.items[i].description.toString();
+        this.itemLowLimit = this.items[i].lowlimit.toString();
         this.itemForm.show();
     }
 
@@ -121,6 +123,7 @@ export class InventoryComponent implements OnInit {
         this.itemQTY = '';
         this.itemUnitPrice = '';
         this.itemDescription = '';
+        this.itemLowLimit = '0';
         this.itemForm.hide();
     }
 
@@ -130,7 +133,8 @@ export class InventoryComponent implements OnInit {
             itemcode: this.itemCode,
             itemname: this.itemName,
             price: this.itemUnitPrice,
-            description: this.itemDescription
+            description: this.itemDescription,
+            lowlimit: this.itemLowLimit
         }
         this.itemDataService.edit(data).subscribe (
             res => {
@@ -304,7 +308,8 @@ export class InventoryComponent implements OnInit {
     }
     addItem(f: NgForm) {
         if (f.valid && this.selectedItemType != null) {
-            let data = f.value;
+            let data = f.value
+            if (data.lowlimit == null || data.lowlimit == '') data.lowlimit = '0';
             data['itemtypeid'] = this.selectedItemType.id;
             data['itemtypename'] = this.selectedItemType.itemtypename;
             this.itemDataService.addItem(f.value).subscribe (

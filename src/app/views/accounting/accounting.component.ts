@@ -197,7 +197,7 @@ export class AccountingComponent implements OnInit {
     dataFrom: string;
     dataTo: string;
     datas = [ ];
-    pages: Array<number>;
+    pages: Array<number> = [ ];
     dataPage = 1;
     dataLimit = 10;
     dataOrderBy = 'createdAt';

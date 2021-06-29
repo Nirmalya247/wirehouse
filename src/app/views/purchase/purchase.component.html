@@ -114,20 +114,20 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Cumulative Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="cumulativeAmount" readonly>
+                            <label class="col-form-label" for="prependedInput">Payable</label>
+                            <label type="text" class="form-control form-control-sm text-white bg-success">{{ cumulativeAmount }}</label>
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Amount Tendered</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalTendered" (ngModelChange)="changeTendered();">
                         </div>
                         <div class="col-md-3">
-                            <label class="col-form-label" for="prependedInput">Change Due</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="changeDue" readonly>
+                            <label class="col-form-label" for="prependedInput">Change</label>
+                            <label type="text" class="form-control form-control-sm text-white bg-warning">{{ changeDue }}</label>
                         </div>
                         <div class="col-md-3">
                             <label class="col-form-label" for="prependedInput">Due Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="dueAmount" readonly>
+                            <label type="text" class="form-control form-control-sm text-white bg-danger">{{ dueAmount }}</label>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -178,12 +178,12 @@
                         <div class="col-md-2">
                             <button class="btn btn-primary btn-sm" type="button" (click)="vendorClear()" [disabled]="vendorNew">Clear Vendor</button>
                         </div>
-                        <div class="col-md-2">
+                        <!-- <div class="col-md-2">
                             <input class="form-check-input" type="checkbox" value="option1" id="dueAdd" [disabled]="vendorNew" [(ngModel)]="addDue" (ngModelChange)="calculateTotalAmmount();">
                             <label class="form-check-label" for="dueAdd">
                                 Add Due to Amount
                             </label>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="form-actions">
                         <button class="btn btn-primary" type="button" (click)="confirmPurchase()">Confirm</button>

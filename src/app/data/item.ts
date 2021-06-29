@@ -14,6 +14,7 @@ export class Item {
         public price: Number,
         public totalsold: Number,
         public totalearned: Number,
+        public lowlimit: Number,
         public createdAt: Date,
         public updatedAt: Date
     ) {
