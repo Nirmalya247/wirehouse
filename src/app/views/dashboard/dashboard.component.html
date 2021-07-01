@@ -307,6 +307,7 @@
                                 <th>Email</th>
                                 <th>Credit</th>
                                 <th>Bill Date</th>
+                                <th>Days passed</th>
                                 <th>Send Mail</th>
                                 <th>Received</th>
                             </tr>
@@ -319,6 +320,7 @@
                                 <td>{{ credit.customerEmail }}</td>
                                 <td>{{ credit.creditAmount }}</td>
                                 <td>{{ credit.createdAt.toLocaleString().split(',')[0] }}</td>
+                                <td>{{ credit.daysPassed }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="sendEmail(i)">
                                         send request

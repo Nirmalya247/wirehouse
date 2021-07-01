@@ -553,7 +553,11 @@ export class DashboardComponent implements OnInit {;
             this.creditPage = pageNo;
         } else this.creditPage = 1;
         this.dashboardDataService.getCredit({ page: this.creditPage, limit: this.dataLimit, order: this.creditOrder, orderby: 'qty', searchText: this.creditSearchText }).subscribe(res => {
-            for (var i = 0; i < res.length; i++) res[i].createdAt = new Date(res[i].createdAt.toString());
+            var today = new Date();
+            for (var i = 0; i < res.length; i++) {
+                res[i].createdAt = new Date(res[i].createdAt.toString());
+                res[i]['daysPassed'] = Math.floor((today.getTime() - res[i].createdAt.getTime()) / (1000 * 3600 * 24));
+            }
             this.creditData = res;
             console.log(res);
         });

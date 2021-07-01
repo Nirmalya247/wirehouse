@@ -206,6 +206,9 @@ export class SalesComponent implements OnInit {
         cumulativeAmount = taxable + taxable * vatPercent / 100;
         // console.log((Number(this.totalTendered) - cumulativeAmount) + Number(this.customerCredit), Number(this.customerCreditLimit))
         cumulativeAmount += oldCredit;
+        if (purchaseCost > cumulativeAmount) {
+            this.toastr.error("payable is too low", "Attention!")
+        }
 
         this.purchaseCost = purchaseCost.toFixed(2);
         this.totalAmount = totalAmount.toFixed(2);
@@ -562,6 +565,7 @@ export class SalesComponent implements OnInit {
                 if (res.err) {
                     // this.toastr.error(res.msg, 'Attention');
                 } else {
+                    this.scanValue = '';
                     this.toastr.success(res.msg, 'Attention');
                     this.selectedItem = res.item;
                     this.saleDataService.getSaleItem({ itemcode: this.selectedItem.itemcode }).subscribe(res => {

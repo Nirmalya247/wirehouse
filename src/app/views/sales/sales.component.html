@@ -84,10 +84,10 @@
                             <label class="col-form-label" for="prependedInput">Taxable</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="taxable" readonly>
                         </div>
-                        <div class="col-md-2">
+                        <!-- <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Puchase Cost</label>
                             <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="purchaseCost" readonly>
-                        </div>
+                        </div> -->
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Vat (%)</label>
                             <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="vatValue" (ngModelChange)="calculateTotalAmmount();">

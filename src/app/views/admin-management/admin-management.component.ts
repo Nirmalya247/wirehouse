@@ -424,6 +424,8 @@ export class AdminManagementComponent implements OnInit {
     shopemailpassword: string = '';
     vatno: string = '';
     licenseno: string = '';
+    billnote: string = '';
+    billfooter: string = '';
     shopData: any = {};
 
     getShop() {
@@ -441,6 +443,8 @@ export class AdminManagementComponent implements OnInit {
             this.shopemailpassword = res.shopemailpassword;
             this.vatno = res.vatno;
             this.licenseno = res.licenseno;
+            this.billnote = res.billnote
+            this.billfooter = res.billfooter;
             this.shopData = res;
         });
     }
@@ -459,7 +463,9 @@ export class AdminManagementComponent implements OnInit {
             shopemail: this.shopemail,
             shopemailpassword: this.shopemailpassword,
             vatno: this.vatno,
-            licenseno: this.licenseno
+            licenseno: this.licenseno,
+            billnote: this.billnote,
+            billfooter: this.billfooter
         }).subscribe(res => {
             if (!res.err) {
                 this.toastr.success('shop data saved', 'Shop Info');
@@ -480,6 +486,8 @@ export class AdminManagementComponent implements OnInit {
         this.website = this.shopData.shopwebsite;
         this.vatno = this.shopData.vatno;
         this.licenseno = this.shopData.licenseno;
+        this.billnote = this.shopData.billnote;
+        this.billfooter = this.shopData.billfooter;
     }
 
     //***********
