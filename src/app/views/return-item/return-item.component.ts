@@ -3,6 +3,7 @@ import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
@@ -18,6 +19,7 @@ import { ReturnCreate, ReturnItemCreate } from '../../data/return';
 })
 
 export class ReturnItemComponent implements OnInit {
+    @ViewChild('confirmForm') public confirmForm: ModalDirective;
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
 
     serverPath = environment.PATH;
@@ -269,6 +271,29 @@ export class ReturnItemComponent implements OnInit {
             this.items.splice(i, 1);
         }
         this.calculateTotalAmmount();
+    }
+
+    deleteReturnId = 0;
+    deleteReturn(returnId) {
+        this.deleteReturnId = returnId;
+        this.confirmForm.show();
+    }
+
+    confirmFormHide() {
+        this.deleteReturnId = 0;
+        this.confirmForm.hide();
+    }
+
+    confirmFormSave() {
+        this.returnDataService.deleteReturn({ id: this.deleteReturnId }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success('delete successful', 'Done!');
+                this.confirmFormHide()
+                this.getReturnTable(this.page);
+            } else {
+                this.toastr.error('delete unsuccessful', 'Attention!');
+            }
+        });
     }
 
 

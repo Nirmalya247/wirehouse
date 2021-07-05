@@ -3,6 +3,7 @@ import { NgSelectModule, NgSelectComponent } from '@ng-select/ng-select';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import { AuthGuardService } from '../../auth-services/auth-guard.service';
 import { AuthDataService } from '../../auth-services/auth-data.service';
@@ -19,6 +20,7 @@ import { Sale, Purchase } from '../../data/transaction';
 })
 
 export class PurchaseComponent implements OnInit {
+    @ViewChild('confirmForm') public confirmForm: ModalDirective;
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
     @ViewChild('FindVendor') ngSelectVendor: NgSelectComponent;
 
@@ -65,7 +67,7 @@ export class PurchaseComponent implements OnInit {
             this.saleDataService.getLastSaleItem({ itemcode: this.selectedItem.itemcode }).subscribe(res => {
                 console.log('@@@@@@@@@@@', res);
                 let newItem = <ItemUpdate> {
-                    id: null,
+                    id: '',
                     purchaseId: null,
                     itemcode: this.selectedItem.itemcode,
                     itemname: this.selectedItem.itemname,
@@ -77,8 +79,8 @@ export class PurchaseComponent implements OnInit {
                     vat: 0,
                     cost: (res.err ? '' : res.cost),
                     totalcost: (res.err ? '' : res.cost),
-                    mfg: '',
-                    expiry: '',
+                    mfg: null,
+                    expiry: null,
                     rack: (res.err ? '' : res.rack),
                     vendorid: '',
                     description: ''
@@ -177,6 +179,8 @@ export class PurchaseComponent implements OnInit {
         let totalQTY = 0;
         for (let i = 0; i < this.items.length; i++) {
             totalQTY += isNaN(Number(this.items[i].qty)) ? 0 : Number(this.items[i].qty);
+            if (this.items[i].mfg == null || this.items[i].mfg == '' || this.items[i].mfg == undefined) this.items[i].mfg = null;
+            if (this.items[i].expiry == null || this.items[i].expiry == '' || this.items[i].expiry == undefined) this.items[i].expiry = null;
             this.items[i].qtystock = this.items[i].qty;
             this.items[i].vendorid = this.vendorID;
             purchaseItems.push(this.items[i]);
@@ -261,6 +265,29 @@ export class PurchaseComponent implements OnInit {
         this.ngSelectComponent.clearModel();
         this.ngSelectVendor.clearModel();
         this.itemSearch({ term: null });
+    }
+
+    deletePurchaseId = 0;
+    deletePurchase(purchaseId) {
+        this.deletePurchaseId = purchaseId;
+        this.confirmForm.show();
+    }
+
+    confirmFormHide() {
+        this.deletePurchaseId = 0;
+        this.confirmForm.hide();
+    }
+
+    confirmFormSave() {
+        this.saleDataService.deletePurchase({ id: this.deletePurchaseId }).subscribe(res => {
+            if (!res.err) {
+                this.toastr.success('delete successful', 'Done!');
+                this.confirmFormHide()
+                this.getPurchaseTable(this.purchasePage);
+            } else {
+                this.toastr.error('delete unsuccessful', 'Attention!');
+            }
+        });
     }
 
 

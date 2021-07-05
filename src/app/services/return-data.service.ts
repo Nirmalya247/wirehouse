@@ -21,6 +21,13 @@ export class ReturnDataService {
         let url = environment.PATH + 'return/add';
         return this.http.post(url, data);
     }
+    // delete return
+    deleteReturn(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'return/delete';
+        return this.http.post(url, data);
+    }
     // get returns
     getReturns(data):Observable<any> {
         data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);

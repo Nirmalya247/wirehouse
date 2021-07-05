@@ -9,51 +9,56 @@
                     </div>
                 </div>
                 <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
-                    <form class="form-horizontal" #f="ngForm" (ngSubmit)="addItem(f)" novalidate>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Item Code</label>
-                                <input type="text" class="form-control" placeholder="code" name="itemcode" ngModel>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Item Name</label>
-                                <input type="text" class="form-control" placeholder="name" required name="itemname" ngModel>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Manufacturer</label>
-                                <input type="text" class="form-control" placeholder="manufacturer" required name="manufacturer" ngModel>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Price/Unit</label>
-                                <input type="text" class="form-control" placeholder="0.00" required name="price" ngModel>
-                            </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Item Code</label>
+                            <input type="text" class="form-control" placeholder="code" [(ngModel)]="newItemData.itemcode">
                         </div>
-                        <div class="form-group row">
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Item Type</label>
-                                <ng-select #FindItem [searchFn]="searchFn" [items]="itemTypesList" bindLabel="itemtypename" autofocus bindValue="id" [(ngModel)]="selectedItemTypeID" (search)="itemTypeSearch($event)" (change)="itemTypeChange($event)" placeholder="search item" [ngModelOptions]="{standalone: true}">
-                                </ng-select>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">HSN</label>
-                                <input type="text" class="form-control" placeholder="HSN" name="hsn" ngModel>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="col-form-label" for="prependedInput">Low Limit</label>
-                                <input type="text" class="form-control" placeholder="Low Limit" name="lowlimit" ngModel>
-                            </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Item Name</label>
+                            <input type="text" class="form-control" placeholder="name" [(ngModel)]="newItemData.itemname">
                         </div>
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label class="col-form-label" for="prependedInput">Description (max 1024 character)</label>
-                                <input type="text" class="form-control" placeholder="description.." name="description" ngModel>
-                            </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Manufacturer</label>
+                            <input type="text" class="form-control" placeholder="manufacturer" [(ngModel)]="newItemData.manufacturer">
                         </div>
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Confirm</button>
-                            <button type="reset" class="btn btn-secondary" (click)="cancelItemAdd()">Cancel</button>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Price/Unit</label>
+                            <input type="text" class="form-control" placeholder="0.00" [(ngModel)]="newItemData.price">
                         </div>
-                    </form>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Item Type</label>
+                            <ng-select #FindItem [searchFn]="searchFn" [items]="itemTypesList" bindLabel="itemtypename" autofocus bindValue="id" [(ngModel)]="selectedItemTypeID" (search)="itemTypeSearch($event)" (change)="itemTypeChange($event)" placeholder="search item" [ngModelOptions]="{standalone: true}">
+                            </ng-select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">HSN</label>
+                            <input type="text" class="form-control" placeholder="HSN" [(ngModel)]="newItemData.hsn">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Low Limit</label>
+                            <input type="text" class="form-control" placeholder="Low Limit" [(ngModel)]="newItemData.lowlimit">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label" for="prependedInput">Product Type</label>
+                            <select class="form-control form-control" [(ngModel)]="newItemData.qty">
+                                <option value="0">Product</option>
+                                <option value="-1">Service</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label class="col-form-label" for="prependedInput">Description (max 1024 character)</label>
+                            <input type="text" class="form-control" placeholder="description.." [(ngModel)]="newItemData.description">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" (click)="addItem();">Confirm</button>
+                        <button class="btn btn-secondary" (click)="cancelItemAdd();">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -119,7 +124,7 @@
                                 <th>Unit Price</th>
                                 <th>Total Sold</th>
                                 <th>Total Earned</th>
-                                <!-- <th>Update</th> -->
+                                <th>Update</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
@@ -135,11 +140,11 @@
                                 <td>{{ item.price }}</td>
                                 <td>{{ item.totalsold }}</td>
                                 <td>{{ item.totalearned }}</td>
-                                <!-- <td>
+                                <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="itemUpdateFormShow(i)">
                                         update QTY
                                     </button>
-                                </td> -->
+                                </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="itemFormShow(i)">
                                         <i class="fa fa-pencil"></i>
@@ -248,77 +253,57 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Product Code</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Code" [(ngModel)]="itemCode" readonly>
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Stock Code</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Stock Code" [(ngModel)]="itemUpdateId" (ngModelChange)="itemUpdateGetData()">
                     </div>
                     <div class="col-md-5">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Product Name</label>
                         <input type="text" class="form-control form-control-sm" placeholder="Product Name" [(ngModel)]="itemName" readonly>
                     </div>
                     <div class="col-md-3">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="itemUnitPrice">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Total QTY</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="itemUpdateData.qty" readonly>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Update Type</label>
-                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateType" (ngModelChange)="itemUpdateTypeChange()">
-                            <option value="add">Add Product</option>
-                            <option value="sub">Deficit</option>
-                        </select>
+                    <div class="col-md-3">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">QTY Stock</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="QTY Stock" [(ngModel)]="itemUpdateData.qtystock">
                     </div>
-                    <div class="col-md-5">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="itemQTY">
+                    <div class="col-md-3">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Price</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Unit Price" [(ngModel)]="itemUpdateData.price">
                     </div>
                     <div class="col-md-3">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Unit Cost</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Unit Cost" [(ngModel)]="itemUpdateUnitCost">
+                        <input type="text" class="form-control form-control-sm" placeholder="Unit Cost" [(ngModel)]="itemUpdateData.cost">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Total Cost</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Total Cost" [(ngModel)]="itemUpdateData.totalcost">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Expiry Year</label>
-                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryYear" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Year">
-                            <option value="2100">No Expiry</option>
-                            <option *ngFor="let year of years" value="{{ year }}">{{ year }}</option>
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">MFG</label>
+                        <input class="form-control form-control-sm" type="date" placeholder="yyyy-mm" [(ngModel)]="itemUpdateData.mfg">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Expiry</label>
+                        <input class="form-control form-control-sm" type="date" placeholder="yyyy-mm" [(ngModel)]="itemUpdateData.expiry">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Rack</label>
+                        <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="itemUpdateData.rack">
+                            <option *ngFor="let rack of racks" value="{{ rack.id }}">{{ rack.id + ', ' + rack.label
+                                }}</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Expiry Month</label>
-                        <select class="form-control form-control-sm" [(ngModel)]="itemUpdateExpiryMonth" [disabled]="itemUpdateType == 'sub'" placeholder="Expiry Month">
-                            <option value="13">No Expiry</option>
-                            <option *ngFor="let month of months" value="{{ month[0] }}">{{ month[1] }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Vendor Name</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Vendor First Name" [(ngModel)]="itemVendorFName" [disabled]="itemUpdateType == 'sub'">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Vendor Name</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Vendor Last Name" [(ngModel)]="itemVendorLName" [disabled]="itemUpdateType == 'sub'">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Vendor Name</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Vendor company" [(ngModel)]="itemVendorCompany" [disabled]="itemUpdateType == 'sub'">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Vendor phone</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Vendor Phone" [(ngModel)]="itemVendorPhone" [disabled]="itemUpdateType == 'sub'">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <label class="col-form-label col-form-label-sm" for="prependedInput">Rack No</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="rack no" [(ngModel)]="itemRack">
-                    </div>
-                    <div class="col-md-8">
                         <label class="col-form-label col-form-label-sm" for="prependedInput">Description</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="Description" [(ngModel)]="itemDescription">
+                        <input type="text" class="form-control form-control-sm" placeholder="Description" [(ngModel)]="itemUpdateData.description">
                     </div>
                 </div>
             </div>

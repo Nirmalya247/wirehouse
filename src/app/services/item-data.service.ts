@@ -43,6 +43,13 @@ export class ItemDataService {
         let url = environment.PATH + 'item/edit';
         return this.http.post(url, data);
     }
+    // get item update
+    getItemUpdate(data):Observable<any> {
+        data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        data[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'item/getitemupdate';
+        return this.http.post(url, data);
+    }
     // update item
     update(data):Observable<any> {
         data[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);

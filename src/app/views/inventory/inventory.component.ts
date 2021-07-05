@@ -9,6 +9,7 @@ import { ItemDataService } from '../../services/item-data.service';
 import { AuthService } from '../../auth-services/auth.service';
 import { environment } from '../../../environments/environment';
 import { Item } from '../../data/item';
+import { getJSDocThisTag } from 'typescript';
 
 @Component({
     templateUrl: 'inventory.component.html'
@@ -18,8 +19,10 @@ export class InventoryComponent implements OnInit {
     @ViewChild('itemUpdateForm') public itemUpdateForm: ModalDirective;
     @ViewChild('deleteConfirmForm') public deleteConfirmForm: ModalDirective;
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
-    items: Array<Item> = [ ];
-    pages: Array<number> = [ ];
+
+    racks = [];
+    items: Array<Item> = [];
+    pages: Array<number> = [];
     itemPage = 1;
     itemLimit = 10;
     itemOrderBy = 'itemcode';
@@ -34,11 +37,17 @@ export class InventoryComponent implements OnInit {
 
     ngOnInit(): void {
         // generate random values for mainChart
+        this.getRacks();
         this.getItemTable(null);
-        this.itemTypeSearch( { term: '' } );
+        this.itemTypeSearch({ term: '' });
         let now = new Date();
         let nowYear = now.getFullYear();
         for (let i = 0; i < this.years.length; i++) this.years[i] += nowYear;
+    }
+    getRacks() {
+        this.itemDataService.getRacks({ }).subscribe(res => {
+            this.racks = res;
+        })
     }
 
     getTablePages(pageNo, pages) {
@@ -47,7 +56,7 @@ export class InventoryComponent implements OnInit {
         start = (end > pages.length ? start - (end - pages.length) : start);
         start = start < 1 ? 1 : start;
         end = end > pages.length ? pages.length : end;
-        var p = [ ];
+        var p = [];
         for (var i = start; i <= end; i++) p.push(i);
         return p;
     }
@@ -68,11 +77,11 @@ export class InventoryComponent implements OnInit {
             itemSearch: this.itemSearch,
             itemPage: this.itemPage
         }
-        this.itemDataService.getItemsCount(query).subscribe (
+        this.itemDataService.getItemsCount(query).subscribe(
             resCount => {
                 console.log(resCount);
-                this.pages = Array.from({length: Math.ceil(parseInt(resCount.toString()) / this.itemLimit)}, (_, i) => i + 1);
-                this.itemDataService.getItems(query).subscribe (
+                this.pages = Array.from({ length: Math.ceil(parseInt(resCount.toString()) / this.itemLimit) }, (_, i) => i + 1);
+                this.itemDataService.getItems(query).subscribe(
                     res => {
                         console.log(res);
                         this.items = res;
@@ -94,17 +103,8 @@ export class InventoryComponent implements OnInit {
     itemDescription: string = '';
     itemLowLimit: string = '0';
 
-    itemUpdateType: string = 'add';
-    itemUpdateUnitCost: string = '';
-    itemUpdateExpiryYear: string = '2100';
-    itemUpdateExpiryMonth: string = '13';
-    itemVendorFName: string = '';
-    itemVendorLName: string = '';
-    itemVendorCompany: string = '';
-    itemVendorPhone: string = '';
-
     years = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-    months = [ [ '01', 'JAN' ], [ '02', 'FEB' ], [ '03', 'MAR' ], [ '04', 'APR' ], [ '05', 'MAY' ], [ '06', 'JUN' ], [ '07', 'JUL' ], [ '08', 'AUG' ], [ '09', 'SEP' ], [ '10', 'OCT' ], [ '11', 'NOV' ], [ '12', 'DEC' ] ];
+    months = [['01', 'JAN'], ['02', 'FEB'], ['03', 'MAR'], ['04', 'APR'], ['05', 'MAY'], ['06', 'JUN'], ['07', 'JUL'], ['08', 'AUG'], ['09', 'SEP'], ['10', 'OCT'], ['11', 'NOV'], ['12', 'DEC']];
 
     itemFormShow(i) {
         this.itemI = i;
@@ -136,7 +136,7 @@ export class InventoryComponent implements OnInit {
             description: this.itemDescription,
             lowlimit: this.itemLowLimit
         }
-        this.itemDataService.edit(data).subscribe (
+        this.itemDataService.edit(data).subscribe(
             res => {
                 if (!res.err) {
                     this.getItemTable(this.itemPage);
@@ -150,28 +150,66 @@ export class InventoryComponent implements OnInit {
         );
     }
 
+    itemUpdateId = '';
+    itemUpdateData = {
+        qty: '',
+        qtystock: '',
+        price: '',
+        discount: '',
+        discountamount: '',
+        vat: '',
+        cost: '',
+        totalcost: '',
+        mfg: null,
+        expiry: null,
+        rack: '',
+        description: ''
+    };
+
     itemUpdateFormShow(i) {
         this.itemI = i;
         this.itemName = this.items[i].itemname.toString();
         this.itemCode = this.items[i].itemcode.toString();
         this.itemUnitPrice = this.items[i].price.toString();
-        this.itemDescription = '';
-        this.itemUpdateType = 'add';
         this.itemQTY = '';
-        this.itemVendorFName = '';
-        this.itemVendorLName = '';
-        this.itemVendorCompany = '';
-        this.itemVendorPhone = '';
+        this.itemDescription = '';
+        this.itemUpdateId = '';
+        this.itemUpdateData = {
+            qty: '',
+            qtystock: '',
+            price: '',
+            discount: '',
+            discountamount: '',
+            vat: '',
+            cost: '',
+            totalcost: '',
+            mfg: null,
+            expiry: null,
+            rack: '',
+            description: ''
+        };
         this.itemUpdateForm.show();
     }
 
-    itemUpdateTypeChange() {
-        if (this.itemUpdateType == 'sub') {
-            this.itemVendorFName = '';
-            this.itemVendorLName = '';
-            this.itemVendorCompany = '';
-            this.itemVendorPhone = '';
-        }
+    itemUpdateGetData() {
+        this.itemDataService.getItemUpdate({ id: this.itemUpdateId, itemcode: this.itemCode }).subscribe(res => {
+            if (!res.err) {
+                this.itemUpdateData = {
+                    qty: res.data.qty,
+                    qtystock: res.data.qtystock,
+                    price: res.data.price,
+                    discount: res.data.discount,
+                    discountamount: res.data.discountamount,
+                    vat: res.data.vat,
+                    cost: res.data.cost,
+                    totalcost: res.data.totalcost,
+                    mfg: res.data.mfg,
+                    expiry: res.data.expiry,
+                    rack: res.data.rack,
+                    description: res.data.description
+                };
+            }
+        });
     }
 
     itemUpdateFormHide() {
@@ -182,32 +220,25 @@ export class InventoryComponent implements OnInit {
         this.itemUnitPrice = '';
         this.itemRack = '';
         this.itemDescription = '';
-        this.itemUpdateUnitCost = '';
-        this.itemUpdateExpiryYear = '2100';
-        this.itemUpdateExpiryMonth = '13';
+        this.itemUpdateData = {
+            qty: '',
+            qtystock: '',
+            price: '',
+            discount: '',
+            discountamount: '',
+            vat: '',
+            cost: '',
+            totalcost: '',
+            mfg: null,
+            expiry: null,
+            rack: '',
+            description: ''
+        };
         this.itemUpdateForm.hide();
     }
 
     itemUpdateFormSave() {
-        let data = {
-            itemcode: this.itemCode,
-            itemname: this.itemName,
-            qty: this.itemQTY,
-            price: this.itemUnitPrice,
-            cost: this.itemUpdateUnitCost,
-            vendorfname: this.itemVendorFName,
-            vendorlname: this.itemVendorLName,
-            vendorcompany: this.itemVendorCompany,
-            vendorphone: this.itemVendorPhone,
-            type: this.itemUpdateType,
-            rack: this.itemRack,
-            description: this.itemDescription
-        }
-        if (this.itemUpdateType == 'add' && this.itemUpdateExpiryYear != '2100') {
-            let dt = this.itemUpdateExpiryYear + '-' + this.itemUpdateExpiryMonth + '-01';
-            data['expiry'] = dt;
-        }
-        this.itemDataService.update(data).subscribe (
+        this.itemDataService.update({ itemcode: this.itemCode, id: this.itemUpdateId, itemupdate: this.itemUpdateData }).subscribe(
             res => {
                 if (!res.err) {
                     this.getItemTable(this.itemPage);
@@ -263,18 +294,32 @@ export class InventoryComponent implements OnInit {
     }
 
 
-    
+
 
     selectedItemType: any = null;
     selectedItemTypeID = null;
-    selectedItemTypeName;
+    selectedItemTypeName
+    addItemQty = '0';
 
-    itemTypesList: Array<any> = [ ];
+    newItemData = {
+        itemcode: '',
+        itemname: '',
+        manufacturer: '',
+        price: '',
+        hsn: '',
+        lowlimit: '',
+        qty: '0',
+        description: '',
+        itemtypeid: '',
+        itemtypename: ''
+    };
+
+    itemTypesList: Array<any> = [];
     itemTypeSearch(event) {
         let query = { itemTypeSearch: event.term }
         //this.itemTypesList = [{ id: 0, itemtypename: event.term }];
         this.selectedItemTypeName = event.term;
-        this.itemDataService.getItemTypes(query).subscribe (res => {
+        this.itemDataService.getItemTypes(query).subscribe(res => {
             this.itemTypesList = res;
             let tadd = true;
             for (let i = 0; i < res.length; i++) {
@@ -306,39 +351,40 @@ export class InventoryComponent implements OnInit {
             this.selectedItemType = event;
         }
     }
-    addItem(f: NgForm) {
-        if (f.valid && this.selectedItemType != null) {
-            let data = f.value
-            if (data.lowlimit == null || data.lowlimit == '') data.lowlimit = '0';
-            data['itemtypeid'] = this.selectedItemType.id;
-            data['itemtypename'] = this.selectedItemType.itemtypename;
-            this.itemDataService.addItem(f.value).subscribe (
-                res => {
-                    if (!res.err) {
-                        this.getItemTable(this.itemPage);
-                        this.toastr.success('item added', 'Done!');
-                        f.resetForm();
-
-                        this.selectedItemType = null;
-                        this.selectedItemTypeID = null;
-                        this.itemTypesList = [ ];
-                        this.ngSelectComponent.clearModel();
-                        this.itemTypeSearch({ term: null });
-                    } else {
-                        this.toastr.error('could not add item', 'Attention');
-                    }
-                    console.log(res);
+    addItem() {
+        if (this.newItemData.lowlimit == null || this.newItemData.lowlimit == '') this.newItemData.lowlimit = '0';
+        this.newItemData.itemtypeid = this.selectedItemType.id;
+        this.newItemData.itemtypename = this.selectedItemType.itemtypename;
+        this.itemDataService.addItem(this.newItemData).subscribe(
+            res => {
+                if (!res.err) {
+                    this.getItemTable(this.itemPage);
+                    this.toastr.success('item added', 'Done!');
+                    
+                    this.cancelItemAdd();
+                } else {
+                    this.toastr.error('could not add item', 'Attention');
                 }
-            );
-        } else {
-            this.toastr.error('fill all field', 'Attention');
-        }
-        //console.log(f.value, f.valid);
+                console.log(res);
+            }
+        );
     }
     cancelItemAdd() {
         this.selectedItemType = null;
         this.selectedItemTypeID = null;
-        this.itemTypesList = [ ];
+        this.itemTypesList = [];
+        this.newItemData = {
+            itemcode: '',
+            itemname: '',
+            manufacturer: '',
+            price: '',
+            hsn: '',
+            lowlimit: '',
+            qty: '0',
+            description: '',
+            itemtypeid: '',
+            itemtypename: ''
+        };
         this.ngSelectComponent.clearModel();
         this.itemTypeSearch({ term: null });
     }

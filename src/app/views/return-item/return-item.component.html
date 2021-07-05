@@ -212,6 +212,7 @@
                                 <th>Staff</th>
                                 <th>Vendor</th>
                                 <th>Date</th>
+                                <th *ngIf="authGuardService.isadmin >= 3">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -226,6 +227,11 @@
                                 <td>{{ returni.userName }}</td>
                                 <td>{{ returni.vendorFName.toString() + ' ' + returni.vendorLName.toString() }}</td>
                                 <td>{{ returni.createdAt.toLocaleString() }}</td>
+                                <td *ngIf="authGuardService.isadmin >= 3">
+                                    <button type="button" class="btn btn-sm btn-ghost-danger" (click)="deleteReturn(returni.id);">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -244,3 +250,37 @@
     </div>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div bsModal #confirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Return</h4>
+                <button type="button" class="close" (click)="confirmFormHide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="confirmFormHide()">No</button>
+                <button type="button" class="btn btn-primary" (click)="confirmFormSave()">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

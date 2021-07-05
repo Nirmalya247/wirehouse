@@ -80,8 +80,8 @@ export class ReportsComponent implements OnInit {
                 }
                 tData[typeI].value[accounttypeI].value.push({ account: transactions[i].account, amount: Number(transactions[i].amount), tendered: Number(transactions[i].tendered), type: transactions[i].type });
                 if (transactions[i].type == 'income') this.income += Number(transactions[i].amount);
-                else if (transactions[i].type == 'expense' && transactions[i].accounttype == 'products') this.costOfGoodsSold += Number(transactions[i].amount);
-                else if (transactions[i].type == 'expense') this.operatingExpense += Number(transactions[i].amount);
+                else if (transactions[i].type == 'expense' && transactions[i].accounttype == 'products' && transactions[i].account == 'sold') this.costOfGoodsSold += Number(transactions[i].amount);
+                else if (transactions[i].type == 'expense' && transactions[i].accounttype != 'products') this.operatingExpense += Number(transactions[i].amount);
                 this.netProfit = this.income - this.costOfGoodsSold - this.operatingExpense;
             }
             this.accountData = tData;

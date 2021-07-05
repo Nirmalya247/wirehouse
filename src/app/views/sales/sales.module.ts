@@ -13,6 +13,8 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgSelectModule } from '@ng-select/ng-select';
 
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 import { SalesComponent } from './sales.component';
 import { SalesRoutingModule } from './sales-routing.module';
 
@@ -31,7 +33,8 @@ import { SalesRoutingModule } from './sales-routing.module';
     ProgressbarModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
-    NgSelectModule
+    NgSelectModule,
+    ModalModule.forRoot()
   ],
   declarations: [ SalesComponent ]
 })

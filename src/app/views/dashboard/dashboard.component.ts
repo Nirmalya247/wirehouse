@@ -531,7 +531,7 @@ export class DashboardComponent implements OnInit {;
         })
     }
     // credit
-    creditOrder = 'asc';
+    creditOrder = 'desc';
     creditData = [ ];
     creditPages = [1];
     creditPage = 1;
@@ -563,17 +563,18 @@ export class DashboardComponent implements OnInit {;
         });
     }
     removeCreditBySale(i) {
-        this.saleDataService.removeCreditBySale({ id: this.creditData[i].id }).subscribe(res => {
+        this.saleDataService.removeCreditBySale({ id: this.creditData[i].id, amount: this.amountDue }).subscribe(res => {
             console.log(res);
             if (!res.err) {
                 this.toastr.success(res.msg, 'Credit');
+                this.getCredit(this.creditPage);
             } else {
                 this.toastr.error(res.msg, 'Credit');
             }
         })
     }
     // purchase due
-    purchaseDueOrder = 'asc';
+    purchaseDueOrder = 'desc';
     purchaseDueData = [ ];
     purchaseDuePages = [1];
     purchaseDuePage = 1;
@@ -604,17 +605,18 @@ export class DashboardComponent implements OnInit {;
         });
     }
     removeDueByPurchase(i) {
-        this.saleDataService.removeDueByPurchase({ id: this.purchaseDueData[i].id }).subscribe(res => {
+        this.saleDataService.removeDueByPurchase({ id: this.purchaseDueData[i].id, amount: this.amountDue }).subscribe(res => {
             console.log(res);
             if (!res.err) {
                 this.toastr.success(res.msg, 'Due');
+                this.getPurchaseDue(this.purchaseDuePage);
             } else {
                 this.toastr.error(res.msg, 'Due');
             }
         })
     }
     // return due
-    returnDueOrder = 'asc';
+    returnDueOrder = 'desc';
     returnDueData = [ ];
     returnDuePages = [1];
     returnDuePage = 1;
@@ -645,10 +647,11 @@ export class DashboardComponent implements OnInit {;
         });
     }
     removeDueByReturn(i) {
-        this.dashboardDataService.removeDueByReturn({ id: this.returnDueData[i].id }).subscribe(res => {
+        this.dashboardDataService.removeDueByReturn({ id: this.returnDueData[i].id, amount: this.amountDue }).subscribe(res => {
             console.log(res);
             if (!res.err) {
                 this.toastr.success(res.msg, 'Due');
+                this.getReturnDue(this.returnDuePage);
             } else {
                 this.toastr.error(res.msg, 'Due');
             }

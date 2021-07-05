@@ -4,15 +4,17 @@
             <div class="card">
                 <div class="card-header">
                     <i class="fa fa-edit"></i>New Sale
-                    <div class="card-header-actions">
-                        <button type="button" class="card-header-action btn btn-link btn-minimize" (click)="toggleCollapse()"><i class={{iconCollapse}}></i></button>
+
+                    <div class="card-header-actions" style="height: 21px;" *ngIf="authGuardService.isadmin >= 3">
+                        <input class="form-control form-control-sm" style="width: 60%; display: inline-block;" placeholder="Search" [(ngModel)]="upBillId">
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="getDataToUpdate();">Edit Bill</button>
                     </div>
                 </div>
                 <div (collapsed)="collapsed($event)" (expanded)="expanded($event)" [collapse]="isCollapsed" class="card-body">
                     <div class="form-group row" *ngFor="let item of items; index as i;">
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Stock ID</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Item Code" [(ngModel)]="item.stockid" (ngModelChange)="stockChange(i);">
+                            <input type="text" class="form-control form-control-sm" placeholder="Item Code" [(ngModel)]="item.stockid" (ngModelChange)="stockChange(i);" [disabled]="item.qtystock < 0">
                         </div>
                         <div class="col-md-4">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Item</label>
@@ -24,7 +26,7 @@
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Exp</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Exp" value="{{ item.expiry.toString().substr(0, 7) }}" [ngClass]="{'error' : expError(item.expiry.toString()) }" readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="Exp" value="{{ (item.expiry ? item.expiry.toString().substr(0, 7) : null) }}" [ngClass]="{'error' : expError(item.expiry) }" readonly>
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Available</label>
@@ -38,7 +40,7 @@
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Price/Unit</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Price/Unit" value="{{ item.price }}" readonly>
+                            <input type="text" class="form-control form-control-sm" placeholder="Price/Unit" value="{{ item.price }}" [disabled]="item.qtystock >= 0">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
@@ -245,6 +247,7 @@
                                 <th>Staff</th>
                                 <th>Customer</th>
                                 <th>Date</th>
+                                <th *ngIf="authGuardService.isadmin >= 3">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -259,6 +262,11 @@
                                 <td>{{ sale.userName }}</td>
                                 <td>{{ sale.customerName }}</td>
                                 <td>{{ sale.createdAt.toLocaleString() }}</td>
+                                <td *ngIf="authGuardService.isadmin >= 3">
+                                    <button type="button" class="btn btn-sm btn-ghost-danger" (click)="deleteSale(sale.id);">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -277,3 +285,37 @@
     </div>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div bsModal #confirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Sale</h4>
+                <button type="button" class="close" (click)="confirmFormHide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="confirmFormHide()">No</button>
+                <button type="button" class="btn btn-primary" (click)="confirmFormSave()">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

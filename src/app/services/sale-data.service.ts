@@ -17,6 +17,27 @@ export class SaleDataService {
         let url = environment.PATH + 'sale/add';
         return this.http.post(url, sale);
     }
+    // get old sale
+    getOldSale(sale):Observable<any> {
+        sale[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        sale[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'sale/getoldsale';
+        return this.http.post(url, sale);
+    }
+    // update sale
+    updateSale(sale):Observable<any> {
+        sale[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        sale[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'sale/update';
+        return this.http.post(url, sale);
+    }
+    // delete sale
+    deleteSale(sale):Observable<any> {
+        sale[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        sale[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'sale/delete';
+        return this.http.post(url, sale);
+    }
     // get sales count
     getSalesCount(sale):Observable<any> {
         sale[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
@@ -126,6 +147,13 @@ export class SaleDataService {
         purchase[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
         purchase[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
         let url = environment.PATH + 'purchase/add';
+        return this.http.post(url, purchase);
+    }
+    // delete purchase
+    deletePurchase(purchase):Observable<any> {
+        purchase[environment.SESSION_ID] = window.localStorage.getItem(environment.SESSION_ID);
+        purchase[environment.SESSION_USERID] = window.localStorage.getItem(environment.SESSION_USERID);
+        let url = environment.PATH + 'purchase/delete';
         return this.http.post(url, purchase);
     }
     // get purchases count
