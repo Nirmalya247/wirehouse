@@ -293,8 +293,9 @@
                     CUSTOMER CREDIT LIMIT
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <input class="form-control form-control-sm" style="width: 50%; display: inline-block;" placeholder="Search" [(ngModel)]="creditSearchText" (ngModelChange)="getCredit(null)">
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllCustomer()">Send Message to All</button>
+                        <input class="form-control form-control-sm" style="width: 26%; display: inline-block;" placeholder="Search" [(ngModel)]="creditSearchText" (ngModelChange)="getCredit(null)">
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllCustomer('bill')">Send Message to All (by bill)</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllCustomer('customer')">Send Message to All (by customer)</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -309,7 +310,7 @@
                                 <th>Bill Date</th>
                                 <th>Days passed</th>
                                 <th>Send Mail</th>
-                                <th>Received</th>
+                                <th>Record a Payment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -328,7 +329,7 @@
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="dueConfirmFormOpen('customer credit', i)">
-                                        received
+                                        Record a Payment
                                     </button>
                                 </td>
                             </tr>
@@ -371,7 +372,7 @@
                                 <th>Due</th>
                                 <th>Due Date</th>
                                 <th>Bill Date</th>
-                                <th>Pay</th>
+                                <th>Record a Payment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -385,7 +386,7 @@
                                 <td>{{ purchaseDue.createdAt.toLocaleString().split(',')[0] }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="dueConfirmFormOpen('purchase due', i)">
-                                        Paid
+                                        Record a Payment
                                     </button>
                                 </td>
                             </tr>
@@ -428,7 +429,7 @@
                                 <th>Due</th>
                                 <th>Due Date</th>
                                 <th>Bill Date</th>
-                                <th>Received</th>
+                                <th>Record a Payment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -442,7 +443,7 @@
                                 <td>{{ returnDue.createdAt.toLocaleString().split(',')[0] }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-ghost-primary" (click)="dueConfirmFormOpen('return due', i)">
-                                        Received
+                                        Record a Payment
                                     </button>
                                 </td>
                             </tr>

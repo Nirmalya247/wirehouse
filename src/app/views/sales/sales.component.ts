@@ -21,13 +21,14 @@ import { Sale } from '../../data/transaction';
 
 export class SalesComponent implements OnInit {
     @ViewChild('confirmForm') public confirmForm: ModalDirective;
+    @ViewChild('dueConfirmForm') public dueConfirmForm: ModalDirective;
     @ViewChild('FindItem') ngSelectComponent: NgSelectComponent;
     @ViewChild('FindCustomer') ngSelectCustomer: NgSelectComponent;
 
     serverPath = environment.PATH;
 
     items: Array<ItemSale> = [];
-    totalAmount: string;
+    totalAmount: string = '0.00';
     discountPercent: string;
     discountAmount: string;
     totalDiscount: string;
@@ -433,22 +434,22 @@ export class SalesComponent implements OnInit {
 
     cancelSale() {
         this.items = [];
-        this.totalAmount = '';
+        this.totalAmount = '0.00';
         this.totalDiscount = '';
         this.taxable = '';
-        this.cumulativeAmount = '';
+        this.cumulativeAmount = '0.00';
         this.paymentMode = 'cash';
         this.totalAmount = '';
         this.totalTendered = '';
-        this.changeDue = '';
-        this.creditAmount = '';
+        this.changeDue = '0.00';
+        this.creditAmount = '0.00';
         this.addCredit = false;
         this.upBillId = '';
         this.customerID = '';
         this.customerName = '';
         this.customerPhone = '';
         this.customerEmail = '';
-        this.customerCredit = '';
+        this.customerCredit = '0.00';
         this.customerCreditLimit = '';
         this.customerData = {};
         this.customerNew = true;
@@ -493,11 +494,12 @@ export class SalesComponent implements OnInit {
     customerName: string = '';
     customerPhone: string = '';
     customerEmail: string = '';
-    customerCredit: string;
+    customerCredit: string = '0.00';
     customerCreditLimit: string;
     customerCreditError = false;
     customerData: any = {};
     customerNew: boolean = true;
+    customerHasCredit = false;
     customerSearch(event) {
         let query = {
             limit: 20,
@@ -532,17 +534,18 @@ export class SalesComponent implements OnInit {
             this.customerName = '';
             this.customerPhone = '';
             this.customerEmail = '';
-            this.customerCredit = '';
+            this.customerCredit = '0.00';
             this.customerCreditLimit = '';
             this.customerData = {};
             this.customerNew = true;
         }
+        this.customerHasCredit = Number(this.customerCredit) > 0;
     }
     customerSearchFn() {
         return true;
     }
     customerGet() {
-        let query = { }
+        let query = {}
         let ch = false;
         if (this.customerID != null && this.customerID != '' && this.customerID.length >= 3 && this.customerID != this.customerData.id) {
             console.log(this.customerID != this.customerData.id, this.customerID, this.customerData.id);
@@ -568,6 +571,7 @@ export class SalesComponent implements OnInit {
                         this.customerNew = false;
                         this.customerData = res;
                         this.calculateTotalAmmount();
+                        this.customerHasCredit = Number(this.customerCredit) > 0;
                     }
                     //this.itemsList = res;
                 }
@@ -625,10 +629,11 @@ export class SalesComponent implements OnInit {
         this.customerName = '';
         this.customerPhone = '';
         this.customerEmail = '';
-        this.customerCredit = '';
+        this.customerCredit = '0.00';
         this.customerCreditLimit = '';
         this.customerData = {};
         this.customerNew = true;
+        this.customerHasCredit = Number(this.customerCredit) > 0;
     }
 
 
@@ -683,56 +688,87 @@ export class SalesComponent implements OnInit {
         }
         this.itemDataService.getItemsScan(query).subscribe(
             res => {
+                console.log(res);
                 if (res.err) {
                     // this.toastr.error(res.msg, 'Attention');
                 } else {
                     this.scanValue = '';
                     this.toastr.success(res.msg, 'Attention');
                     this.selectedItem = res.item;
-                    this.saleDataService.getSaleItem({ itemcode: this.selectedItem.itemcode }).subscribe(res => {
-                        for (let i = 0; i < res.length; i++) {
-                            let newBatch = true;
-                            for (let j = 0; j < this.items.length; j++) {
-                                if (this.items[j].stockid.toString() == res[i].id.toString() && Number(this.items[j].qtystock) > Number(this.items[j].qty)) {
-                                    this.items[j].qty = Number(this.items[j].qty) + 1
-                                    this.stockChange(j);
-                                    return;
-                                } else if (this.items[j].stockid.toString() == res[i].id.toString()) {
-                                    newBatch = false;
+                    if (this.selectedItem.qty < 0) {
+                        let newItem = <ItemSale>{
+                            id: null,
+                            stockid: null,
+                            itemcode: this.selectedItem.itemcode,
+                            itemname: this.selectedItem.itemname,
+                            rack: null,
+                            hsn: this.selectedItem.hsn,
+                            qtystock: -1,
+                            cost: 0,
+                            qty: 1,
+                            price: this.selectedItem.price,
+                            discount: 0,
+                            discountamount: 0,
+                            vat: 0,
+                            totalprice: this.selectedItem.price,
+                            mfg: null,
+                            expiry: null,
+                            vendorid: null,
+                            vendorfname: null,
+                            vendorlname: null,
+                            vendorcompany: null,
+                            vendorphone: null,
+                            vendoremail: null
+                        };
+                        console.log(newItem);
+                        this.items.push(newItem);
+                        this.changeQTY(this.items.length - 1);
+                    } else {
+                        this.saleDataService.getSaleItem({ itemcode: this.selectedItem.itemcode }).subscribe(res => {
+                            for (let i = 0; i < res.length; i++) {
+                                let newBatch = true;
+                                for (let j = 0; j < this.items.length; j++) {
+                                    if (this.items[j].stockid && this.items[j].stockid.toString() == res[i].id.toString() && Number(this.items[j].qtystock) > Number(this.items[j].qty)) {
+                                        this.items[j].qty = Number(this.items[j].qty) + 1
+                                        this.changeQTY(j);
+                                        return;
+                                    } else if (this.items[j].stockid.toString() == res[i].id.toString()) {
+                                        newBatch = false;
+                                        break;
+                                    }
+                                }
+                                if (newBatch) {
+                                    let newItem = <ItemSale>{
+                                        id: null,
+                                        stockid: res[i].id,
+                                        itemcode: this.selectedItem.itemcode,
+                                        itemname: this.selectedItem.itemname,
+                                        rack: res[i].rack,
+                                        hsn: this.selectedItem.hsn,
+                                        qtystock: res[i].qtystock,
+                                        cost: res[i].cost,
+                                        qty: 1,
+                                        price: res[i].price,
+                                        discount: this.selectedItem.discount,
+                                        discountamount: 0,
+                                        vat: this.selectedItem.vat,
+                                        totalprice: res[i].price,
+                                        mfg: res[i].mfg,
+                                        expiry: res[i].expiry,
+                                        vendorid: res[i].vendorid,
+                                        vendorfname: res[i].vendorfname,
+                                        vendorlname: res[i].vendorlname,
+                                        vendorcompany: res[i].vendorcompany,
+                                        vendorphone: res[i].vendorphone,
+                                        vendoremail: res[i].vendoremail
+                                    };
+                                    this.items.push(newItem);
+                                    this.changeQTY(this.items.length - 1);
                                     break;
                                 }
                             }
-                            if (newBatch) {
-                                let newItem = <ItemSale>{
-                                    id: null,
-                                    stockid: res[i].id,
-                                    itemcode: this.selectedItem.itemcode,
-                                    itemname: this.selectedItem.itemname,
-                                    rack: res[i].rack,
-                                    hsn: this.selectedItem.hsn,
-                                    qtystock: res[i].qtystock,
-                                    cost: res[i].cost,
-                                    qty: 1,
-                                    price: res[i].price,
-                                    discount: this.selectedItem.discount,
-                                    discountamount: 0,
-                                    vat: this.selectedItem.vat,
-                                    totalprice: res[i].price,
-                                    mfg: res[i].mfg,
-                                    expiry: res[i].expiry,
-                                    vendorid: res[i].vendorid,
-                                    vendorfname: res[i].vendorfname,
-                                    vendorlname: res[i].vendorlname,
-                                    vendorcompany: res[i].vendorcompany,
-                                    vendorphone: res[i].vendorphone,
-                                    vendoremail: res[i].vendoremail
-                                };
-                                this.items.push(newItem);
-                                this.changeQTY(this.items.length - 1);
-                                break;
-                            }
-                        }
-                    });
+                        });
+                    }
                 }
             }
         );
@@ -797,5 +833,34 @@ export class SalesComponent implements OnInit {
         this.saleDataService.fetchCustomerFromHubSpot({ recent: 'yes' }).subscribe(res => {
             this.toastr.success(`updated ${res.update} and added ${res.new} customers`, 'Done!');
         });
+    }
+
+    // due
+    formIndex = -1;
+    amountDue = 0;
+    dueConfirmFormOpen(i) {
+        this.dueConfirmForm.show();
+        this.formIndex = i;
+        this.amountDue = Number(this.sales[i].creditAmount);
+    }
+    dueConfirmFormSave() {
+        this.dueConfirmForm.hide();
+        this.removeCreditBySale(this.formIndex);
+        this.formIndex = -1;
+    }
+    dueConfirmFormHide() {
+        this.dueConfirmForm.hide();
+        this.formIndex = -1;
+    }
+    removeCreditBySale(i) {
+        this.saleDataService.removeCreditBySale({ id: this.sales[i].id, amount: this.amountDue }).subscribe(res => {
+            console.log(res);
+            if (!res.err) {
+                this.toastr.success(res.msg, 'Credit');
+                this.getSaleTable(this.salePage);
+            } else {
+                this.toastr.error(res.msg, 'Credit');
+            }
+        })
     }
 }

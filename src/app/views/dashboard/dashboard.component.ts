@@ -21,7 +21,7 @@ import { MessageDataService } from '../../services/message-data.service';
 @Component({
     templateUrl: 'dashboard.component.html'
 })
-export class DashboardComponent implements OnInit {;
+export class DashboardComponent implements OnInit {
     @ViewChild('dueConfirmForm') public dueConfirmForm: ModalDirective;
     totalItemSold: string = '0';
     totalItemBought: string = '0';
@@ -666,35 +666,53 @@ export class DashboardComponent implements OnInit {;
         //     }
         // });
         let data = {
-            messageId: 1,
-            customerId: this.creditData[i].customerId,
-            shopId: 1
+            messageId: 13,
+            customerId: this.creditData[i].customerID,
+            shopId: 1,
+            salesId: this.creditData[i].id
         };
         this.messageDataService.sendMessage(data).subscribe(resMessage => {
             if (resMessage.err) this.toastr.error('email could not be sent', 'Error!');
             else this.toastr.success('email sent', 'Done!');
         });
-        data.messageId = 2;
+        data.messageId = 14;
         this.messageDataService.sendMessage(data).subscribe(resMessage => {
             if (resMessage.err) this.toastr.error('text could not be sent', 'Error!');
             else this.toastr.success('text sent', 'Done!');
         });
     }
-    sendEmailToAllCustomer() {
-        this.messageDataService.sendMessageMultiple({ message: 1 }).subscribe(res => {
-            if (!res.err) {
-                this.toastr.success(res.msg, 'Email');
-            } else {
-                this.toastr.error(res.msg, 'Email');
-            }
-        });
-        this.messageDataService.sendMessageMultiple({ message: 2 }).subscribe(res => {
-            if (!res.err) {
-                this.toastr.success(res.msg, 'Text');
-            } else {
-                this.toastr.error(res.msg, 'Text');
-            }
-        });
+    sendEmailToAllCustomer(by) {
+        if (by == 'bill') {
+            this.messageDataService.sendMessageMultiple({ message: 13 }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success(res.msg, 'Email');
+                } else {
+                    this.toastr.error(res.msg, 'Email');
+                }
+            });
+            this.messageDataService.sendMessageMultiple({ message: 14 }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success(res.msg, 'Text');
+                } else {
+                    this.toastr.error(res.msg, 'Text');
+                }
+            });
+        } else {
+            this.messageDataService.sendMessageMultiple({ message: 1 }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success(res.msg, 'Email');
+                } else {
+                    this.toastr.error(res.msg, 'Email');
+                }
+            });
+            this.messageDataService.sendMessageMultiple({ message: 2 }).subscribe(res => {
+                if (!res.err) {
+                    this.toastr.success(res.msg, 'Text');
+                } else {
+                    this.toastr.error(res.msg, 'Text');
+                }
+            });
+        }
     }
     sendEmailToAllVendorPurchase() {
         this.messageDataService.sendMessageMultiple({ message: 3 }).subscribe(res => {

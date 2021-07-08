@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Quantity</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="Quantity" [(ngModel)]="item.qty" (ngModelChange)="changeQTY(i);">
+                            <input type="text" class="form-control form-control-sm bg-info" placeholder="Quantity" [(ngModel)]="item.qty" (ngModelChange)="changeQTY(i);">
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label col-form-label-sm" for="prependedInput">Total Price</label>
@@ -72,7 +72,7 @@
                     <div class="form-group row">
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Total Amount</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="totalAmount" readonly>
+                            <label type="text" class="form-control form-control-sm text-white bg-info">{{ totalAmount }}</label>
                         </div>
                         <div class="col-md-2">
                             <label class="col-form-label" for="prependedInput">Discount (%)</label>
@@ -112,8 +112,11 @@
                             <label class="col-form-label" for="select1">Payment Mode</label>
                             <select id="select1" name="select1" class="form-control form-control-sm" [(ngModel)]="paymentMode">
                                 <option value="cash">Cash</option>
-                                <option value="POS">POS</option>
-                                <option value="Cash and POS">Cash and POS</option>
+                                <option value="QR code Scanned">QR code Scanned</option>
+                                <option value="Bank Payment">Bank Payment</option>
+                                <option value="Online Wallets">Online Wallets ( Esewa, Khalit, etc. )</option>
+                                <option value="Credit / Debit Card">Credit / Debit Card</option>
+                                <option value="Other">Other</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -149,7 +152,7 @@
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label" for="prependedInput">Credit</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="0.00" [(ngModel)]="customerCredit" readonly>
+                            <label type="text" class="form-control form-control-sm text-white {{ (customerHasCredit ? 'bg-warning' : '') }}">{{ customerCredit }}</label>
                         </div>
                         <div class="col-md-1">
                             <label class="col-form-label" for="prependedInput">CreditLimit</label>
@@ -242,11 +245,12 @@
                                 <th>Total Item</th>
                                 <th>Total Amount</th>
                                 <th>Amount Tendered</th>
-                                <th>Change Due</th>
+                                <th>Due</th>
                                 <th>Mode of Payment</th>
                                 <th>Staff</th>
                                 <th>Customer</th>
                                 <th>Date</th>
+                                <th>Record a Payment</th>
                                 <th *ngIf="authGuardService.isadmin >= 3">Delete</th>
                             </tr>
                         </thead>
@@ -257,11 +261,16 @@
                                 <td>{{ sale.totalItem }}</td>
                                 <td>{{ sale.totalAmount }}</td>
                                 <td>{{ sale.totalTendered }}</td>
-                                <td>{{ sale.changeDue }}</td>
+                                <td>{{ sale.creditAmount }}</td>
                                 <td>{{ sale.paymentMode }}</td>
                                 <td>{{ sale.userName }}</td>
                                 <td>{{ sale.customerName }}</td>
                                 <td>{{ sale.createdAt.toLocaleString() }}</td>
+                                <td>
+                                    <button *ngIf="sale.creditAmount > 0" type="button" class="btn btn-sm btn-ghost-primary" (click)="dueConfirmFormOpen(i)">
+                                        Record a Payment
+                                    </button>
+                                </td>
                                 <td *ngIf="authGuardService.isadmin >= 3">
                                     <button type="button" class="btn btn-sm btn-ghost-danger" (click)="deleteSale(sale.id);">
                                         <i class="fa fa-close"></i>
@@ -312,6 +321,45 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="confirmFormHide()">No</button>
                 <button type="button" class="btn btn-primary" (click)="confirmFormSave()">Yes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+<div bsModal #dueConfirmForm="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dueConfirmLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Are you sure?</h4>
+                <button type="button" class="close" (click)="dueConfirmFormHide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="col-form-label col-form-label-sm" for="prependedInput">Amount</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="Amount" [(ngModel)]="amountDue">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="dueConfirmFormHide()">No</button>
+                <button type="button" class="btn btn-primary" (click)="dueConfirmFormSave()">Yes</button>
             </div>
         </div>
         <!-- /.modal-content -->

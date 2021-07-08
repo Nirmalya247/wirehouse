@@ -282,7 +282,7 @@ export class AdminManagementComponent implements OnInit {
     }
 
     isMessageDeletable(id) {
-        return parseInt(id.toString().substr(2)) > 10;
+        return parseInt(id.toString().substr(2)) > 14;
     }
 
     //*********** messageData
