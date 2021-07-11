@@ -408,7 +408,7 @@ export class SalesComponent implements OnInit {
             if (!res.err) {
                 this.toastr.success('Sale successful', 'Done!');
                 this.getSaleTable(this.salePage);
-                window.open(environment.PATH + 'sale-bill?saleId=' + res.id.toString() + '&paper=A4V2');
+                window.open(environment.PATH + 'sale-bill?saleId=' + res.id.toString() + '&key=' + res.key.toString() + '&paper=A4V2');
                 let data = {
                     messageId: 7,
                     customerId: this.customerID,

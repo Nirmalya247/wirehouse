@@ -1,6 +1,7 @@
 export class Sale {
     constructor(
         public id: String,
+        public key: String,
         public totalItem: Number,
         public totalQTY: Number,
         public totalAmount: Number,

@@ -139,7 +139,7 @@
                         <tbody>
                             <tr *ngFor="let data of datas; index as i;">
                                 <td>{{ i + 1 + (dataPage - 1) * dataLimit }}</td>
-                                <td><a href="{{ serverPath + 'sale-bill?saleId=' + data.id.toString() + '&paper=A4' }}" target="_blank" *ngIf=" dataType == 'sales' ">{{ data.id }}</a>
+                                <td><a href="{{ serverPath + 'sale-bill?saleId=' + data.id.toString() + '&key=' + data.key.toString() + '&paper=A4' }}" target="_blank" *ngIf=" dataType == 'sales' ">{{ data.id }}</a>
                                     <div *ngIf=" dataType != 'sales' ">{{ dataType == 'sales' ? data.id : data.billID }}
                                     </div>
                                 </td>

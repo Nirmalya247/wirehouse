@@ -1,8 +1,9 @@
 // If you want to override variables do it here
 @import "variables";
-
 // Import styles
 @import "~@coreui/coreui/scss/coreui";
-
 // If you want to add something do it here
 @import "custom";
+.sidebar .nav-link.active {
+    background-color: #20a8d8;
+}
