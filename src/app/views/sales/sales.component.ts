@@ -688,6 +688,7 @@ export class SalesComponent implements OnInit {
 
     scanValue: string = '';
     itemScan() {
+        var scanValue = this.scanValue.toString();
         let query = {
             code: this.scanValue
         }
@@ -743,7 +744,7 @@ export class SalesComponent implements OnInit {
                                         break;
                                     }
                                 }
-                                if (newBatch) {
+                                if (newBatch && (res[i].id.toString() == scanValue || res[i].stockid.toString() == scanValue || this.selectedItem.itemcode.toString() == scanValue)) {
                                     let newItem = <ItemSale>{
                                         id: null,
                                         stockid: res[i].id,
