@@ -91,6 +91,7 @@ export class SalesComponent implements OnInit {
                 let newItem = <ItemSale>{
                     id: res.items[i].salesitem.id,
                     stockid: res.items[i].stock.id,
+                    stockcode: res.items[i].stock.stockid,
                     itemcode: res.items[i].item.itemcode,
                     itemname: res.items[i].item.itemname,
                     rack: res.items[i].stock.rack,
@@ -119,12 +120,13 @@ export class SalesComponent implements OnInit {
     }
 
     stockChange(i) {
-        console.log(this.items[i].stockid);
-        this.saleDataService.getSaleItemByStock({ stockid: this.items[i].stockid }).subscribe(res => {
+        console.log(this.items[i].stockcode);
+        this.saleDataService.getSaleItemByStock({ stockid: this.items[i].stockcode }).subscribe(res => {
             console.log(res);
             if (!res.err) {
                 this.items[i].id = null;
                 this.items[i].stockid = res.itemUpdate.id;
+                this.items[i].stockcode = res.itemUpdate.stockid;
                 this.items[i].itemcode = res.item.itemcode;
                 this.items[i].itemname = res.item.itemname;
                 this.items[i].rack = res.itemUpdate.rack;
@@ -163,6 +165,7 @@ export class SalesComponent implements OnInit {
                 let newItem = <ItemSale>{
                     id: null,
                     stockid: null,
+                    stockcode: null,
                     itemcode: this.selectedItem.itemcode,
                     itemname: this.selectedItem.itemname,
                     rack: null,
@@ -200,6 +203,7 @@ export class SalesComponent implements OnInit {
                             let newItem = <ItemSale>{
                                 id: null,
                                 stockid: res[i].id,
+                                stockcode: res[i].stockid,
                                 itemcode: this.selectedItem.itemcode,
                                 itemname: this.selectedItem.itemname,
                                 rack: res[i].rack,
@@ -352,6 +356,7 @@ export class SalesComponent implements OnInit {
             saleItems.push({
                 id: this.items[i].id,
                 stockid: this.items[i].stockid ? this.items[i].stockid : null,
+                stockcode: this.items[i].stockcode ? this.items[i].stockcode : null,
                 itemcode: this.items[i].itemcode,
                 itemname: this.items[i].itemname,
                 hsn: this.items[i].hsn,
@@ -699,6 +704,7 @@ export class SalesComponent implements OnInit {
                         let newItem = <ItemSale>{
                             id: null,
                             stockid: null,
+                            stockcode: null,
                             itemcode: this.selectedItem.itemcode,
                             itemname: this.selectedItem.itemname,
                             rack: null,
@@ -741,6 +747,7 @@ export class SalesComponent implements OnInit {
                                     let newItem = <ItemSale>{
                                         id: null,
                                         stockid: res[i].id,
+                                        stockcode: res[i].stockid,
                                         itemcode: this.selectedItem.itemcode,
                                         itemname: this.selectedItem.itemname,
                                         rack: res[i].rack,

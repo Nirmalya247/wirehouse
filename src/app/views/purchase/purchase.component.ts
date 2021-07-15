@@ -68,6 +68,7 @@ export class PurchaseComponent implements OnInit {
                 console.log('@@@@@@@@@@@', res);
                 let newItem = <ItemUpdate> {
                     id: '',
+                    stockid: '',
                     purchaseId: null,
                     itemcode: this.selectedItem.itemcode,
                     itemname: this.selectedItem.itemname,

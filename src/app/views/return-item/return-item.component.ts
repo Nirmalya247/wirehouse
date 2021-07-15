@@ -82,6 +82,7 @@ export class ReturnItemComponent implements OnInit {
                 itemcode: this.selectedItem.itemcode,
                 itemname: this.selectedItem.itemname,
                 batchno: this.selectedItem.id,
+                batchcode: this.selectedItem.stockid,
                 qtystock: this.selectedItem.qtystock,
                 qty: 1,
                 price: this.selectedItem.cost,
@@ -335,7 +336,7 @@ export class ReturnItemComponent implements OnInit {
             res => {
                 console.log(res);
                 for (var i = 0; i < res.length; i++) {
-                    res[i]['itemlabel'] = `(${res[i].id}), (${res[i].purchaseId}) ${res[i].itemname}`;
+                    res[i]['itemlabel'] = `(${res[i].stockid}), (${res[i].purchaseId}) ${res[i].itemname}`;
                     if (this.items.some(item => item.batchno == res[i].id)) {
                         res.splice(i, 1);
                         i--;

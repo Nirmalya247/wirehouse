@@ -24,6 +24,7 @@ export class ItemSale {
     constructor(
         public id: String,
         public stockid: String,
+        public stockcode: String,
         public itemcode: String,
         public itemname: String,
         public rack: String,
@@ -50,6 +51,7 @@ export class ItemSale {
 export class ItemUpdate {
     constructor(
         public id: String,
+        public stockid: String,
         public purchaseId: String,
         public itemcode: String,
         public itemname: String,
