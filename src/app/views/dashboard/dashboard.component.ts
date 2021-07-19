@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit {
         this.getExpiryCount();
         this.getStockCount();
         this.getDemandCount();
+        this.getEarningCount();
         this.getCreditCount();
         this.getPurchaseDueCount();
         this.getReturnDueCount();
@@ -427,13 +428,22 @@ export class DashboardComponent implements OnInit {
     }
     dataLimit = 5;
     // expiry
+    getExpiryColor(d) {
+        var today = new Date()
+        var d1 = new Date(d.toString())
+        var d2 = new Date(d.toString())
+        if (d1.setMonth(d1.getMonth() - 3) < today.getTime()) return 'bg-danger'
+        if (d2.setMonth(d2.getMonth() - 6) < today.getTime()) return 'bg-warning'
+        return '';
+    }
     expiryOrder = 'asc';
     expiryData = [ ];
     expiryPages = [1];
     expiryPage = 1;
+    expiryLimit = 5;
     getExpiryCount() {
         this.dashboardDataService.getExpiryCount({}).subscribe(res => {
-            this.expiryPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
+            this.expiryPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.expiryLimit) }, (_, i) => i + 1);
             this.getExpiry(null);
             // console.log(res);
         })
@@ -447,7 +457,7 @@ export class DashboardComponent implements OnInit {
             if (pageNo < 1 || pageNo > this.expiryPages.length) return;
             this.expiryPage = pageNo;
         } else this.expiryPage = 1;
-        this.dashboardDataService.getExpiry({ page: this.expiryPage, limit: this.dataLimit, order: this.expiryOrder }).subscribe(res => {
+        this.dashboardDataService.getExpiry({ page: this.expiryPage, limit: this.expiryLimit, order: this.expiryOrder }).subscribe(res => {
             console.log('###########', res)
             for (let i = 0; i < res.length; i++) {
                 res[i].expiry = new Date(res[i].expiry.toString());
@@ -462,9 +472,10 @@ export class DashboardComponent implements OnInit {
     stockData: Array<Item> = [];
     stockPages = [1];
     stockPage = 1;
+    stockLimit = 5;
     getStockCount() {
         this.dashboardDataService.getStockCount({}).subscribe(res => {
-            this.stockPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
+            this.stockPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.stockLimit) }, (_, i) => i + 1);
             this.getStock(null);
             // console.log(res);
         })
@@ -478,7 +489,7 @@ export class DashboardComponent implements OnInit {
             if (pageNo < 1 || pageNo > this.stockPages.length) return;
             this.stockPage = pageNo;
         } else this.stockPage = 1;
-        this.dashboardDataService.getStock({ page: this.stockPage, limit: this.dataLimit, order: this.stockOrder }).subscribe(res => {
+        this.dashboardDataService.getStock({ page: this.stockPage, limit: this.stockLimit, order: this.stockOrder }).subscribe(res => {
             this.stockData = res;
             // console.log(res);
         })
@@ -488,12 +499,11 @@ export class DashboardComponent implements OnInit {
     demandData = [ ];
     demandPages = [1];
     demandPage = 1;
+    demandLimit = 5;
     getDemandCount() {
         this.dashboardDataService.getDemandCount({}).subscribe(res => {
-            this.demandPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
-            this.earningPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
+            this.demandPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.demandLimit) }, (_, i) => i + 1);
             this.getDemand(null);
-            this.getEarning(null);
             console.log(res);
         })
     }
@@ -506,7 +516,7 @@ export class DashboardComponent implements OnInit {
             if (pageNo < 1 || pageNo > this.demandPages.length) return;
             this.demandPage = pageNo;
         } else this.demandPage = 1;
-        this.dashboardDataService.getDemand({ page: this.demandPage, limit: this.dataLimit, order: this.demandOrder, orderby: 'qty' }).subscribe(res => {
+        this.dashboardDataService.getDemand({ page: this.demandPage, limit: this.demandLimit, order: this.demandOrder, orderby: 'qty' }).subscribe(res => {
             this.demandData = res;
             console.log(res);
         })
@@ -516,6 +526,14 @@ export class DashboardComponent implements OnInit {
     earningData = [ ];
     earningPages = [1];
     earningPage = 1;
+    earningLimit = 5;
+    getEarningCount() {
+        this.dashboardDataService.getDemandCount({}).subscribe(res => {
+            this.earningPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.demandLimit) }, (_, i) => i + 1);
+            this.getEarning(null);
+            console.log(res);
+        })
+    }
     getEarning(pageNo) {
         if (pageNo != null) {
             if (pageNo == -1) pageNo = this.earningPage - 1;
@@ -525,7 +543,7 @@ export class DashboardComponent implements OnInit {
             if (pageNo < 1 || pageNo > this.earningPages.length) return;
             this.earningPage = pageNo;
         } else this.earningPage = 1;
-        this.dashboardDataService.getDemand({ page: this.earningPage, limit: this.dataLimit, order: this.earningOrder, orderby: 'totalprice' }).subscribe(res => {
+        this.dashboardDataService.getDemand({ page: this.earningPage, limit: this.earningLimit, order: this.earningOrder, orderby: 'totalprice' }).subscribe(res => {
             this.earningData = res;
             console.log(res);
         })
@@ -536,9 +554,10 @@ export class DashboardComponent implements OnInit {
     creditPages = [1];
     creditPage = 1;
     creditSearchText = '';
+    creditLimit = 5;
     getCreditCount() {
         this.dashboardDataService.getCreditCount({ searchText: this.creditSearchText }).subscribe(res => {
-            this.creditPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
+            this.creditPages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.creditLimit) }, (_, i) => i + 1);
             this.getCredit(null);
             console.log(res);
         })
@@ -552,7 +571,7 @@ export class DashboardComponent implements OnInit {
             if (pageNo < 1 || pageNo > this.creditPages.length) return;
             this.creditPage = pageNo;
         } else this.creditPage = 1;
-        this.dashboardDataService.getCredit({ page: this.creditPage, limit: this.dataLimit, order: this.creditOrder, orderby: 'qty', searchText: this.creditSearchText }).subscribe(res => {
+        this.dashboardDataService.getCredit({ page: this.creditPage, limit: this.creditLimit, order: this.creditOrder, orderby: 'qty', searchText: this.creditSearchText }).subscribe(res => {
             var today = new Date();
             for (var i = 0; i < res.length; i++) {
                 res[i].createdAt = new Date(res[i].createdAt.toString());
@@ -579,9 +598,10 @@ export class DashboardComponent implements OnInit {
     purchaseDuePages = [1];
     purchaseDuePage = 1;
     purchaseDueSearchText = '';
+    purchaseDueLimit = 5;
     getPurchaseDueCount() {
         this.dashboardDataService.getPurchaseDueCount({ searchText: this.purchaseDueSearchText }).subscribe(res => {
-            this.purchaseDuePages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
+            this.purchaseDuePages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.purchaseDueLimit) }, (_, i) => i + 1);
             this.getPurchaseDue(null);
             console.log(res);
         })
@@ -595,7 +615,7 @@ export class DashboardComponent implements OnInit {
             if (pageNo < 1 || pageNo > this.purchaseDuePages.length) return;
             this.purchaseDuePage = pageNo;
         } else this.purchaseDuePage = 1;
-        this.dashboardDataService.getPurchaseDue({ page: this.purchaseDuePage, limit: this.dataLimit, order: this.purchaseDueOrder, orderby: 'qty', searchText: this.purchaseDueSearchText }).subscribe(res => {
+        this.dashboardDataService.getPurchaseDue({ page: this.purchaseDuePage, limit: this.purchaseDueLimit, order: this.purchaseDueOrder, orderby: 'qty', searchText: this.purchaseDueSearchText }).subscribe(res => {
             console.log(res);
             for (let i = 0; i < res.length; i++) {
                 if (res[i].dueDate) res[i].dueDate = new Date(res[i].dueDate.toString());
@@ -621,9 +641,10 @@ export class DashboardComponent implements OnInit {
     returnDuePages = [1];
     returnDuePage = 1;
     returnDueSearchText = '';
+    returnDueLimit = 5;
     getReturnDueCount() {
         this.dashboardDataService.getReturnDueCount({ searchText: this.returnDueSearchText }).subscribe(res => {
-            this.returnDuePages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.dataLimit) }, (_, i) => i + 1);
+            this.returnDuePages = Array.from({ length: Math.ceil(parseInt(res.toString()) / this.returnDueLimit) }, (_, i) => i + 1);
             this.getReturnDue(null);
             console.log(res);
         })
@@ -637,7 +658,7 @@ export class DashboardComponent implements OnInit {
             if (pageNo < 1 || pageNo > this.returnDuePages.length) return;
             this.returnDuePage = pageNo;
         } else this.returnDuePage = 1;
-        this.dashboardDataService.getReturnDue({ page: this.returnDuePage, limit: this.dataLimit, order: this.returnDueOrder, orderby: 'qty',searchText: this.returnDueSearchText }).subscribe(res => {
+        this.dashboardDataService.getReturnDue({ page: this.returnDuePage, limit: this.returnDueLimit, order: this.returnDueOrder, orderby: 'qty',searchText: this.returnDueSearchText }).subscribe(res => {
             console.log(res);
             for (let i = 0; i < res.length; i++) {
                 if (res[i].dueDate) res[i].dueDate = new Date(res[i].dueDate.toString());

@@ -255,6 +255,7 @@
                         <thead>
                             <tr>
                                 <th>SN</th>
+                                <th>ID</th>
                                 <th>Receipt No</th>
                                 <th>Total QTY</th>
                                 <th>Total Amount</th>
@@ -270,6 +271,7 @@
                         <tbody>
                             <tr *ngFor="let purchase of purchases; index as i;">
                                 <td>{{ i + 1 + (purchasePage - 1) * purchaseLimit }}</td>
+                                <td><a href="{{ serverPath + 'purchase-barcode?purchaseId=' + purchase.id.toString() }}" target="_blank">{{ purchase.id }}</a></td>
                                 <td><a href="{{ serverPath + 'purchase-barcode?purchaseId=' + purchase.id.toString() }}" target="_blank">{{ purchase.billID }}</a></td>
                                 <td>{{ purchase.totalQTY }}</td>
                                 <td>{{ purchase.totalAmount }}</td>

@@ -95,10 +95,17 @@
                             <div class="card">
                                 <div class="card-header">
                                     <i class="fa fa-align-justify"></i> EXPIRY
-                                    <div class="card-header-actions">
+                                    <div class="card-header-actions" style="height: 21px;">
                                         <select class="form-select form-select-sm" [(ngModel)]="expiryOrder" (ngModelChange)="getExpiry(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
+                                        </select>
+                                        <select class="form-select form-select-sm" [(ngModel)]="expiryLimit" (ngModelChange)="getExpiryCount()">
+                                            <option value="1">1</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
                                         </select>
                                     </div>
                                 </div>
@@ -106,6 +113,7 @@
                                     <table class="table table-sm">
                                         <thead>
                                             <tr>
+                                                <th>#Stock</th>
                                                 <th>Item Code</th>
                                                 <th>Item Name</th>
                                                 <th>QTY</th>
@@ -117,10 +125,11 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let item of expiryData">
+                                                <td>{{ item.id }}</td>
                                                 <td>{{ item.itemcode }}</td>
                                                 <td>{{ item.itemname }}</td>
                                                 <td>{{ item.qtystock }}</td>
-                                                <td>{{ item.expiry.toLocaleString().split(',')[0] }}</td>
+                                                <td class="{{ getExpiryColor(item.expiry) }}">{{ item.expiry.toLocaleString().split(',')[0] }}</td>
                                                 <td>{{ item.createdAt.toLocaleString().split(',')[0] }}</td>
                                                 <td>{{ item.vendors.fname + ' ' + item.vendors.lname }}</td>
                                                 <td>{{ item.vendors.phone }}</td>
@@ -149,6 +158,13 @@
                                         <select class="form-select form-select-sm" [(ngModel)]="stockOrder" (ngModelChange)="getStock(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
+                                        </select>
+                                        <select class="form-select form-select-sm" [(ngModel)]="stockLimit" (ngModelChange)="getStockCount()">
+                                            <option value="1">1</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
                                         </select>
                                     </div>
                                 </div>
@@ -202,6 +218,13 @@
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
                                         </select>
+                                        <select class="form-select form-select-sm" [(ngModel)]="demandLimit" (ngModelChange)="getDemandCount()">
+                                            <option value="1">1</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -245,6 +268,13 @@
                                         <select class="form-select form-select-sm" [(ngModel)]="earningOrder" (ngModelChange)="getEarning(null)">
                                             <option value="asc">Low to High</option>
                                             <option value="desc">High to Low</option>
+                                        </select>
+                                        <select class="form-select form-select-sm" [(ngModel)]="earningLimit" (ngModelChange)="getEarningCount()">
+                                            <option value="1">1</option>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
                                         </select>
                                     </div>
                                 </div>
@@ -296,6 +326,13 @@
                         <input class="form-control form-control-sm" style="width: 26%; display: inline-block;" placeholder="Search" [(ngModel)]="creditSearchText" (ngModelChange)="getCredit(null)">
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllCustomer('bill')">Send Message to All (by bill)</button>
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllCustomer('customer')">Send Message to All (by customer)</button>
+                        <select class="form-select form-select-sm" [(ngModel)]="creditLimit" (ngModelChange)="getCreditCount()">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
                     </div>
                 </div>
                 <div class="card-body">
@@ -357,8 +394,15 @@
                     PURCHASE DUE
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <input class="form-control form-control-sm" style="width: 50%; display: inline-block;" placeholder="Search" [(ngModel)]="purchaseDueSearchText" (ngModelChange)="getPurchaseDue(null)">
+                        <input class="form-control form-control-sm" style="width: 40%; display: inline-block;" placeholder="Search" [(ngModel)]="purchaseDueSearchText" (ngModelChange)="getPurchaseDue(null)">
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllVendorPurchase()">Send Message to All</button>
+                        <select class="form-select form-select-sm" [(ngModel)]="purchaseDueLimit" (ngModelChange)="getPurchaseDueCount()">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
                     </div>
                 </div>
                 <div class="card-body">
@@ -414,8 +458,15 @@
                     RETURN DUE
 
                     <div class="card-header-actions" style="height: 21px;">
-                        <input class="form-control form-control-sm" style="width: 50%; display: inline-block;" placeholder="Search" [(ngModel)]="returnDueSearchText" (ngModelChange)="getReturnDue(null)">
+                        <input class="form-control form-control-sm" style="width: 40%; display: inline-block;" placeholder="Search" [(ngModel)]="returnDueSearchText" (ngModelChange)="getReturnDue(null)">
                         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" (click)="sendEmailToAllVendorReturn()">Send Message to All</button>
+                        <select class="form-select form-select-sm" [(ngModel)]="returnDueLimit" (ngModelChange)="getReturnDueCount()">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
                     </div>
                 </div>
                 <div class="card-body">

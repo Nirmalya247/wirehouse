@@ -42,6 +42,7 @@ export class SalesComponent implements OnInit {
     changeDue: string = '0.00';
     creditAmount: string = '0.00';
     addCredit: boolean = false;
+    description: string = '';
 
 
     constructor(
@@ -71,6 +72,7 @@ export class SalesComponent implements OnInit {
             if (Number(res.sale.vat) == 0) this.vatValue = '0e'; else this.vatValue = '13';
             this.paymentMode = res.sale.paymentMode;
             this.totalTendered = res.sale.totalTendered;
+            this.description = res.sale.description;
             this.saleDataService.customerGet({ id: res.sale.customerID }).subscribe(
                 resCustomer => {
                     console.log(resCustomer);
@@ -106,6 +108,7 @@ export class SalesComponent implements OnInit {
                     totalprice: 0,
                     mfg: res.items[i].stock.mfg,
                     expiry: res.items[i].stock.expiry,
+                    description: res.items[i].salesitem.description,
                     vendorid: res.items[i].stock.vendorid,
                     vendorfname: '',
                     vendorlname: '',
@@ -180,6 +183,7 @@ export class SalesComponent implements OnInit {
                     totalprice: this.selectedItem.price,
                     mfg: null,
                     expiry: null,
+                    description: this.selectedItem.description,
                     vendorid: null,
                     vendorfname: null,
                     vendorlname: null,
@@ -218,6 +222,7 @@ export class SalesComponent implements OnInit {
                                 totalprice: res[i].price,
                                 mfg: res[i].mfg,
                                 expiry: res[i].expiry,
+                                description: this.selectedItem.description,
                                 vendorid: res[i].vendorid,
                                 vendorfname: res[i].vendorfname,
                                 vendorlname: res[i].vendorlname,
@@ -367,7 +372,8 @@ export class SalesComponent implements OnInit {
                 vat: this.items[i].vat,
                 totalPrice: this.items[i].totalprice,
                 mfg: this.items[i].mfg,
-                expiry: this.items[i].expiry
+                expiry: this.items[i].expiry,
+                description: this.items[i].description
             });
         }
         if (this.addCredit) saleItems.push({
@@ -398,6 +404,7 @@ export class SalesComponent implements OnInit {
             changeDue: isNaN(Number(this.changeDue)) ? 0 : Number(this.changeDue),
             creditAmount: isNaN(Number(this.creditAmount)) ? 0 : Number(this.creditAmount),
             addCredit: this.addCredit ? 1 : 0,
+            description: (this.description && this.description != '') ? this.description : null,
             customerID: this.customerID,
             customerName: this.customerName,
             customerPhone: this.customerPhone,
@@ -720,6 +727,7 @@ export class SalesComponent implements OnInit {
                             totalprice: this.selectedItem.price,
                             mfg: null,
                             expiry: null,
+                            description: this.selectedItem.description,
                             vendorid: null,
                             vendorfname: null,
                             vendorlname: null,
@@ -763,6 +771,7 @@ export class SalesComponent implements OnInit {
                                         totalprice: res[i].price,
                                         mfg: res[i].mfg,
                                         expiry: res[i].expiry,
+                                        description: this.selectedItem.description,
                                         vendorid: res[i].vendorid,
                                         vendorfname: res[i].vendorfname,
                                         vendorlname: res[i].vendorlname,

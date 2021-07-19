@@ -39,6 +39,7 @@ export class ItemSale {
         public totalprice: Number,
         public mfg: String,
         public expiry: String,
+        public description: String,
         public vendorid: String,
         public vendorfname: String,
         public vendorlname: String,
