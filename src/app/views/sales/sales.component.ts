@@ -268,8 +268,11 @@ export class SalesComponent implements OnInit {
 
 
         if (isNaN(Number(this.items[i].qty))) this.items[i].qty = 1;
-        if (this.items[i].qtystock >= 0 && this.items[i].qty > this.items[i].qtystock) this.items[i].qty = this.items[i].qtystock;
-        if (this.items[i].qty < 0) this.items[i].qty = 0;
+        if (Number(this.items[i].qtystock) >= 0 && Number(this.items[i].qty) > Number(this.items[i].qtystock)) {
+            console.log(this.items[i].qty, this.items[i].qtystock);
+            this.items[i].qty = this.items[i].qtystock;
+        }
+        if (Number(this.items[i].qty) < 0) this.items[i].qty = 0;
         let total = Number(this.items[i].qty) * Number(this.items[i].price);
         discount = total * discount / 100;
         if (total - discount - discountamount <= 0) {
@@ -596,7 +599,7 @@ export class SalesComponent implements OnInit {
             phone: this.customerPhone,
             email: this.customerEmail,
             credit: '0.00',
-            creditlimit: this.customerCreditLimit,
+            creditlimit: (this.customerCreditLimit && this.customerCreditLimit.toString() != '') ? this.customerCreditLimit : 0,
             qty: 0,
             amount: 0,
             count: 0
